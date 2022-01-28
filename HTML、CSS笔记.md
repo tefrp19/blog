@@ -4,26 +4,6 @@
 
 英国人李爵士发明了HTML（最初HTML没有CSS） 1990年
 
-# HTML起手
-
-```html
-<!DOCTYPE html>
-<!-- 网站语言 -->
-<html lang="en">
-<head>
-    <!-- 字符集 -->
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- 完美视口 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
-```
-
 # 常见标签
 
 ## h1~h6
@@ -48,13 +28,35 @@ id、class、style、contenteditable（true|false 规定元素内容是否可编
 
 # 常用内容标签
 
-- a（anchor）超链接
 
-- strong、em都表示强调，em侧重语气，strong侧重内容
-- code 代码块
-- pre 使HTML不忽略空格、回车、tab
 
-本地与github建立连接，实时更新云端内容
+## a（anchor）超链接
+
+### href
+
+`<a href="//baidu.com">test</a>`这是不规定协议的超链接
+
+`<a href="javascript:;">test</a>`页面不会刷新也不会移到顶部，`<a href="href="#">test</a>`页面焦点会移到顶部
+
+`<a href="#标题1">test</a>`页面会定位到id为`标题1`的元素
+
+### target
+
+`<a href="//baidu.com" target="_top|_self...">test</a>`
+
+## table
+
+设置表格单元格边距
+
+## img
+
+永远不要让图片变形，可只设置宽或只设置高
+
+## form
+
+autocomplete="off|on" 输入框是否可以让用户自动填充
+
+form中`<input type="sumbit" value="提交"/>`与`<button>提交</button>`的区别：button标签中还能含svg等标签，使提交按钮更好看
 
 # 为什么即使像footer这样页面**唯一的元素也建议写类选择器**不要写id选择器？
 

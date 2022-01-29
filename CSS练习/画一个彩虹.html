@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>彩虹</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .rainbow-container {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .rainbow,
+        .rainbow div {
+            overflow: hidden;
+            /*解决margin塌陷*/
+            margin-top: 20px;
+            margin-left: 20px;
+            border-radius: 50%;
+        }
+
+        .rainbow {
+            background-color: red;
+            width: 500px;
+            height: 500px;
+        }
+
+        .rainbow>div {
+            background-color: orange;
+            width: 460px;
+            height: 460px;
+        }
+
+        .rainbow>div>div {
+            background-color: yellow;
+            width: 420px;
+            height: 420px;
+        }
+
+        .rainbow>div>div>div {
+            background-color: green;
+            width: 380px;
+            height: 380px;
+        }
+
+        .rainbow>div>div>div>div {
+            background-color: blue;
+            width: 340px;
+            height: 340px;
+        }
+
+        .rainbow>div>div>div>div>div {
+            background-color: white;
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="rainbow-container">
+        <div class="rainbow">
+            <div>
+                <div>
+                    <div>
+                        <div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

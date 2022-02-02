@@ -6,10 +6,6 @@
 
 # 常见标签
 
-## h1~h6
-
-英语head+级别n，表示标题
-
 ## section
 
 用来定义一个明确的主题，通常含有一个标题（h1~h6）。但如果是文章，通常会使用article标签来代替。
@@ -27,8 +23,6 @@
 id、class、style、contenteditable（true|false 规定元素内容是否可编辑）、hidden（布尔属性）tabindex（规定元素的 tab 键次序）等
 
 # 常用内容标签
-
-
 
 ## a（anchor）超链接
 
@@ -62,7 +56,6 @@ form中`<input type="sumbit" value="提交"/>`与`<button>提交</button>`的区
 
 1. 不要死究，奇怪的现象先记住就行
 2. 先写border进行测试
-3. margin合并（上下合并）：相邻元素元素之间上下margin会**重叠**，父元素和第一个子元素、最后一个子元素margin会**重叠**。见[练习](CSS练习/margin合并.html)
 
 
 
@@ -92,10 +85,45 @@ border box：**width包含内容、padding和border**
 
 因为即使页面有相同id的元素，html不会报错，有可能遗忘之前写过的id而写相同的id，这时难以调试（先申明的元素先有样式，后写的元素会被忽略），如果写类选择器容易调试
 
-# css需要清除默认样式的原因
+# margin合并、塌陷
 
-html是先于css出来的，html为了区别标题和正文于是就有了默认的样式，但目前主流的审美都不接受默认样式
+相邻元素元素之间上下margin会**重叠**。父元素和第一个子元素、最后一个子元素margin会**重叠**。见[练习](CSS练习/margin合并.html)
 
 # 布局
 
 设计思路：需要兼容IE9使用float布局；兼容大多数浏览器使用felx布局；只兼容最新浏览器使用grid布局
+
+### float
+
+步骤
+
+1）子元素上加float:left和width
+
+2）父元素上加
+
+```css
+.clearfix:after {
+    content:'';
+    display:block;
+    clear:both;
+}
+```
+
+
+
+## flex
+
+步骤
+
+1）父元素选择整体排列方向
+
+```css
+.container{
+    display:flex;
+    flex-direction:row（默认）|column;
+}
+
+```
+
+2）
+

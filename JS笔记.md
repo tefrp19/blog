@@ -14,7 +14,18 @@ JavaScript是浏览器执行的实际
 
 
 
+# falsy
 
+6个falsy值：
+
+1. false
+2. 0
+3. "" 空串
+4. null
+5. undefined
+6. NaN
+
+ 
 
 
 
@@ -48,14 +59,15 @@ js中变量是没有类型的，只有值才有。变量可以随时持有任何
             </tr>
         </tbody>
     </table>
-
-[**函数传参传的是值，不是引用**](https://weread.qq.com/web/reader/751326d0720befab7514782k636320102206364d3f0ffdc)，[测试地址](/JS练习/变量的引用值以及函数传值.js)
+[**函数传参传的是值，不是引用**](https://weread.qq.com/web/reader/751326d0720befab7514782k636320102206364d3f0ffdc)，[测试地址](JS练习/变量的引用值以及函数传值.js)
 
 # 上下文
 
 （执行）上下文主要有全局上下文（window）和函数上下文
 
-var变量自动提升
+## 自动提升
+
+### var变量自动提升
 
 ```js
 function add(num1, num2) {
@@ -69,13 +81,30 @@ let result = add(10, 20); // 30
 console.log(sum); // 报错：sum在这里不是有效变量
 ```
 
-在全局上下文中用var申明变量，变量会成为window的属性，而在函数上下文中用var申明变量，变量则不会成为window的属性，离开函数的上下文刚刚申明的变量自动清理
+在全局上下文中用 var 申明变量，变量会成为 window 的属性，而在函数上下文中用 var 申明变量，变量则不会成为 window 的属性，离开函数的上下文刚刚申明的变量自动清理
 
 
 
-对象是**属性和方法**的集合
+### 函数声明（定义函数的其中一种方法）自动提升
+
+```js
+sayHi()
+function sayHi(){
+    console.log('Hi!');
+}
+```
+
+这个例子不会抛出错误，因为 JavaScript 引擎会先读取函数声明，然后再执行代码。
+
+## 闭包
+
+闭包指的是那些**引用了另一个函数作用域中变量的函数**，通常是在嵌套函数中实现的。
+
+
 
 # 对象的属性
+
+对象是**属性和方法**的集合
 
 对象的属性分两种：数据属性和访问器属性
 
@@ -198,7 +227,7 @@ Person.prototype.sayName=function () {
 };
 ```
 
-实例之间公共的内容可以挂到构造函数的原型对象上，**实现管理与共享，节省内存**。
+**实例之间公共的内容**可以挂到构造函数的原型对象上，**实现管理与共享，节省内存**。
 
 ## 原型链的产生
 
@@ -211,6 +240,47 @@ prototype是一个属性，指向原型对象，这个对象可以看作是所�
 <img src="https://res.weread.qq.com/wrepub/epub_34336683_41" alt="原型" style="zoom: 50%;" />
 
 由于Person.prototype也是一个对象，也是由`new Object()`（底层）创建出的，所以Person的原型对象也会有原型对象（`即Person.__proto__.__proto__`），为Object（Object也是一个构造函数）的原型对象（Object.prototype），但到Object的原型就为止了（这像蛋生鸡鸡生蛋的问题），Object的原型的原型为null。
+
+
+
+
+
+```js
+Object.__proto__===Function.prototype//true
+```
+
+Object 是一个函数实例
+
+
+
+# 数组
+
+JS 中的数组不是典型数组，内存空间不连续。
+
+伪数组原型没有指向 `Array.propotype`，所以没有 push和pop 等方法。
+
+
+
+# this
+
+this 在标准函数和箭头函数中有不同的行为：
+
+1. 在标准函数中 this 引用的是**把函数当成方法调用的上下文对象**。
+2. 在箭头函数中 this 引用的是**定义箭头函数的上下文**。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -238,3 +308,22 @@ prototype是一个属性，指向原型对象，这个对象可以看作是所�
 ## 'name' in obj和obj.hasOwnProperty('name') 的区别
 
 前者会先在对象自身寻找属性，找不到就沿着原型链寻找，后者只在自身寻找属性
+
+
+
+
+
+# DOM
+
+## 节点
+
+```html
+<div>
+    <p title="title" myAttr="test">
+        content
+    </p >
+</div>
+```
+
+上述结构中，`div`、`p`就是元素节点，`content` 就是文本节点，`title`、`myAttr` 就是属性节点
+

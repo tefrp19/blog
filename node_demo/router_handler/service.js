@@ -1,5 +1,4 @@
-const db = require('../dbConfig.js') //导入操作数据库的对象
-
+const { db } = require('../dbConfig.js') //导入操作数据库的对象
 
 
 exports.getAllMatters = (req, res) => {
@@ -69,4 +68,31 @@ exports.deleteMatter = (req, res) => {
         })
     })
 
+}
+
+exports.login = (req, res) => {
+    console.log(req.session);
+    if (!req.session.users) req.session.users = []
+    req.session.users.push()
+
+
+    res.send({
+        msg: 'ok'
+    })
+}
+
+exports.sessionTest = (req, res) => {
+    const { userName } = req.query
+    // console.log(req);
+    if (req.session.views) {
+        req.session.views++
+        res.setHeader('Content-Type', 'text/html')
+        res.write('<p>views: ' + req.session.views + '</p>')
+        res.write('<p>expires in: ' + (req.session.cookie.maxAge / 1000) + 's</p>')
+        res.write('<p>userName: ' + userName + '</p>')
+        res.end()
+    } else {
+        req.session.views = 1 // 如果是第一次访问则 session 中没有 views 值
+        res.end('welcome to the session demo. refresh!' + userName) // 根据不同的参数展示不同的userName
+    }
 }

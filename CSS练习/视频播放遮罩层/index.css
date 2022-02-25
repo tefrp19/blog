@@ -1,0 +1,44 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.wrapper {
+    display: flex;
+}
+
+.container {
+    width: 550px;
+    height: 350px;
+    margin: 0 auto;
+    position: relative;
+    /* 使 container 成为圆角，超过圆角的部分不显示*/
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.content,
+.content img {
+    width: 100%;
+    height: 100%;
+}
+
+.mask {
+    /* 一开始遮罩层透明度为0 */
+    opacity: 0;
+    /* 透明度渐变0.3秒 */
+    transition: opacity .3s;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    /* background-size 只能紧接着 background-position 出现，以"/"分割，如： "center/80%". */
+    background: url('./img/播放.png') rgb(0, 0, 0, .3) no-repeat center/25%;
+}
+
+/* 当鼠标经过时显示遮罩层 */
+.container:hover .mask {
+    opacity: 1;
+}

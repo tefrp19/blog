@@ -327,3 +327,26 @@ this 在标准函数和箭头函数中有不同的行为：
 
 上述结构中，`div`、`p`就是元素节点，`content` 就是文本节点，`title`、`myAttr` 就是属性节点
 
+
+
+# 异步
+
+做一件任务需要等待时间，如果等待期间不能做任何事情那么这件任务称为同步任务，需要把该任务做完了才能做下一件任务；如果等待期间可以做其他任务那么这件任务称为异步任务。
+
+在异步中通知任务解决完有两种方式：1.轮询，每隔一段时间查询任务是否做完 2.回调，任务一做完就通知
+
+# BOM
+
+## cookie
+
+cookie 是覆盖写
+
+```js
+document.cookie = 'test1=hello';
+document.cookie = 'test1=hello22';
+// cookie 为hello22
+```
+
+### httpOnly属性
+
+`document.cookie` 读不到cookie

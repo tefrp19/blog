@@ -8,4 +8,24 @@ const db = mysql.createPool({
     database: 'test'//指定操作的数据库
 })
 
-module.exports=db
+// redis 连接
+const redis = require('redis')
+const redisClient = redis.createClient({
+    url: 'redis://tefrp:passwords@121.41.94.106:6379',
+
+})
+// (async () => {
+
+// redisClient.on('error', (err) => console.log('Redis Client Error', err));
+redisClient.connect();
+// await redisClient.connect();
+
+// await redisClient.set('key', 'value');
+// const value = await redisClient.get('key');
+// })()
+
+
+module.exports = {
+    db,
+
+}

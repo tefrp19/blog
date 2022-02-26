@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>遮罩层</title>
+    <title>视频播放遮罩层遮罩层</title>
     <link rel="stylesheet" href="./index.css">
 </head>
 
 <body>
-    <p>实现效果：鼠标悬浮产生遮罩的效果</p>
-
+    <p>实现效果：鼠标悬浮产生遮罩层</p>
+    <p>大致思路：给容器设置相对定位，mask 设为绝对定位，浮起来。设置遮罩层默认不显示（方法：opacity:0或dispaly:none），触发效果时设置为显示</p>
     <div class="wrapper">
         <div class="container">
             <a href="javascript:">

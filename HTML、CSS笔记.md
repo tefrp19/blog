@@ -89,7 +89,7 @@ border box：**width包含内容、padding和border**
 
 设计思路：需要兼容IE9使用float布局；兼容大多数浏览器使用felx布局；只兼容最新浏览器使用grid布局
 
-### float
+## float
 
 步骤
 
@@ -122,4 +122,32 @@ border box：**width包含内容、padding和border**
 ```
 
 2）
+
+
+
+# BFC（块格式化上下文 Block Formatting Context）
+
+
+
+BFC 目的是形成一个相**对于外界完全独立的空间**，**让内部的子元素不会影响到外部的元素**
+
+
+
+
+
+
+
+# img 在CSS中是特殊的标签
+
+[使用 CSS 为 \<img> 附加样式](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/img#使用_css_为__附加样式)
+
+img 标签为可替换元素，常设置为 `diplay:block;`，进行布局
+
+
+
+# 使用 JS  操作页面
+
+## offset
+
+offsetTop、offsetLeft 以带有定位的父元素为准，返回元素的偏移值（不带单位），如没有，则以 body 为准
 

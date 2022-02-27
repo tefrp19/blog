@@ -1,12 +1,30 @@
-function test(params) {
-    var myVar = 1
+function shallowClone(obj) {
+    const newObj = {};
+    for (let prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+            newObj[prop] = obj[prop];
+        }
+    }
+    return newObj;
 }
 
-if (2 > 1) {
-    var a1 = 'a1'
+var obj = {
+    age: 18,
+    nature: ['smart', 'good'],
+    names: {
+        name1: 'fx',
+        name2: 'xka'
+    },
+    love: function () {
+        console.log('fx is a great girl')
+    }
 }
-else {
-    var a2 = 'a2'
+
+const obj2=shallowClone(obj)
+obj2.age=19
+obj2.names={
+    name1:'new name'
 }
-console.log(a1);
-console.log(a2);
+console.log('obj2:',obj2);
+
+console.log('obj:',obj);

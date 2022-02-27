@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.nav {
+    background-color: blueviolet;
+    height: 100px;
+    /* 为了实现子元素居中，给父元素设置 position: relative; */
+    position: relative;
+}
+
+.banner video {
+    width: 100%;
+    background-color: red;
+}
+
+.user {
+    height: 50px;
+    width: 50px;
+    margin-left: 60%;
+    /* 垂直居中 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+
+.avatar {
+    display: block;
+    height: 100%;
+    width: 100%;
+    /* 过渡 */
+    transform: translate(0px, 0px);
+    transition: all .4s;
+    /* 使头像在详情栏的上层。
+    对于一个已经定位的盒子（即其 position 属性值不是 static，这里要注意的是 CSS 把元素看作盒子），z-index 属性指定：
+    盒子在当前堆叠上下文中的堆叠层级。
+    盒子是否创建一个本地堆叠上下文。 */
+    position: relative;
+    z-index: 1;
+}
+
+.avatar img {
+    /* img 底侧空白常用做法：display: block; 再单独设置其样式 */
+    display: block;
+    height: 100%;
+    /* 圆形*/
+    border-radius: 50%;
+    border: 2px solid #fff;
+
+}
+
+.avatar:hover {
+    /* 悬浮时移动位置，缩放大小 */
+    transform: translate(-50%, 50%) scale(2);
+}
+
+.user-detail {
+    display: none;
+    background-color: antiquewhite;
+    height: 550px;
+    width: 300px;
+    position: absolute;
+    top: 100%;
+    transform: translate(-50%, 0);
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgb(0 0 0 / 10%);
+    /* 过渡效果 */
+    transition: all .5s;
+}
+
+.user:hover .user-detail {
+    display: block;
+}

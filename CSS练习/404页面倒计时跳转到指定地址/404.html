@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 not found</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            background: url('./404.png') no-repeat bottom/100%;
+            /* 给父元素加上overflow: hidden;创建一个BFC，有效地清除父子元素的 margin 合并 */
+            overflow: hidden;
+        }
+
+        .container {
+            margin-top: 50px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 100px;
+            width: 500px;
+            /* font-size: 50px; */
+        }
+        .subtitle{
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>来到了一片未知的荒原</h1>
+        <div class="subtitle">5 秒后自动跳至首页</div>
+    </div>
+    <script>
+        const subtitle=document.querySelector('.subtitle')
+        let num=5
+        const id= setInterval(() => {
+            subtitle.innerText=`${--num} 秒后自动跳至首页`
+            if (num===0) {
+                clearInterval(id)
+                location.assign('https://www.baidu.com')
+            }
+        }, 1000)
+    </script>
+</body>
+
+</html>

@@ -13,22 +13,39 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// 配置 session 中间件
-const session = require('express-session')
-// 将session 存到 redis 中
-app.use(session({
-    secret: 'tefrp', // secret 为任意字符串
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 3000 }
-}))
-// 该中间件配置成功后，可通过 req.session 来访问和使用 session 对象
+// 配置 express-jwt 中间件解析 token 生成 JSON 对象
+const expressJWT = require('express-jwt')
+    ({
+        secret: '123456',
+        algorithms: ['HS256']
+    })
+    // 符合路径的不用进行 token 检查
+    .unless({ path: ['/login', '/register'] })
+
+
+app.use(expressJWT)
+
+// 配置一个处理错误的全局中间件
+app.use((err, req, res, next) => {
+    console.log('处理错误的全局中间件');
+    // 当 token 身份校验失败
+    if (err.name === 'UnauthorizedError') {
+        res.send(new Model(401, '验证失败，无效的token'))
+        return
+    }
+
+    if (err.type === 'entity.parse.failed') {
+        res.send(new Model(400, '请求语法错误'))
+        return
+    }
+})
 
 // 导入路由（api）
-const api = require('./router/api')
+const api = require('./src/controller/api')
+const { Model } = require('./src/model/model')
 app.use(api)
-
+// console.log(process.env.NO);
 
 app.listen(8000, () => {
-    console.log('服务器运行在：http://127.0.0.1:8000');
+    console.log('服务器运行在8000端口');
 })

@@ -19,7 +19,8 @@ const modal = document.querySelector('.modal')
 const header = modal.children[0]
 
 header.addEventListener('mousedown', e => {
-    // console.log(e);
+    // e.pageX：鼠标在页面中的位置
+    // offsetLeft：元素距离父元素的偏移位置
     const x = e.pageX - modal.offsetLeft
     const y = e.pageY - modal.offsetTop
     // console.log(x,y);
@@ -37,7 +38,7 @@ header.addEventListener('mousedown', e => {
     })
 })
 
-// 点击到除 modal 外的部分，遮罩层关闭
+// 点击到 modal 外部，遮罩层关闭
 document.addEventListener('mousedown', e=>{
     // console.dir();
     if (e.target.className==='mask') {

@@ -7,9 +7,8 @@
 - cors 模块解决跨域问题
 - body-parser 模块处理 json 数据
 - mysql 模块实现数据库连接
-- express-session 模块实现 session 的实现
-- redis
-- connect-redis
+- jsonwebtoken 模块用于生成 JWT 字符串
+- express-jwt 模块用于将 JWT 字符串解析还原成 JSON 对象
 
 # 如何运行项目
 1. 进入项目目录，执行 `npm install`

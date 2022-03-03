@@ -5,7 +5,6 @@
 }
 
 .nav {
-    background-color: blueviolet;
     height: 100px;
     /* 为了实现子元素居中，给父元素设置 position: relative; */
     position: relative;
@@ -13,7 +12,6 @@
 
 .banner video {
     width: 100%;
-    background-color: red;
 }
 
 .user {

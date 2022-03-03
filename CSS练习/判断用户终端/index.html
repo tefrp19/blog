@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>判断用户终端展示不同页面</title>
+</head>
+
+<body>
+    <script>
+        const userAgent = navigator.userAgent
+        console.log(userAgent);
+        // 匹配移动端的正则（不全）
+        const mobileReg = /phone|Android|ios|iPhone|iPad|Mobile/
+        const body = document.querySelector('body')
+        if (mobileReg.test(userAgent)) {
+            // 移动端
+            body.innerHTML = '<h1>这是移动端，进行移动端布局</h1>'
+        } else {
+            // 电脑
+            body.innerHTML = '<h1>这是PC端，进行PC端布局</h1>'
+        }
+    </script>
+</body>
+
+</html>

@@ -1,5 +1,19 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+@import url(../reset.css);
+/* html 默认字体大小16 px */
+@media screen and (max-width:768px){
+    body{
+        background-color: aqua;
+    }
+}
+
+.toc {
+    margin: 50px;
+    height: 3rem;
+    width: 3rem;
+    background-color: rgb(232, 232, 232);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    padding: 5px;
 }

@@ -1,0 +1,93 @@
+.root {
+    height: 100vh;
+    display: flex;
+}
+
+aside {
+    background-color: rgb(243, 242, 241);
+    width: 15rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.user {
+    height: 2.5rem;
+    /* border: 1px solid black; */
+}
+
+.serach {
+    height: 2.5rem;
+    border-bottom: 1px solid black;
+    margin-top: .5rem;
+
+}
+
+.groups {
+    /* 分组较少时把剩余空间填充完 */
+    flex-grow: 1;
+    /* 有多个分组时，y轴出现滚轮 */
+    overflow-y: auto;
+    /* 使最后一个元素不被添加列表按钮遮挡 */
+    padding-bottom: 3rem;
+}
+
+.list-item {
+    height: 3rem;
+    line-height: 3rem;
+    border: 1px solid #000;
+    padding-left: 10px;
+}
+
+.list-item:hover {
+    background-color: rgb(250, 250, 250);
+    cursor: pointer;
+}
+
+.add-list {
+    /* position: fixed; 会创建bfc */
+    position: fixed;
+    bottom: 0;
+    height: 3rem;
+    width: 15rem;
+    background-color: yellowgreen;
+}
+
+main {
+    display: flex;
+    /* justify-content: space-between; */
+    /* width: 70vw; */
+    flex-grow: 1;
+}
+
+.contanier {
+    flex-grow: 1;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 0 1rem;
+}
+
+.menu {
+    display: none;
+}
+
+.matters {
+    background-color: aliceblue;
+    flex-grow: 1;
+}
+
+.matters li {
+    height: 4rem;
+    line-height: 4rem;
+    border: 1px solid #000;
+}
+
+.matters li:hover {
+    background-color: rgb(237, 235, 233);
+    cursor: pointer;
+}
+
+.matter-detail {
+    width: 20rem;
+    background-color: brown;
+}

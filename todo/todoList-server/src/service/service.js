@@ -18,6 +18,16 @@ exports.register = (req, res) => {
     })
 }
 
+
+exports.login = (req, res) => {
+    // 生成 token 
+    const jwt = require('jsonwebtoken')
+    // 密钥要和解析 token 时的密钥一致
+    const secreKey = '123456'
+    const token = jwt.sign({ userId: req.userId }, secreKey, { expiresIn: '60000s' })
+    res.send(new Model(token))
+}
+
 exports.getAllMatters = (req, res) => {
     //    const userId =escape(req.)
     const sql = `SELECT user_id,matter.id,status,remarks,deadline FROM matter JOIN user ON matter.user_id=user.id WHERE user_id=${1};`
@@ -26,8 +36,7 @@ exports.getAllMatters = (req, res) => {
         for (const item of results) {
             delete item.user_id // 删除前端不需要的字段
         }
-        const model = new Model(200, 'ok', results)
-        res.send(model)
+        res.send(new Model(results))
     })
 }
 
@@ -80,24 +89,6 @@ exports.deleteMatter = (req, res) => {
 
 }
 
-const jwt = require('jsonwebtoken')
-const secreKey = '123456'
-exports.login = (req, res) => {
-   
-    // 通过传入的 username 查找对应的 userID
-    const sql = `SELECT id FROM user WHERE user_name=${username}`
-
-    // exec(sql, username).then(results => {
-    //     const userId = results.id
-    //     const token = jwt.sign({ userId: userId }, secreKey, { expiresIn: '60000s' })
-    //     res.send({
-    //         msg: 'ok',
-    //         token: token
-    //     })
-
-    // })
-    // 生成 token 
-}
 
 // exports.sessionTest = (req, res) => {
 //     const { userName } = req.query

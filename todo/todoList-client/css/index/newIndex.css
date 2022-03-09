@@ -1,0 +1,24 @@
+@import url(../reset.css);
+/* 通用样式 */
+@import url(./common.css);
+
+/* 大屏三栏全部显示；平板右侧栏不显示（遮罩层）；手机左右侧都不显示（遮罩层） */
+/* 平板 */
+@media screen and (max-width:1200px) {
+    .matter-detail {
+        display: none;
+    }
+}
+
+/* 手机 */
+@media screen and (max-width:768px) {
+    aside {
+        display: none;
+    }
+
+    .menu {
+        display: block;
+    }
+  
+
+}

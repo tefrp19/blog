@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>client1</title>
+</head>
+
+<body>
+    <button onclick="createConnection()">连接到socket服务器</button>
+    <button onclick="sendMessage()">广播发送消息</button>
+    <script>
+        let socket = null;
+        const createConnection = () => {
+            // Create WebSocket connection.
+            socket = new WebSocket('ws://127.0.0.1:8000');
+            // Connection opened
+            socket.addEventListener('open', function (event) {
+                socket.send('Hello Server! 我是客户端1');
+            });
+            // Listen for messages
+            socket.addEventListener('message', function (event) {
+                if (typeof event.data === "string") {
+                    console.log(event.data);
+                    return
+                }
+                event.data.text().then(res => {
+                    console.log(res);
+                })
+            });
+        }
+
+        const sendMessage = () => {
+            socket.send('message from client1')
+        }
+    </script>
+</body>
+
+</html>

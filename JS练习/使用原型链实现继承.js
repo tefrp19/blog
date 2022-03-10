@@ -54,6 +54,7 @@ Teacher.prototype.sayHi = function () {
     console.log(`Hi I am ${this.name}, I am teaching ${this.subject}`);
 }
 const teacher1 = new Teacher('王五', 25, '男', 'math')
+console.log(teacher1);
 teacher1.sayHi()
 
 

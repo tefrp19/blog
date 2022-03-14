@@ -6,7 +6,7 @@ const mysqlConn = mysql.createPool({
     host: '127.0.0.1',
     user: 'root',
     password: 'root',
-    database: 'todolist'//指定操作的数据库
+    database: 'todo'//指定操作的数据库
 })
 
 

@@ -2,89 +2,93 @@ const { exec } = require('../db/mysql') // 导入封装的执行 sql 的异步�
 const escape = require('mysql').escape;// 防止 sql 注入
 const { Model } = require('../model/model') // 抽象的响应对象
 
-exports.register = (req, res) => {
-    const { username, password } = req.body
+exports.register = async (req, res) => {
+    try {
+        const { username, password } = req.body
 
-    console.log('执行注册操作');
-    const crypto = require('../utils/crypto')
-    // 生成一个随机密码盐
-    const randomNum = Math.floor(Math.random() * 1000)
-    const salt = crypto('' + randomNum)
-    const cryptedPassword = crypto(password + salt)
-    const sql = `INSERT INTO user VALUES(null,?,null,?,?)`
-    exec(sql, [username, cryptedPassword, salt]).then(result => {
-        const userId = result.insertId
+        const crypto = require('../utils/crypto')
+        // 生成一个随机密码盐
+        const randomNum = Math.floor(Math.random() * 1000)
+        const salt = crypto('' + randomNum)
+        const cryptedPassword = crypto(password + salt)
+        const sql = 'INSERT INTO user VALUES(null,?,?,?)'
+        // 从 exec 返回的结果中提取 insertId 的值，并将其重命名为 userId
+        const { insertId: userId } = await exec(sql, [username, cryptedPassword, salt])
+
+        // 注册成功后为该用户添加一个默认分组
+        const addGroupSql = 'INSERT INTO `group` VALUES(NULL,\'默认分组\',?);'
+        await exec(addGroupSql, userId)
+
         res.send(new Model({ userId }))
-    })
+    } catch (error) {
+        res.send(new Model('500', '注册失败'))
+    }
+
+
 }
 
 
-exports.login = (req, res) => {
+exports.login = async (req, res) => {
+    const userId = req.userId
     // 生成 token 
     const jwt = require('jsonwebtoken')
     // 密钥要和解析 token 时的密钥一致
     const secreKey = '123456'
-    const token = jwt.sign({ userId: req.userId }, secreKey, { expiresIn: '60000s' })
-    res.send(new Model(token))
+    const token = jwt.sign({ userId: userId }, secreKey, { expiresIn: '60000s' })
+    // 登录成功后还要返回用户对应的所有分组信息（分组id、分组名字）
+    const sql = 'SELECT id,name FROM `group` WHERE user_id=?;'
+    const result = await exec(sql, userId)
+    const data = {
+        token,
+        groups: result,
+    }
+    res.send(new Model(data))
+
 }
 
-exports.getAllMatters = (req, res) => {
-    //    const userId =escape(req.)
-    const sql = `SELECT user_id,matter.id,status,remarks,deadline FROM matter JOIN user ON matter.user_id=user.id WHERE user_id=${1};`
-    exec(sql).then(results => {
+exports.getTasks = (req, res) => {
+    const userId = req.user.userId
+    const groupId = req.body.groupId
+    const sql = 'SELECT id,`name`,note,deadline,`check`,important FROM task WHERE user_id=? and group_id=?'
+    exec(sql, [userId, groupId]).then(results => {
         // console.log(results);
-        for (const item of results) {
-            delete item.user_id // 删除前端不需要的字段
-        }
         res.send(new Model(results))
     })
 }
 
-exports.addMatter = (req, res) => {
-
-    const addMatterSql = 'insert into matter values (?,?,?,?,?)'
-    // console.log(req.body);
-    const matter = req.body
-
-    db.query(addMatterSql, [null, matter.name, 0, matter.remarks, matter.deadline], (err, results) => {
-        if (err) {
-            console.log(err.message)
-            res.send({
-                status: 400,
-                msg: '添加失败！',
-                data: null,
-            })
-            return
+exports.addTask = (req, res) => {
+    const userId = req.user.userId
+    const { groupId, name } = req.body
+    // user_id、group_id
+    const sql = 'INSERT INTO task VALUES(NULL,?,?,?,NULL,NULL,0,0)'
+    exec(sql, [userId, groupId, name]).then(result => {
+        const data = {
+            taskId: result.insertId
         }
-        res.send({
-            status: 200,
-            msg: '添加成功！',
-            data: null,
-        })
+        res.send(new Model(data))
     })
+}
+
+exports.modifyTask = async (req, res) => {
+    const userId = req.user.userId
+    const { taskId, groupId, name, note, deadline, check, important } = req.body
+    const sql = 'UPDATE task SET group_id=?,name=?,note=?,deadline=?,`check`=?,important=?  WHERE id = ? AND user_id=?'
+    try {
+        await exec(sql, [groupId, name, note, deadline, check, important, taskId, userId])
+        res.send(new Model())
+    } catch (error) {
+        res.send(new Model(400, '请求错误'))
+    }
 
 }
 
-exports.deleteMatter = (req, res) => {
-    // 删除指定用户的事项，sql怎么写？传matter id？不安全？解决：同时传 matter id 和 user id
+exports.deleteTask = (req, res) => {
+    const userId = req.user.userId
+    const taskId = req.body.taskId
+    const sql = 'DELETE FROM task WHERE user_id=? and id=?'
 
-    // console.log(req.params);
-    const deleteMatterSql = 'delete from matter where id=?'
-    db.query(deleteMatterSql, req.params.id, (err, results) => {
-        if (err) {
-            console.log(err.message)
-            res.send({
-                status: 400,
-                msg: 'error!',
-                data: null
-            })
-            return
-        }
-        res.send({
-            status: 200,
-            msg: '删除成功！',
-            data: null,
-        })
+    exec(sql, [userId, taskId]).then(results => {
+        res.send(new Model())
     })
 
 }

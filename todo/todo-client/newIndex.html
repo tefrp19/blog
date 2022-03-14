@@ -47,7 +47,9 @@
             <div class="add-list list-item"><i class="fa fa-plus"></i> <span>添加分组</span></div>
         </aside>
         <main>
+           
             <div class="contanier">
+                <div class="mask"></div>
                 <div class="menu"><i class="fa fa-bars" aria-hidden="true"></i></div>
                 <ul class="matters">
                     <li>
@@ -55,14 +57,14 @@
                             <i class="fa fa-circle-thin"></i>
                             <i class="fa fa-check-circle-o"></i>
                         </div>
-                        <span class="matter-name">事项1</span>
+                        <span class="task-name">事项1</span>
                         <div class="importance"><i class="fa fa-star-o"></i></div>
                     </li>
                     <li>
                         <div class="checkBox">
                             <i class="fa fa-circle-thin"></i>
                             <i class="fa fa-check-circle-o"></i></div>
-                        <span class="matter-name">事项2</span>
+                        <span class="task-name">事项2</span>
                         <div class="importance"><i class="fa fa-star-o"></i></div>
                     </li>
                     <li>
@@ -70,7 +72,7 @@
                             <i class="fa fa-circle-thin"></i>
                             <i class="fa fa-check-circle-o"></i>
                         </div>
-                        <span class="matter-name">事项3</span>
+                        <span class="task-name">事项3</span>
                         <div class="importance">
                             <i class="fa fa-star-o"></i>
                         </div>
@@ -78,19 +80,23 @@
 
                 </ul>
             </div>
-            <div class="matter-detail">
+            <div class="task-detail">
                 <div class="detail-header">
                     <div class="checkBox">
                         <i class="fa fa-circle-thin"></i>
                         <i class="fa fa-check-circle-o"></i>
                     </div>
-                    <div class="modify-matter-name">
+                    <div class="modify-task-name">
                         <input type="text">
                     </div>
                     <div class="importance">
                         <i class="fa fa-star-o"></i>
                     </div>
                 </div>
+                <div class="modify-deadline">
+                    <input type="datetime-local" name="deadline"><br>
+                </div>
+                <div class="modify-note"></div>
             </div>
         </main>
     </div>

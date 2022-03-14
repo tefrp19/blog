@@ -8,9 +8,10 @@ const service = require('../service/service')
 const {checkRegister,checkLogin}=require('../service/user')
 router.post('/register',[checkRegister,service.register])
 router.post('/login',[checkLogin,service.login])
-router.get('/getAllMatters', service.getAllMatters)
-router.post('/addMatter', service.addMatter)
-router.get('/deleteMatter/:id', service.deleteMatter)
+router.post('/getTasks', service.getTasks)
+router.post('/addTask', service.addTask)
+router.post('/modifyTask', service.modifyTask)
+router.post('/deleteTask', service.deleteTask)
 
 // router.get('/sessionTest',service.sessionTest)
 

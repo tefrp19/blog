@@ -91,8 +91,8 @@ exports.checkLogin = (req, res, next) => {
     }).catch(err => {
         // console.log(err);
         // 同一错误处理
-        const model = errInfor.get(err)
-        res.send(model)
+        const response = errInfor.get(err)
+        res.send(response)
     })
 
 }

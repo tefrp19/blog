@@ -5,22 +5,11 @@ const { mysqlConn } = require('../conf/db')
  * @param {string} sql - sql 语句
  * @param {Array} param - sql 语句的参数，为了防止 sql 注入需要进行转义
  */
-module.exports.exec = (sql,param) => {
+module.exports.exec = (sql, param) => {
     return new Promise((reslove, reject) => {
-        mysqlConn.query(sql,param,(err, results) => {
-            //#region 
-            // switch (err.code) {
-            //     case 'ECONNREFUSED':
-
-            //         break;
-            //     case 'ER_PARSE_ERROR':
-            //         break
-            //     default:
-            //         break;
-            // }
-            //#endregion
+        mysqlConn.query(sql, param, (err, results) => {
             if (err) {
-                console.log('数据库相关问题：',err);
+                console.log('数据库相关问题：', err);
                 if (err.code === 'ECONNREFUSED') {
                     console.log('数据库连接失败');
                     reject(err)
@@ -35,4 +24,4 @@ module.exports.exec = (sql,param) => {
     })
 
 }
-module.exports.escape=require('mysql').escape
+module.exports.escape = require('mysql').escape

@@ -100,6 +100,12 @@ function sayHi(){
 
 闭包指的是那些**引用了另一个函数作用域中变量的函数**，通常是在嵌套函数中实现的。
 
+闭包使得内层函数能访问到外层函数的作用域。
+
+### 应用场景
+
+节流和防抖
+
 
 
 # 对象的属性
@@ -268,9 +274,27 @@ this 在标准函数和箭头函数中有不同的行为：
 1. 在标准函数中 this 引用的是**把函数当成方法调用的上下文对象**。
 2. 在箭头函数中 this 引用的是**定义箭头函数的上下文**。
 
+### call、apply的应用
 
-
-
+call的一种用法：防抖（或节流）函数封装事件回调函数，指定回调函数的this
+```js
+function debounce(fn, delay) {
+    let timer
+    return function (event) { // 此时的 function 相当于addEventListener的第二个参数
+        const context = this // 将 this 存到一个变量中
+        // const arg=arguments
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+            fn.call(context, event) // 调用fn函数，并将fn的this指定为外部函数的this，此时fn中的this指向 domElement
+            // fn.apply(context,arg) call()方法的作用和 apply() 方法类似，区别就是call()方法接受的是参数列表，而apply()方法接受的是一个参数数组。
+        }, delay);
+    }
+}
+function callback(event){
+    console.log(event)
+}
+domElement.addEventListener('xxx',debounce(callback, 500))
+```
 
 
 
@@ -353,4 +377,16 @@ document.cookie = 'test1=hello22';
 
 ### httpOnly属性
 
-`document.cookie` 读不到cookie
+若某cookie为httpOnly，则`document.cookie` 读不到cookie
+
+
+
+## web性能优化
+
+（看waiting ttfb时间判断后端处理时间）
+web性能优化：
+
+1. 设置请求、响应头中的`cache-control`字段，将资源在浏览器本地长时间**缓存**。（可采用内容摘要、版本号作为缓存更新依据 —— 实现精确的缓存控制）[大公司里怎样开发和部署前端代码——知乎张云龙](https://www.zhihu.com/question/20790576/answer/32602154)
+2. 静态资源使用CDN加速
+3. 浏览器**对同一域名下的同时请求有数量限制**比如10个，所以可将不同资源**放到不同域名**下，html、css、js放到static1.domain.com，png等图片资源放到另一个域名static2.domain.com
+4. 

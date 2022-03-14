@@ -8,6 +8,6 @@ window.$ = window.jQuery = function (selector) {
                 elements[i].classList.add(className)
             }
             return this
-        },
+        }
     }
 }

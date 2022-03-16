@@ -20,14 +20,14 @@ const expressJWT = require('express-jwt')
         algorithms: ['HS256']
     })
     // 符合路径的不用进行 token 检查
-    .unless({ path: ['/login', '/register'] })
+    .unless({ path: ['/login', '/register','/crosTest'] })
 
 
 app.use(expressJWT)
 
 // 配置一个处理错误的全局中间件
 app.use((err, req, res, next) => {
-    console.log('处理错误的全局中间件');
+    console.log('处理错误的全局中间件',err);
     // 当 token 身份校验失败
     if (err.name === 'UnauthorizedError') {
         res.send(new Model(401, '验证失败，无效的token'))

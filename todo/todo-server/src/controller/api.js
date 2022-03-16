@@ -13,6 +13,14 @@ router.post('/addTask', service.addTask)
 router.post('/modifyTask', service.modifyTask)
 router.post('/deleteTask', service.deleteTask)
 
+
+router.get('/crosTest', (req, res)=>{
+    console.log(req);
+    res.send({
+        data:123
+    })
+})
+
 // router.get('/sessionTest',service.sessionTest)
 
 module.exports = router

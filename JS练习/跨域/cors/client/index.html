@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cors跨域</title>
+</head>
+
+<body>
+    <script>
+        // 模拟跨域
+        (async () => {
+            const req = await fetch('http://127.0.0.1:8000/cors', {
+                method: 'post', // 方法为GET、POST 或 HEAD 以外的请求属于复杂请求，需要服务端额外配置
+                headers: {
+                    mytest: 'mytest' // 有规定以外的自定义头部属于复杂请求，需要服务端额外配置
+                },
+            });
+            const data = await req.json();
+            console.log(data);
+        })()
+    </script>
+</body>
+
+</html>

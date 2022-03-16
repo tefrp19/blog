@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jsonp跨域</title>
+</head>
+
+<body>
+    <script>
+        // 创建script标签
+        let script = document.createElement("script");
+        // 给src属性赋值，当dom元素创建完后会向服务器发送一个get请求，返回一段js代码（并自动执行）
+        script.src = "http://127.0.0.1:8000/jsonp?callback=handleResponse";
+        document.body.insertBefore(script, document.body.firstChild);
+
+        // 服务器返回js代码：handleResponse({data:123})，则会执行下面定义的函数，并获取到数据
+        function handleResponse(response) {
+            console.log(response);
+        }
+    </script>
+</body>
+
+</html>

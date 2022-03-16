@@ -381,12 +381,31 @@ document.cookie = 'test1=hello22';
 
 
 
-## web性能优化
+# web性能优化
 
-（看waiting ttfb时间判断后端处理时间）
+（看waiting TTFB时间判断后端处理时间）
 web性能优化：
 
 1. 设置请求、响应头中的`cache-control`字段，将资源在浏览器本地长时间**缓存**。（可采用内容摘要、版本号作为缓存更新依据 —— 实现精确的缓存控制）[大公司里怎样开发和部署前端代码——知乎张云龙](https://www.zhihu.com/question/20790576/answer/32602154)
 2. 静态资源使用CDN加速
 3. 浏览器**对同一域名下的同时请求有数量限制**比如10个，所以可将不同资源**放到不同域名**下，html、css、js放到static1.domain.com，png等图片资源放到另一个域名static2.domain.com
-4. 
+4. 对于[复杂请求](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CORS#%E7%AE%80%E5%8D%95%E8%AF%B7%E6%B1%82)需要额外发送一次预检请求，服务端设置`Access-Control-Max-Age`字段缓存该OPTIONS预检请求的响应结果
+
+
+
+# 跨域
+
+从https://a.com加载静态资源到浏览器（get请求），但js发送了ajax或fetch请求到非同源的url，默认情况下会出现跨域问题
+
+## jsonp
+
+利用`script`标签加载不算跨域的特性实现跨域请求，详情见[jsonp](JS练习/跨域/jsonp)
+
+## CORS
+
+非简单请求的CORS请求，会在正式通信之前，增加一次HTTP查询请求，称为"预检"请求（preflight），method为`options`。
+
+浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单之中，以及可以使用哪些HTTP动词和头信息字段（主要通过在服务器配置一些响应头：`Access-Control-Allow-Origin: http://foo.com`、`Access-Control-Allow-Methods: GET, POST, PUT`等）。只有得到肯定答复，浏览器才会发出**正式的**ajax请求，否则就报错。
+
+详情见[CORS](JS练习/跨域/CORS)
+

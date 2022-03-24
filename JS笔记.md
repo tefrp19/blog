@@ -296,6 +296,21 @@ function callback(event){
 domElement.addEventListener('xxx',debounce(callback, 500))
 ```
 
+call的另一种用法：手写继承时，在子构造函数中调用父构造函数，使用call以新创建的对象为上下文构造函数
+
+```js
+function Person(name, age, gender) {
+    this.name = name
+    this.age = age
+}
+function Teacher(name, age, gender, subject) {
+    // 为通用属性赋值
+    Person.call(this, name, age, gender)
+    // 为子对象赋值
+    this.subject = subject
+}
+```
+
 
 
 
@@ -408,4 +423,12 @@ web性能优化：
 浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单之中，以及可以使用哪些HTTP动词和头信息字段（主要通过在服务器配置一些响应头：`Access-Control-Allow-Origin: http://foo.com`、`Access-Control-Allow-Methods: GET, POST, PUT`等）。只有得到肯定答复，浏览器才会发出**正式的**ajax请求，否则就报错。
 
 详情见[CORS](JS练习/跨域/CORS)
+
+# 设计模式
+
+方应杭：推荐JS只用看：（推荐看大话设计模式）
+
+1. 发布订阅模式（又叫观察者模式=>事件委托=>DOM事件
+2. 迭代模式
+3. 装饰器模式
 

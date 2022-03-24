@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件委托</title>
+    <style>
+        /* *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        } */
+
+
+        ul {
+            width: 50vw;
+            margin: 0;
+        }
+
+        li {
+            height: 50px;
+            border: 1px solid red;
+            margin: 10px 0;
+            line-height: 50px;
+        }
+
+        li:hover {
+            cursor: pointer;
+        }
+
+        .showData {
+            width: 200px;
+            border: 1px solid red;
+            height: 100px;
+            margin-top: 10px;
+            line-height: 100px;
+            text-align: center;
+            position: fixed;
+            right: 20px;
+            top: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <ul>
+            <li data-id="1">item1</li>
+            <li data-id="2">item2</li>
+            <li data-id="3">item3</li>
+            <li data-id="4">item4</li>
+            <li data-id="5">item5</li>
+        </ul>
+
+        <div class="showData">itemId为：0</div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+
+</html>

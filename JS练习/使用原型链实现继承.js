@@ -43,12 +43,8 @@ function Teacher(name, age, gender, subject) {
 // 方法1（在浏览器实现了__proto__属性，非 js 的标准）：
 // Teacher.prototype.__proto__= Person.prototype
 // 方法2：
-Teacher.prototype = Object.create(Person.prototype) // 只定义这句话会使 Teacher 的原型丢掉 constructor 属性，需要重新将构造函数的原型指回构造函数
-Object.defineProperty(Teacher.prototype, 'constructor', {
-    value: Teacher,
-    enumerable: false, 
-    writable: true,
-})
+Teacher.prototype = Object.create(Person.prototype) // 只定义这句话会使 Teacher 对应的原型丢掉 constructor 属性，需要重新将构造函数的原型指回构造函数
+Teacher.prototype.constructor=Teacher
 
 Teacher.prototype.sayHi = function () {
     console.log(`Hi I am ${this.name}, I am teaching ${this.subject}`);

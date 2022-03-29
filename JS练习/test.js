@@ -1,13 +1,16 @@
-// es6
-function unique1(arr) {
-    return [...new Set(arr)]
-}
 
-// es5
-function unique2(arr) {
-    const obj = {}
-    for (let i = 0; i < arr.length; i++) {
-        obj[arr[i]] = true
+(async () => {
+    const userInfor = {
+        username: 'frp1',
+        password: 123
     }
-   return Object.getOwnPropertyNames(obj).map(item=>parseInt(item))
-}
+    await fetch('//127.0.0.1:8000/loginTest', {
+        method: 'post',
+        body: JSON.stringify(userInfor),
+
+        // 默认fetch请求不带上cookie
+        credentials: "include"
+
+    })
+
+})()

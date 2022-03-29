@@ -392,7 +392,11 @@ document.cookie = 'test1=hello22';
 
 ### httpOnly属性
 
-若某cookie为httpOnly，则`document.cookie` 读不到cookie
+若某cookie为httpOnly，则`document.cookie` 读不到cookie，并且客户端不能修改cookie
+
+## max-Age
+
+当cookie过期（Expires/Max-Age为过去的时间），浏览器会删除cookie
 
 
 
@@ -431,4 +435,10 @@ web性能优化：
 1. 发布订阅模式（又叫观察者模式=>事件委托=>DOM事件
 2. 迭代模式
 3. 装饰器模式
+
+# token
+
+用加密算法将数据+时间进行加密生成一个`xxx.xxx.xxx`的JWT发送给客户端，客户端一般存在localStorage中，每次需要进行身份验证的时候在请求首部添加`Authorization`字段，将token放在其中。服务端拿到token判断时间是否过期以及获取token中的数据（一般为userId）
+
+
 

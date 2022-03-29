@@ -11,7 +11,7 @@ server.on('request', (req, res) => {
         console.log(req.headers.cookie);
         res.setHeader('Set-Cookie', 'serverCookie=test;HttpOnly')
         
-        res.end()
+        res.end('hello')
     }
 })
 server.listen(8000, () => {

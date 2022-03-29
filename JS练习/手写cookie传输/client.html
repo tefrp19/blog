@@ -15,10 +15,10 @@
         document.querySelector('button').addEventListener('click', sendFetch)
         async function sendFetch() {
             const req = await fetch('//127.0.0.1:8000/cookie'
-                ,{
-                    // 默认fetch请求不带上cookie
-                    credentials: "include" 
-                }
+                // ,{
+                //     // 默认fetch请求不带上cookie
+                //     credentials: "include" 
+                // }
             )
             
         }

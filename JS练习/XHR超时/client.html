@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    const xhr=new XMLHttpRequest()
+    xhr.open('GET','//127.0.0.1:8080')
+    xhr.timeout=1000
+    xhr.ontimeout=()=>{
+        console.log('超时了')
+    }
+    xhr.send()
+
+    fetch('//127.0.0.1:8080')
+</script>
+</body>
+</html>

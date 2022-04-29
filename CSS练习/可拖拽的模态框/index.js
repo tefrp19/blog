@@ -40,7 +40,7 @@ header.addEventListener('mousedown', e => {
 
 // 点击到 modal 外部，遮罩层关闭
 document.addEventListener('mousedown', e=>{
-    // console.dir();
+    console.dir(e.target.className);
     if (e.target.className==='mask') {
         mask.style.display='none'
     }

@@ -77,7 +77,8 @@ function readFile(fileName) {
     console.log(content);
 })()
 
-// 5.Promise.race的一个应用：当后端接口请求时长过长时可提示用户重试
+// 5.Promise.race：只要给定的迭代中的一个promise解决或拒绝，就采用第一个promise的值作为它的值
+// 应用：当后端接口请求时长过长时可提示用户重试
 const ajax = new Promise((resolve, reject) => {
     const randomTime = Math.floor(Math.random() * 3000)
     setTimeout(resolve, randomTime, "成功");

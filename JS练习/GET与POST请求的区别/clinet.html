@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>client</title>
+</head>
+
+<body>
+    <script>
+        // 1.关于get请求能否带请求体：浏览器对get请求有限制
+        // 1.1.在fetch中get请求带body浏览器会直接报错
+        // (async ()=>{
+        //     fetch('//127.0.0.1:8080',{
+        //         method:'get',
+        //         body:'123',
+        //     })
+        // })()
+
+        // 1.2在XHR中get请求带body浏览器取会消掉请求体中的内容
+        const xhr = new XMLHttpRequest()
+        xhr.open('GET', 'http://127.0.0.1:8080')
+        // xhr.send('123')
+
+        // 1.3在postman中get请求则能带body
+
+        // 2.get请求能被浏览器缓存、post请求不能被浏览器缓存
+        xhr.send()
+    </script>
+
+</body>
+
+</html>

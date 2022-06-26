@@ -58,11 +58,11 @@ function readFile(fileName) {
 // 3. 使用Promise.all并行执行异步（异步函数之间不存在依赖关系时使用这种方法）：
 //#region 
 
-// Promise.all([readFile('f1.txt'), readFile('f2.txt'), readFile('f3.txt')]).then(res => {
-//     console.log(res);
-// }).catch(err => {
-//     console.log(err);
-// })
+Promise.all([readFile('f1.txt'), readFile('f2.txt'), readFile('f3.txt')]).then(res => {
+    console.log(res);
+}).catch(err => {
+    console.log(err);
+})
 //#endregion
 
 // 4. 异步的最佳方案

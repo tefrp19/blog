@@ -35,7 +35,7 @@ function sendAjax(e) {
  * @param {number} delay 
  */
 function debounce(fn=function(){}, delay=1000) {
-    let timer
+    let timer=null
     return function (event) { // 此时的 function 相当于addEventListener的第二个参数
         const context = this // 将 this 存到一个变量中
         if (timer) clearTimeout(timer) // 如果本次请求时上次请求还未执行，取消上次请求
@@ -61,9 +61,10 @@ function showScrollTimes(e) {
 function throttle(fn=function(){}, delay=1000) {
     let timer=null
     return function (event) {
+        const context=this
         if (!timer) { // 如果没有定时器就设置一个定时器，如果定时器还每执行就等待（定时器完成时）
             timer=setTimeout(() => {
-                fn.call(this,event)
+                fn.call(context,event)
                 // clearTimeout(timer) 这里不能用clearTimeout，其只是取消定时器，但定时器id还在
                 timer=null
             }, delay);

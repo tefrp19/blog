@@ -1,6 +1,8 @@
 const server = require('http').createServer()
 
 server.on('request', ((req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
     console.log('收到请求')
     setTimeout(()=>{
         res.end('hello')

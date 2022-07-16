@@ -398,6 +398,14 @@ document.cookie = 'test1=hello22';
 
 当cookie过期（Expires/Max-Age为过去的时间），浏览器会删除cookie
 
+# console.log与调试
+
+console.log 是同步的
+
+chrome 的控制台对应引用类型的数据读取是默认值读取一层数据，当你点击展开时，会再去堆内存中读取属性值和下一层的数据。这种出于性能优先的考虑有时候会给我们一种console.log 是异步的错觉。利用debugger调试更靠谱
+
+
+
 
 
 # web性能优化
@@ -409,6 +417,8 @@ web性能优化：
 2. 静态资源使用CDN加速
 3. 浏览器**对同一域名下的同时请求有数量限制**比如10个，所以可将不同资源**放到不同域名**下，html、css、js放到static1.domain.com，png等图片资源放到另一个域名static2.domain.com
 4. 对于[复杂请求](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CORS#%E7%AE%80%E5%8D%95%E8%AF%B7%E6%B1%82)需要额外发送一次预检请求，服务端设置`Access-Control-Max-Age`字段缓存该OPTIONS预检请求的响应结果
+
+
 
 
 

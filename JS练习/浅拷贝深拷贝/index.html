@@ -1,0 +1,54 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 浅拷贝拷贝的是对象的指针，修改对象内容互相影响。深拷贝则是将整个对象拷贝到另一个内存种，修改内容互不影响
+        const obj1 = {
+            a: 1,
+            b: [1, 2, 3],
+            c: {
+                a: 1,
+                b: [1, 2, 3],
+                c: {},
+            },
+
+        }
+        // 浅拷贝：最简单的实现为利用展开语法
+        const shallowClone = (obj) => {
+            return {
+                ...obj
+            }
+        }
+
+        const obj2 = shallowClone(obj1)
+        obj1.b[0] = 0 // 修改obj1中引用值b的元素，obj2也会受到影响
+        console.log(obj1);
+        console.log(obj2);
+
+        // 深拷贝：利用递归，原始值直接赋值，引用值重新申请一块内容进行赋值
+        const deepClone = (obj) => {
+            if (typeof obj === 'object') {
+                const newObj = Array.isArray(obj) ? [] : {} // 考虑数组
+                for (const key in obj) {
+                    newObj[key] = deepClone(obj[key])
+                }
+                return newObj
+            } else {
+                return obj
+            }
+
+        }
+        const obj3 = deepClone(obj1)
+        obj1.b[1] = 0 // 修改obj1中引用值b的元素，obj3不会受到影响
+        console.log(obj3);
+    </script>
+</body>
+
+</html>

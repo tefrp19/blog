@@ -368,15 +368,21 @@ function Teacher(name, age, gender, subject) {
 
 
 
-# 异步
+# 事件循环与异步
+
+## 异步
 
 做一件任务需要等待时间，如果等待期间不能做任何事情那么这件任务称为同步任务，需要把该任务做完了才能做下一件任务；如果等待期间可以做其他任务那么这件任务称为异步任务。
 
 在异步中通知任务解决完有两种方式：1.轮询，每隔一段时间查询任务是否做完 2.回调，任务一做完就通知![synchronous mode](https://www.ruanyifeng.com/blogimg/asset/201310/2013102002.png)![asynchronous mode](https://www.ruanyifeng.com/blogimg/asset/201310/2013102004.png)
 
-js 中任务分为宏任务和微任务，`script` 标签中常见的语句都是宏任务， `setTimeout()` 是宏任务，`I/O` 是宏任务。`promise` 是微任务（但在实例化的过程中所执行的代码都是同步进行的，只有 `then` 方法中注册的回调是异步执行的）。
+## [事件循环](http://ruanyifeng.com/blog/2014/10/event-loop.html)
 
-执行顺序：执行同步任务，执行完后检查异步任务是否完成，若完成则执行相应的回调，微任务又会在宏任务之前完成。
+所有任务可以分成两种，一种是同步任务（synchronous），另一种是异步任务（asynchronous）。同步任务指的是，在主线程上排队执行的任务，只有前一个任务执行完毕，才能执行后一个任务；异步任务指的是，不进入主线程、而进入"任务队列"（task queue）的任务，只有"任务队列"通知主线程，某个异步任务可以执行了，该任务才会进入主线程执行。**异步任务会先被挂起，当完成后进入任务队列，等待主线程任务执行完再插入主线程。**
+
+setTimeout(fn,0)的含义是，指定某个任务在主线程最早可得的空闲时间执行，也就是说，尽可能早得执行。**要等到同步任务和"任务队列"现有的事件都处理完，才会插入任务队列尾部，并且一次只会插入一个setTimeout的回调任务，再插入主线程执行，如果此时setTimeout的回调任务又使任务队列产生了新的任务后面的setTimeout即使完成了也不能插入任务队列**。
+
+执行顺序：同步任务直接插入主线程执行，异步任务会被挂起，完成后再插入任务队列（定时器的情况特殊些，见上），当主线程为空时任务队列的任务插入主线程执行
 
 # BOM
 
@@ -468,9 +474,13 @@ fetch支持上传流式
 
 
 
-# 框架
+# 框架的作用
 
-[框架解决问题](https://zhuanlan.zhihu.com/p/45510072)：**使用声明式语法，描述组件对象的嵌套关系，并自动生成与dom对象的对应关系。**
+**[The deepest reason why modern JavaScript frameworks exist](https://medium.com/dailyjs/the-deepest-reason-why-modern-javascript-frameworks-exist-933b86ebc445)：Keeping the UI in sync with the state is hard 保持UI与状态（或称数据、JS对象）一致性是很难的**
+
+**Every time you change the state, you need to update the UI**.
+
+框架解决问题：**We define the UI in a single shot, not having to write particular UI code in every action, and we always get the same output due to a particular state**: the framework automatically updates it after the state changes.
 
 没有框架时写网页步骤：
 
@@ -478,3 +488,12 @@ fetch支持上传流式
 2. 操作dom，利用节点innerHTML属性生成元素
 
 这样有个问题，页面改动时还需先写静态html改样式再写入innerHTML
+
+
+
+# 八股文
+
+- 浅拷贝深拷贝是什么，手写代码
+- 防抖节流是什么，手写代码
+- 事件循环
+

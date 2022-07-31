@@ -69,7 +69,6 @@ function throttle(fn=function(){}, delay=1000) {
                 timer=null
             }, delay);
         }
-       
     }
 }
 

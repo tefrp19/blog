@@ -13,6 +13,8 @@ server.on('request', (req, res) => {
         
         res.end('hello')
     }
+
+    // 另外，如果前后端的项目不在一个ip下部署的，set-cookie会无效除非是https协议并对set-cookie响应头进一步设置
 })
 server.listen(8000, () => {
     console.log('服务器运行在8000端口');

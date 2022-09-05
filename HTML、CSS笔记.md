@@ -163,11 +163,15 @@ offsetTop、offsetLeft 以带有定位的父元素为准，返回元素的偏移
 
 
 
-# 页面显示流程
+# 页面渲染流程
 
-解析：1.dom树 2.cssom树 3.js ast树
+![WebKit main flow.](https://web-dev.imgix.net/image/T4FyVKpzu4WKF1kBNvXepbi08t52/S9TJhnMX1cu1vrYuQRqM.png?auto=format)
+
+解析：1.dom树 2.cssom树
 渲染：合成render树
 
-任何会改变元素几何信息(元素的位置和尺寸大小)的操作，都会触发回流
-改变元素的颜色等不改变几何位置的操作会触发重绘
+任何会改变元素几何信息(元素的位置和尺寸大小)的操作，都会触发回流（relayout）
+改变元素的颜色等不改变几何位置的操作会触发重绘（repaint）
 触发回流一定会触发重绘，反之则不一定
+
+关于回流和重绘的优化：改变元素大小和位置用`transform`属性不会触发回流节省时间

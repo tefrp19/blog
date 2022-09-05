@@ -259,6 +259,12 @@ Object 是一个函数实例
 
 
 
+# for...of...与for...in...
+
+`for...of...`用于迭代[可迭代对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Iterators_and_Generators#%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1)
+
+`for...in`以任意顺序迭代一个对象的除[Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)以外的[可枚举](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Enumerability_and_ownership_of_properties)属性，包括继承的可枚举属性。
+
 # 数组
 
 JS 中的数组不是典型数组，内存空间不连续。
@@ -489,7 +495,7 @@ fetch支持上传流式
 
 这样有个问题，页面改动时还需先写静态html改样式再写入innerHTML
 
-
+dom元素删除后所绑定的事件也随即消失
 
 # 八股文
 

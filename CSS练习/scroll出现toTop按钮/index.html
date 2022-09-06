@@ -11,14 +11,17 @@
             height: 2000px;
         }
 
+        /* 实现消失元素的显现过渡效果思路：首先 transition: opacity 1s;然后消失元素设置opacity: 0;并且移除屏幕外，当显现时移回屏幕，再设置opacity: 1; */
         a {
-            display: none;
             width: 50px;
-            height: 100px;
+            height: 0px;
+            overflow: hidden;
             background-color: #0288D1;
             position: fixed;
             bottom: 50px;
             right: 50px;
+            opacity: 0;
+            transition: opacity 1s;
         }
     </style>
 </head>

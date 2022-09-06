@@ -163,7 +163,17 @@ offsetTop、offsetLeft 以带有定位的父元素为准，返回元素的偏移
 
 
 
+# script标签的加载
+
+[浏览器解析标签是同步的，遇到script标签会等执行完（如果是外部标签，还需要等network请求完资源）再解析下面的标签](https://web.dev/howbrowserswork/#the-order-of-processing-scripts-and-style-sheets)
+
+可以给script标签添加async与defer属性异步加载标签，async属性与defer类似，它们两者都只适用于外部脚本，都会告诉浏览器立即开始下载。不过，与defer不同的是，标记为async的脚本并不保证能按照它们出现的次序执行
+
+
+
 # 页面渲染流程
+
+[how browsers work](https://web.dev/howbrowserswork/#main-flow-examples)
 
 ![WebKit main flow.](https://web-dev.imgix.net/image/T4FyVKpzu4WKF1kBNvXepbi08t52/S9TJhnMX1cu1vrYuQRqM.png?auto=format)
 

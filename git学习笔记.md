@@ -1,9 +1,5 @@
 # git学习
 
-## 本篇笔记来由
-
-这篇笔记是参考[廖雪峰git教程](https://www.liaoxuefeng.com/wiki/896043488029600/896202780297248)得来的，加上自己的理解能可以使自己更加充分得记住和理解知识点
-
 ## [常用git命令及简易流程](https://blog.csdn.net/weixin_43367262/article/details/100575221)
 
 ## 理解Git

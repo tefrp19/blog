@@ -372,7 +372,7 @@ function Teacher(name, age, gender, subject) {
 
 上述结构中，`div`、`p`就是元素节点，`content` 就是文本节点，`title`、`myAttr` 就是属性节点
 
-
+选择元素节点：parentNode、children、firstElementChild、lastElementChild、previousElementSibling、nextElementSibling
 
 # 事件循环与异步
 

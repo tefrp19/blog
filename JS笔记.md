@@ -280,7 +280,9 @@ this 在标准函数和箭头函数中有不同的行为：
 1. 在标准函数中 this 引用的是**把函数当成方法调用的上下文对象**。
 2. 在箭头函数中 this 引用的是**定义箭头函数的上下文**。
 
-### call、apply的应用
+
+
+## call、apply的应用
 
 call的一种用法：防抖（或节流）函数封装事件回调函数，指定回调函数的this
 ```js
@@ -478,28 +480,12 @@ fetch支持上传流式
 
 
 
-
-
-# 框架的作用
-
-**[The deepest reason why modern JavaScript frameworks exist](https://medium.com/dailyjs/the-deepest-reason-why-modern-javascript-frameworks-exist-933b86ebc445)：Keeping the UI in sync with the state is hard 保持UI与状态（或称数据、JS对象）一致性是很难的**
-
-**Every time you change the state, you need to update the UI**.
-
-框架解决问题：**We define the UI in a single shot, not having to write particular UI code in every action, and we always get the same output due to a particular state**: the framework automatically updates it after the state changes.
-
-没有框架时写网页步骤：
-
-1. 先写html、css静态页面
-2. 操作dom，利用节点innerHTML属性生成元素
-
-这样有个问题，页面改动时还需先写静态html改样式再写入innerHTML
-
-dom元素删除后所绑定的事件也随即消失
-
 # 八股文
 
 - 浅拷贝深拷贝是什么，手写代码
 - 防抖节流是什么，手写代码
 - 事件循环
 
+
+
+![temp](./temp.jpeg)

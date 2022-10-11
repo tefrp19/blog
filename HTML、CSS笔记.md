@@ -131,7 +131,9 @@ border box：**width包含内容、padding和border**
 
 BFC 目的是形成一个相**对于外界完全独立的空间**，**让内部的子元素不会影响到外部的元素**
 
+bfc可以用于：
 
+- 阻止[外边距重叠](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
 
 
 

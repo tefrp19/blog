@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            height: 50px;
+            width: 50px;
+            margin-top: 10px;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div>1</div>
+    <div>2</div>
+    <!-- <script src="http://127.0.0.1:8000/js"></script> -->
+    <link rel="stylesheet" href="http://127.0.0.1:8000/css">
+    <script>
+        const start = Date.now()
+        let end = Date.now()
+        while (end - start < 3000) {
+            end = Date.now()
+        }
+        console.log(document.querySelectorAll('div'));
+    </script>
+    <div class="test">3</div>
+
+
+</body>
+
+</html>

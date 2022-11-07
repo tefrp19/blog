@@ -173,6 +173,22 @@ offsetTop、offsetLeft 以带有定位的父元素为准，返回元素的偏移
 
 
 
+
+
+# 浏览器、进程、JS引擎、主线程
+
+每一个tab页是一个单独的进程，每个tab页有主线程、I/O线程
+
+浏览器的渲染、js的执行和处理用户事件等操作都发生在主线程中
+
+JS引擎负责执行js代码，无论是在浏览器（google为V8，FireFox为SpiderMonkey）还是Nodejs中（V8引擎）
+
+
+
+
+
+
+
 # 页面渲染流程
 
 [how browsers work](https://web.dev/howbrowserswork/#main-flow-examples)
@@ -181,6 +197,22 @@ offsetTop、offsetLeft 以带有定位的父元素为准，返回元素的偏移
 
 解析：1.dom树 2.cssom树
 渲染：合成render树
+
+WebKit uses the term "layout" for the placing of elements, while Gecko calls it "Reflow".
+
+当DOM树解析到`script`标签时，会立即执行内容，直到执行完毕才会继续进行后续DOM解析（如果`script`是外部资源，还需等其下载完成后再执行。但浏览器做了优化，会平行请求外部`script`、`img`等资源 ）
+
+css的加载不会阻止dom的解析，但会阻止dom的渲染
+
+css的加载会阻止js的执行
+
+当DOM树解析完成后页面才可以进行交互
+
+
+
+不可见的（`display:none`）元素不会被合成到render树中。
+
+
 
 任何会改变元素几何信息(元素的位置和尺寸大小)的操作，都会触发回流（relayout）
 改变元素的颜色等不改变几何位置的操作会触发重绘（repaint）

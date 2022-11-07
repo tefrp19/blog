@@ -384,13 +384,63 @@ function Teacher(name, age, gender, subject) {
 
 在异步中通知任务解决完有两种方式：1.轮询，每隔一段时间查询任务是否做完 2.回调，任务一做完就通知![synchronous mode](https://www.ruanyifeng.com/blogimg/asset/201310/2013102002.png)![asynchronous mode](https://www.ruanyifeng.com/blogimg/asset/201310/2013102004.png)
 
-## [事件循环](http://ruanyifeng.com/blog/2014/10/event-loop.html)
+## [事件循环](https://stackoverflow.com/questions/25915634/difference-between-microtask-and-macrotask-within-an-event-loop-context)
 
-所有任务可以分成两种，一种是同步任务（synchronous），另一种是异步任务（asynchronous）。同步任务指的是，在主线程上排队执行的任务，只有前一个任务执行完毕，才能执行后一个任务；异步任务指的是，不进入主线程、而进入"任务队列"（task queue）的任务，只有"任务队列"通知主线程，某个异步任务可以执行了，该任务才会进入主线程执行。**异步任务会先被挂起，当完成后进入任务队列，等待主线程任务执行完再插入主线程。**
+<img src="https://miro.medium.com/max/875/1*FA9NGxNB6-v1oI2qGEtlRQ.png" alt="img" style="zoom: 80%;" />
 
-setTimeout(fn,0)的含义是，指定某个任务在主线程最早可得的空闲时间执行，也就是说，尽可能早得执行。**要等到同步任务和"任务队列"现有的事件都处理完，才会插入任务队列尾部，并且一次只会插入一个setTimeout的回调任务，再插入主线程执行，如果此时setTimeout的回调任务又使任务队列产生了新的任务后面的setTimeout即使完成了也不能插入任务队列**。
+<img src="https://camo.githubusercontent.com/2f12852c45cf6c9f9f7c3f03c07c063a83b7ede0/68747470733a2f2f626c6f672d6173736574732e726973696e67737461636b2e636f6d2f323031362f31302f7468652d4e6f64652d6a732d6576656e742d6c6f6f702e706e67" alt="img" style="zoom:130%;" />
 
-执行顺序：同步任务直接插入主线程执行，异步任务会被挂起，完成后再插入任务队列（定时器的情况特殊些，见上），当主线程为空时任务队列的任务插入主线程执行
+
+
+任务队列（task queue）、消息队列（message queue）、事件队列（event queue）都是指的一件事
+
+事件循环详细步骤：https://stackoverflow.com/questions/25915634/difference-between-microtask-and-macrotask-within-an-event-loop-context/30910084#30910084
+
+**需要注意的是：**
+
+> promiseA.then()'s callback is a task
+>
+> - promiseA is resolved/rejected:  the task will be pushed into microtask queue in **current round** of event loop.
+> - promiseA is pending:  the task will be pushed into microtask queue in the **future round** of event loop(may be next round)
+
+
+
+在事件循环中，每进行一次循环操作称为 tick，每一次 tick 的任务[处理模型](https://www.w3.org/TR/html5/webappapis.html#event-loops-processing-model)是比较复杂的，但关键步骤如下：
+
+- 执行一个宏任务（栈中没有就从事件队列中获取）
+- 执行过程中如果遇到微任务，就将它添加到微任务的任务队列中
+- 宏任务执行完毕后，立即执行当前微任务队列中的所有微任务（依次执行，如果有新的任务加入后续的微任务也要处理）
+- 当前轮的微任务执行完，执行下一个宏任务
+
+
+
+**macrotasks:** [setTimeout](https://developer.mozilla.org/docs/Web/API/WindowTimers/setTimeout), [setInterval](https://developer.mozilla.org/docs/Web/API/WindowTimers/setInterval), [setImmediate](https://developer.mozilla.org/docs/Web/API/Window/setImmediate), [requestAnimationFrame](https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame), [I/O](https://developer.mozilla.org/docs/Mozilla/Projects/NSPR/Reference/I_O_Functions), UI rendering
+**microtasks:** [process.nextTick](https://nodejs.org/uk/docs/guides/event-loop-timers-and-nexttick/), [Promises](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise), [queueMicrotask](https://developer.mozilla.org/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask), [MutationObserver](https://developer.mozilla.org/docs/Web/API/MutationObserver)
+
+`await`是语法糖：
+
+```js
+async function async1() {
+	console.log('async1 start');
+	await async2();
+	console.log('async1 end');
+}
+```
+
+等价于
+
+```js
+async function async1() {
+	console.log('async1 start');
+	Promise.resolve(async2()).then(() => {
+                console.log('async1 end');
+        })
+}
+```
+
+我们说js是单线程时指的是js引擎的主线程，主线程负责执行js代码、渲染网页
+
+
 
 # BOM
 
@@ -408,7 +458,7 @@ document.cookie = 'test1=hello22';
 
 若某cookie为httpOnly，则`document.cookie` 读不到cookie，并且客户端不能修改cookie
 
-## max-Age
+### max-Age
 
 当cookie过期（Expires/Max-Age为过去的时间），浏览器会删除cookie
 

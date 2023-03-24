@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>两栏和三栏布局</title>
+    <style>
+        .container {
+            height: 300px;
+            border: 1px solid black;
+            margin-bottom: 50px;
+        }
+
+        .container > div:nth-child(1) {
+            background-color: #0288D1;
+        }
+
+        .container > div:nth-child(2) {
+            background-color: #ff007b;
+        }
+
+        .container > div:nth-child(3) {
+            background-color: #02d18f;
+        }
+
+        .two-col {
+            display: flex;
+        }
+
+        .two-col > .left {
+            width: 100px;
+            height: 100%;
+        }
+
+        .two-col > .right {
+            flex-grow: 1;
+        }
+
+        .three-col {
+            display: flex;
+        }
+
+        .three-col > .left {
+            width: 100px;
+        }
+
+        .three-col > .center {
+            flex-grow: 1;
+        }
+
+        .three-col > .right {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+<div class="container two-col">
+    <div class="left"></div>
+    <div class="right"></div>
+</div>
+<div class="container three-col">
+    <div class="left"></div>
+    <div class="center"></div>
+    <div class="right"></div>
+</div>
+</body>
+</html>

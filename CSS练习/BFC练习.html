@@ -14,24 +14,32 @@
         }
 
         .item1 {
-            width: 100px;
+            width: 300px;
             height: 100px;
             background-color: red;
+            /*item1创建了一个bfc，即使其子元素高度溢出也不会影响其他元素布局*/
             position: fixed;
+            /*top: calc(50% - 50px);*/
+            /*left: calc(50% - 150px);*/
         }
 
         .item2 {
-            width: 100px;
-            height: 100px;
+            width: 400px;
+            height: 200px;
             background-color: green;
-            /* position: relative; */
-            /* top: -40px; */
+        }
+        .child{
+            width: 100px;
+            height: 500px;
+            background-color: #0288D1;
         }
     </style>
 </head>
 
 <body>
-    <div class="item1"></div>
+    <div class="item1">
+        <div class="child"></div>
+    </div>
     <div class="item2"></div>
 </body>
 

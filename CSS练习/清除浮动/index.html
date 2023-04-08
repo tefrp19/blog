@@ -1,0 +1,41 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>清除浮动</title>
+    <style>
+        .wrapper {
+            background-color: rgb(79, 185, 227);
+            padding: 10px;
+            color: #fff;
+        }
+
+        .box {
+            float: left;
+            /*float会使box脱离文档流，使得wrapper的高度塌陷*/
+            /*解决办法：1.给wrapper设置伪元素 2.使wrapper成为一个bfc*/
+            margin-right: 15px;
+            width: 150px;
+            height: 100px;
+            border-radius: 5px;
+            background-color: rgb(207, 232, 220);
+            padding: 1em;
+        }
+
+        .wrapper::after {
+            content: "";
+            clear: both;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="box">Float</div>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla luctus aliquam dolor, eu lacinia lorem placerat
+        vulputate.</p>
+</div>
+</body>
+</html>

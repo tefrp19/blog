@@ -8,6 +8,7 @@ export default function Example() {
         <button onClick={() => {
             data.push(Math.floor(Math.random() * 10))
             // setData(data) // wrong
+
             setData([...data]) // right
         }
         }>数据+1

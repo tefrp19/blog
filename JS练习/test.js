@@ -1,16 +1,26 @@
+function deepClone(obj) {
+    if (typeof obj === 'object') {
 
-(async () => {
-    const userInfor = {
-        username: 'frp1',
-        password: 123
+        const newObj = {}
+        for (const key in obj) {
+            newObj[key] = deepClone(obj[key])
+        }
+        return newObj
+    } else {
+        return obj
     }
-    await fetch('//127.0.0.1:8000/loginTest', {
-        method: 'post',
-        body: JSON.stringify(userInfor),
 
-        // 默认fetch请求不带上cookie
-        credentials: "include"
 
-    })
+    return newObj
+}
 
-})()
+const obj = {
+    a: 1,
+    obj: {
+        b: 2
+    }
+}
+console.log(obj)
+const newObj = deepClone(obj)
+newObj.obj.b=3
+console.log(newObj)

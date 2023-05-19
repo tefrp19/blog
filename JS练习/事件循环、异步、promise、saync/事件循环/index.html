@@ -7,9 +7,24 @@
     <title>Document</title>
 </head>
 
+<input type="text">
+<button id="btn">执行5sjs代码</button>
+
 <body>
     <script>
-        debugger
+        function fn() {
+            console.log('js执行期间不能进行交互，不会进行布局渲染');
+            const start = Date.now()
+            let end = Date.now()
+            while (end - start < 5000) {
+                end = Date.now()
+            }
+            console.log('fn执行完毕');
+        }
+        document.querySelector('#btn').addEventListener('click', fn)
+    </script>
+    <!-- <script>
+        // debugger
         async function async1() {
             console.log('async1 start')
             await async2()
@@ -36,6 +51,22 @@
         })
 
         console.log('script end')
+    </script> -->
+
+    <!-- Promise.resolve() -->
+    <script>
+        function asyncFn() {
+            setTimeout(() => {
+                console.log('setTimeout');
+            }, 1000)
+        }
+        console.log('start');
+        const a = Promise.resolve(asyncFn())
+        console.log(a);
+        a.then(() => {
+            console.log(2);
+        })
+        console.log('end');
     </script>
 </body>
 

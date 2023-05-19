@@ -125,6 +125,21 @@ border box：**width包含内容、padding和border**
 
 
 
+
+
+# 块元素和行内元素的区别
+
+1.块元素的特点：
+a.总是在新行上开始；
+b.高度、行高以及外边距和内边距都可控制；
+c.宽度默认是它容器的100%，除非设定一个宽度；
+d.他可以容纳内联元素和其他块元素。
+2.内联元素的特点：
+a.和其他元素都在同一行；
+b.高，行高及外边距和内边距不可改变；
+c.宽度就是它的文字和图片的宽度，不可改变；
+d.内联元素只能容纳文本或者其他内联元素。
+
 # BFC（块格式化上下文 Block Formatting Context）
 
 
@@ -201,6 +216,8 @@ JS引擎负责执行js代码，无论是在浏览器（google为V8，FireFox为S
 WebKit uses the term "layout" for the placing of elements, while Gecko calls it "Reflow".
 
 当DOM树解析到`script`标签时，会立即执行内容，直到执行完毕才会继续进行后续DOM解析（如果`script`是外部资源，还需等其下载完成后再执行。但浏览器做了优化，会平行请求外部`script`、`img`等资源 ）
+
+当遇到第一个外部资源（img、script、css）时，浏览器会加载资源，在加载资源的同时浏览器会解析后续所有外部资源（平行地）
 
 css的加载不会阻止dom的解析，但会阻止dom的渲染
 

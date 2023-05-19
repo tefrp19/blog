@@ -1,10 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>generator</title>
 </head>
 <body>
-$END$
+
+<script>
+
+    // 生成器函数
+    function *generator(){
+        const a=1
+        console.log('生成器函数内部代码')
+        yield a
+        yield 2
+
+
+        return 0
+
+    }
+
+    const gen=generator() // gen是生成器（Generator）对象
+    console.log(gen)
+    console.log(gen.next('a')) // 生成器对象只有执行next方法后生成器函数才会继续执行，一直执行到碰到yield为止
+    console.log(gen.next())
+    console.log(gen.next())
+    console.log(gen.next())
+</script>
 </body>
 </html>

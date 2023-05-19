@@ -1,0 +1,28 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>事件</title>
+</head>
+<body>
+<button>btn</button>
+<script>
+    document.querySelector('button').addEventListener('click', btnFn)
+    document.querySelector('body').addEventListener('click', bodyFn)
+
+    function btnFn(e) {
+        // 默认事件会一直冒泡到html元素（这也是事件委托的原理）
+        e.stopPropagation() // 阻止该事件冒泡后，事件就不会被冒泡到祖先元素，即body元素注册的函数不会被执行
+        console.log('button')
+    }
+
+    function bodyFn() {
+        console.log('body')
+    }
+
+
+</script>
+</body>
+</html>

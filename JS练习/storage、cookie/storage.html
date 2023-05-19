@@ -1,10 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>storage</title>
 </head>
 <body>
-$END$
+<button id="local">add localStorage</button><br/>
+<button id="session">add sessionStorage</button>
+<script>
+    // localStorage可以长期保存
+    document.querySelector('#local').addEventListener('click', () => {
+        localStorage.setItem('localStorage', 'value');
+    })
+    // 每一个标签页（即使在同域下）有自己独立的sessionStorage，关闭页面后sessionStorage消失
+    document.querySelector('#session').addEventListener('click', () => {
+        sessionStorage.setItem('sessionStorage', 'value');
+    })
+
+</script>
 </body>
 </html>

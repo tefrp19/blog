@@ -1,10 +1,16 @@
-// 写一个sum函数，让sum(2)(3)返回5
-const sum =(number)=>{
-    let total=0
-    return function(){
-        total+=number
+function curry(fn) {
+    const args = []
+    return function inner(arg) {
+        if (args.length === fn.length) return fn(...args)
+        args.push(arg)
+        return inner
     }
 }
 
-console.log(sum(1)(2)(3));
+function add(a, b) {
+    return a + b
+}
+
+const curriedAdd = curry(add)
+console.log(curriedAdd(2)(3)()) // 5
 

@@ -14,7 +14,7 @@
 
         .box {
             float: left;
-            /*float会使box脱离文档流，使得wrapper的高度塌陷*/
+            /*float会使box脱离文档流（但文本和内联元素会环绕它），使得wrapper的高度塌陷*/
             /*解决办法：1.给wrapper设置伪元素 2.使wrapper成为一个bfc*/
             margin-right: 15px;
             width: 150px;

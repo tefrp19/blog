@@ -11,9 +11,9 @@ server.on('request', (req, res) => {
             body = `div{
                     background-color: blue;
                 }`
-            setTimeout(() => {
+            // setTimeout(() => {
                 res.end(body)
-            }, 3000)
+            // }, 0)
             break;
         case '/js':
             // 响应的内容为js

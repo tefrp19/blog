@@ -30,7 +30,8 @@ function sendAjax(e) {
     sendReq(data)
 }
 /**
- * 
+ * 防抖、节流应用场景：事件触发过于频繁，降低回调函数执行次数
+ * 防抖：事件发生 n 秒后再执行回调函数，若 n 秒内事件被重复触发，则重新计时
  * @param {function}  fn 
  * @param {number} delay 
  */

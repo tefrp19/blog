@@ -1,6 +1,6 @@
 <script setup>
-import List from "./List";
-import Input from "./Input";
+import List from "./List.vue";
+import Input from "./Input.vue";
 import {reactive} from "vue";
 
 const tasks = reactive([

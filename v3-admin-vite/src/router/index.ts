@@ -100,7 +100,7 @@ export const constantRoutes: RouteRecordRaw[] = [
       {
         path: "element-plus",
         component: () => import("@/views/table/element-plus/index.vue"),
-        name: "ElementPlus",
+        // name: "ElementPlus",
         meta: {
           title: "Element Plus",
           keepAlive: true
@@ -224,6 +224,14 @@ export const constantRoutes: RouteRecordRaw[] = [
         name: "fileUpload",
         meta: {
           title: "文件上传"
+        }
+      },
+      {
+        path: "multiple-charts",
+        component: () => import("@/components/multipleCharts/index.vue"),
+        name: "multipleCharts",
+        meta: {
+          title: "多种图，动态配置项"
         }
       }
     ]

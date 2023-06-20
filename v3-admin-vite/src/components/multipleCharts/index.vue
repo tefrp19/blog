@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import * as echarts from "echarts";
 import { onMounted, reactive, ref } from "vue";
+import { EChartsOption } from "echarts";
 
 let chart;
 const chartRef = ref();
@@ -18,9 +19,9 @@ const chartOption: any = {
   tooltip: {
     axisPointer: {
       show: true,
-      type: 'cross',
+      type: "cross",
       lineStyle: {
-        type: 'dashed',
+        type: "dashed",
         width: 1
       }
     }
@@ -49,7 +50,7 @@ const chartOption: any = {
     max: null,
     axisLabel: {
       formatter: "{value} g"
-    },
+    }
   },
   yAxis: [
     {
@@ -57,8 +58,8 @@ const chartOption: any = {
       axisLabel: {
         formatter: "{value} Hz"
       },
-     min: null,
-      max: null,
+      min: null,
+      max: null
     },
     {
       scale: true,
@@ -66,7 +67,7 @@ const chartOption: any = {
         formatter: "{value} mm"
       },
       min: null,
-      max: null,
+      max: null
     }
   ],
   series: [
@@ -181,11 +182,11 @@ const switchList = [
 // 设置图表标线
 const handleDisplayMarkLineChange = (type, checked: boolean) => {
   if (checked) {
-    chartOption.series[0].markLine.data.push({ type, name: switchList.find(item => item.type === type)?.name });
-    chartOption.series[1].markLine.data.push({ type, name: switchList.find(item => item.type === type)?.name });
+    chartOption.series[0].markLine.data.push({ type, name: switchList.find((item) => item.type === type)?.name });
+    chartOption.series[1].markLine.data.push({ type, name: switchList.find((item) => item.type === type)?.name });
   } else {
-    chartOption.series[0].markLine.data = chartOption.series[0].markLine.data.filter(item => item.type !== type);
-    chartOption.series[1].markLine.data = chartOption.series[0].markLine.data.filter(item => item.type !== type);
+    chartOption.series[0].markLine.data = chartOption.series[0].markLine.data.filter((item) => item.type !== type);
+    chartOption.series[1].markLine.data = chartOption.series[0].markLine.data.filter((item) => item.type !== type);
   }
   chart.setOption(chartOption);
 };
@@ -198,15 +199,7 @@ const handleChartTitleChange = () => {
 
 const leftColor = ref("#1e90ff");
 const rightColor = ref("#90ee90");
-const predefineColors = ref([
-  "#ff4500",
-  "#ff8c00",
-  "#ffd700",
-  "#90ee90",
-  "#00ced1",
-  "#1e90ff",
-  "#c71585"
-]);
+const predefineColors = ref(["#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"]);
 
 const handleLeftColorChange = () => {
   chartOption.series[0].color = leftColor.value;
@@ -257,18 +250,15 @@ const handleRightYAxisMaxChange = (value) => {
           <el-form label-width="120px">
             <el-form-item label="图表类型：">
               <el-select v-model="userOption.chartType" placeholder="Select" @change="chartTypeOptionChange">
-                <el-option
-                  v-for="item in  chartTypeOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
+                <el-option v-for="item in chartTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </el-form-item>
 
             <el-form-item v-for="item in switchList" :label="`显示${item.name}：`">
-              <el-switch v-model="userOption.displayMarkLine[item.type]"
-                         @change="handleDisplayMarkLineChange(item.type,$event)" />
+              <el-switch
+                v-model="userOption.displayMarkLine[item.type]"
+                @change="handleDisplayMarkLineChange(item.type, $event)"
+              />
             </el-form-item>
             <el-form-item label="图表标题名称：">
               <el-input v-model="userOption.chartTitle" @input="handleChartTitleChange" />
@@ -282,19 +272,38 @@ const handleRightYAxisMaxChange = (value) => {
             <el-form-item label="x轴值域：" label-width="auto">
               <el-input v-model="xAxisMin" placeholder="最小值" class="number-input" @change="handleXAxisMinChange" />
               至
-              <el-input v-model="xAxisMax" placeholder="最大值" class="number-input"  @change="handleXAxisMaxChange"/>
+              <el-input v-model="xAxisMax" placeholder="最大值" class="number-input" @change="handleXAxisMaxChange" />
             </el-form-item>
             <el-form-item label="左y轴值域：" label-width="auto">
-              <el-input v-model="leftYAxisMin" placeholder="最小值" class="number-input" @change="handleLeftYAxisMinChange" />
+              <el-input
+                v-model="leftYAxisMin"
+                placeholder="最小值"
+                class="number-input"
+                @change="handleLeftYAxisMinChange"
+              />
               至
-              <el-input v-model="leftYAxisMax" placeholder="最大值" class="number-input"  @change="handleLeftYAxisMaxChange"/>
+              <el-input
+                v-model="leftYAxisMax"
+                placeholder="最大值"
+                class="number-input"
+                @change="handleLeftYAxisMaxChange"
+              />
             </el-form-item>
             <el-form-item label="右y轴值域：" label-width="auto">
-              <el-input v-model="rightYAxisMin" placeholder="最小值" class="number-input" @change="handleRightYAxisMinChange" />
+              <el-input
+                v-model="rightYAxisMin"
+                placeholder="最小值"
+                class="number-input"
+                @change="handleRightYAxisMinChange"
+              />
               至
-              <el-input v-model="rightYAxisMax" placeholder="最大值" class="number-input"  @change="handleRightYAxisMaxChange"/>
+              <el-input
+                v-model="rightYAxisMax"
+                placeholder="最大值"
+                class="number-input"
+                @change="handleRightYAxisMaxChange"
+              />
             </el-form-item>
-
           </el-form>
         </div>
       </el-col>
@@ -302,11 +311,8 @@ const handleRightYAxisMaxChange = (value) => {
         <div class="right" ref="chartRef" />
       </el-col>
     </el-row>
-
   </div>
-
 </template>
-
 
 <style scoped>
 .container {
@@ -316,7 +322,8 @@ const handleRightYAxisMaxChange = (value) => {
   height: 100%;
 }
 
-.left, .right {
+.left,
+.right {
   border: #000 solid 1px;
   height: 800px;
   padding: 20px 10px;

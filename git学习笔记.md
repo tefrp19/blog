@@ -229,7 +229,14 @@ git log --pretty=oneline
 - 当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令`git reset HEAD <file>`，就回到了场景1，第二步按场景1操作。
 - 已经提交了不合适的修改到版本库时，想要撤销本次提交，参考[版本回退](https://www.liaoxuefeng.com/wiki/896043488029600/897013573512192)一节，进行版本回退，不过前提是没有推送到远程库。
 
+### `git revert`
 
+
+
+git revert 和 reset 最本质的区别为两点：
+
+revert 使用一个新的commit 来回滚你希望回滚的commit， reset 是直接HEAD 指向回退的commit
+revert 只会回滚你希望回滚的哪一个commit的操作，不会影响其他的，reset 由于指针回退了，因此这个commit 之后的commit都会消失。
 
 
 

@@ -4,7 +4,7 @@ import { onMounted, reactive, ref } from "vue";
 
 let chart;
 const chartRef = ref();
-const chartOption = {
+const chartOption: any = {
   title: {
     text: "图表默认标题",
     left: "center"
@@ -35,7 +35,10 @@ const chartOption = {
     }
   },
   brush: {},
-  xAxis: {},
+  xAxis: {
+    min: null
+    // max: null
+  },
   yAxis: [
     {
       scale: true,
@@ -44,7 +47,9 @@ const chartOption = {
       },
       splitLine: {
         show: true
-      }
+      },
+      min: null,
+      max: null,
     },
     {
       scale: true,
@@ -53,14 +58,16 @@ const chartOption = {
       },
       splitLine: {
         show: true
-      }
+      },
+      min: null,
+      max: null,
     }
   ],
   series: [
     {
       name: "aaa",
       type: "scatter",
-      color: '',
+      color: "",
       data: [],
       smooth: false,
       yAxisIndex: 0,
@@ -71,7 +78,7 @@ const chartOption = {
     {
       name: "bbb",
       type: "scatter",
-      color: '',
+      color: "",
       data: [],
       smooth: false,
       yAxisIndex: 1,
@@ -94,8 +101,8 @@ onMounted(() => {
 
   chartOption.series[0].data = mockData1;
   chartOption.series[1].data = mockData2;
-  chartOption.series[0].color=leftColor.value
-  chartOption.series[1].color=rightColor.value
+  chartOption.series[0].color = leftColor.value;
+  chartOption.series[1].color = rightColor.value;
   chart.setOption(chartOption);
 });
 
@@ -195,14 +202,45 @@ const predefineColors = ref([
   "#c71585"
 ]);
 
-const handleLeftColorChange=(color:string)=>{
-  chartOption.series[0].color=leftColor.value
-  chart.setOption(chartOption)
-}
-const handleRightColorChange=(color:string)=>{
-  chartOption.series[1].color=rightColor.value
-  chart.setOption(chartOption)
-}
+const handleLeftColorChange = () => {
+  chartOption.series[0].color = leftColor.value;
+  chart.setOption(chartOption);
+};
+const handleRightColorChange = () => {
+  chartOption.series[1].color = rightColor.value;
+  chart.setOption(chartOption);
+};
+
+const xAxisMin = ref<null | number>(null);
+const xAxisMax = ref<null | number>(null);
+const handleXAxisMinChange = (value) => {
+  chartOption.xAxis.min = +value;
+  chart.setOption(chartOption);
+};
+const handleXAxisMaxChange = (value) => {
+  chartOption.xAxis.max = +value;
+  chart.setOption(chartOption);
+};
+const leftYAxisMin = ref<null | number>(null);
+const leftYAxisMax = ref<null | number>(null);
+const handleLeftYAxisMinChange = (value) => {
+  chartOption.yAxis[0].min = +value;
+  chart.setOption(chartOption);
+};
+const handleLeftYAxisMaxChange = (value) => {
+  chartOption.yAxis[0].max = +value;
+  chart.setOption(chartOption);
+};
+const rightYAxisMin = ref<null | number>(null);
+const rightYAxisMax = ref<null | number>(null);
+const handleRightYAxisMinChange = (value) => {
+  chartOption.yAxis[1].min = +value;
+  chart.setOption(chartOption);
+};
+const handleRightYAxisMaxChange = (value) => {
+  chartOption.yAxis[1].max = +value;
+  chart.setOption(chartOption);
+};
 </script>
 
 <template>
@@ -230,11 +268,27 @@ const handleRightColorChange=(color:string)=>{
               <el-input v-model="userOption.chartTitle" @input="handleChartTitleChange" />
             </el-form-item>
             <el-form-item label="左侧y轴数据颜色：" label-width="auto">
-              <el-color-picker v-model="leftColor" :predefine="predefineColors" @change="handleLeftColorChange"/>
+              <el-color-picker v-model="leftColor" :predefine="predefineColors" @change="handleLeftColorChange" />
             </el-form-item>
             <el-form-item label="右侧y轴数据颜色：" label-width="auto">
-              <el-color-picker v-model="rightColor" :predefine="predefineColors" @change="handleRightColorChange"/>
+              <el-color-picker v-model="rightColor" :predefine="predefineColors" @change="handleRightColorChange" />
             </el-form-item>
+            <el-form-item label="x轴值域：" label-width="auto">
+              <el-input v-model="xAxisMin" placeholder="最小值" class="number-input" @change="handleXAxisMinChange" />
+              至
+              <el-input v-model="xAxisMax" placeholder="最大值" class="number-input"  @change="handleXAxisMaxChange"/>
+            </el-form-item>
+            <el-form-item label="左y轴值域：" label-width="auto">
+              <el-input v-model="leftYAxisMin" placeholder="最小值" class="number-input" @change="handleLeftYAxisMinChange" />
+              至
+              <el-input v-model="leftYAxisMax" placeholder="最大值" class="number-input"  @change="handleLeftYAxisMaxChange"/>
+            </el-form-item>
+            <el-form-item label="右y轴值域：" label-width="auto">
+              <el-input v-model="rightYAxisMin" placeholder="最小值" class="number-input" @change="handleRightYAxisMinChange" />
+              至
+              <el-input v-model="rightYAxisMax" placeholder="最大值" class="number-input"  @change="handleRightYAxisMaxChange"/>
+            </el-form-item>
+
           </el-form>
         </div>
       </el-col>
@@ -265,5 +319,10 @@ const handleRightColorChange=(color:string)=>{
 .right {
   border: #000 solid 1px;
   height: 800px;
+}
+
+.number-input {
+  width: 100px;
+  margin: 0 10px;
 }
 </style>

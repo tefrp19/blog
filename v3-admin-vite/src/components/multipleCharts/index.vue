@@ -4,7 +4,7 @@ import { onMounted, reactive, ref } from "vue";
 
 let chart;
 const chartRef = ref();
-const chartOption = reactive({
+const chartOption = {
   title: {
     text: "图表默认标题",
     left: "center"
@@ -35,9 +35,7 @@ const chartOption = reactive({
     }
   },
   brush: {},
-  xAxis: {
-
-  },
+  xAxis: {},
   yAxis: [
     {
       scale: true,
@@ -62,31 +60,38 @@ const chartOption = reactive({
     {
       name: "aaa",
       type: "scatter",
-      data: [
-        [10, 40],
-        [50, 100],
-        [40, 20]
-      ],
+      data: [],
       smooth: false,
+      yAxisIndex: 0,
+      markLine: {
+        data: []
+      }
+    },
+    {
+      name: "bbb",
+      type: "scatter",
+      data: [],
+      smooth: false,
+      yAxisIndex: 1,
       markLine: {
         data: []
       }
     }
   ]
-});
+};
 onMounted(() => {
-  const mockData = [];
-  for (let i = 0; i < 1000; i++) {
-    mockData.push({
-      unit: "Hz",
-      xValue: Math.random() * 1000,
-      yValue: Math.random() * 1000
-    });
+  const mockData1 = [];
+  const mockData2= [];
+  for (let i = 0; i < 100; i++) {
+    mockData1.push([Math.random() * 1000,Math.random() * 1000])
+    mockData2.push([Math.random() * 1000,Math.random() * 1000])
   }
   chart = echarts.init(chartRef.value);
-  chartOption.xAxis.data = [...new Set(mockData.map(item => item.xValue))]; // 去重
-  chartOption.series[0].data = mockData.map(item => item.yValue);
-  // chartOption.series[0].data = mockData.map(item => [item.xValue,item.yValue]);
+  mockData1.sort((a,b)=>b[0]-a[0]);
+  mockData2.sort((a,b)=>b[0]-a[0]);
+
+  chartOption.series[0].data =mockData1
+  chartOption.series[1].data =mockData2
   chart.setOption(chartOption);
 });
 
@@ -121,15 +126,20 @@ const chartTypeOptionChange = (value) => {
     case "line": {
       chartOption.series[0].type = "line";
       chartOption.series[0].smooth = false;
+      chartOption.series[1].type = "line";
+      chartOption.series[1].smooth = false;
       break;
     }
     case "curve": {
       chartOption.series[0].type = "line";
       chartOption.series[0].smooth = true;
+      chartOption.series[1].type = "line";
+      chartOption.series[1].smooth = true;
       break;
     }
     case "scatter": {
       chartOption.series[0].type = "scatter";
+      chartOption.series[1].type = "scatter";
       break;
     }
   }
@@ -154,10 +164,11 @@ const switchList = [
 // 设置图表标线
 const handleDisplayMarkLineChange = (type, checked: boolean) => {
   if (checked) {
-    console.log(1);
     chartOption.series[0].markLine.data.push({ type, name: switchList.find(item => item.type === type)?.name });
+    chartOption.series[1].markLine.data.push({ type, name: switchList.find(item => item.type === type)?.name });
   } else {
     chartOption.series[0].markLine.data = chartOption.series[0].markLine.data.filter(item => item.type !== type);
+    chartOption.series[1].markLine.data = chartOption.series[0].markLine.data.filter(item => item.type !== type);
   }
   chart.setOption(chartOption);
 };

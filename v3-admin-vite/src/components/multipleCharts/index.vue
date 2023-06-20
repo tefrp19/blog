@@ -15,7 +15,16 @@ const chartOption: any = {
     bottom: "7%",
     containLabel: true
   },
-  tooltip: {},
+  tooltip: {
+    axisPointer: {
+      show: true,
+      type: 'cross',
+      lineStyle: {
+        type: 'dashed',
+        width: 1
+      }
+    }
+  },
   toolbox: {
     feature: {
       dataZoom: {
@@ -36,8 +45,11 @@ const chartOption: any = {
   },
   brush: {},
   xAxis: {
-    min: null
-    // max: null
+    min: null,
+    max: null,
+    axisLabel: {
+      formatter: "{value} g"
+    },
   },
   yAxis: [
     {
@@ -45,19 +57,13 @@ const chartOption: any = {
       axisLabel: {
         formatter: "{value} Hz"
       },
-      splitLine: {
-        show: true
-      },
-      min: null,
+     min: null,
       max: null,
     },
     {
       scale: true,
       axisLabel: {
         formatter: "{value} mm"
-      },
-      splitLine: {
-        show: true
       },
       min: null,
       max: null,
@@ -93,7 +99,7 @@ onMounted(() => {
   const mockData2 = [];
   for (let i = 0; i < 100; i++) {
     mockData1.push([Math.random() * 1000, Math.random() * 1000]);
-    mockData2.push([Math.random() * 1000, Math.random() * 1000]);
+    mockData2.push([Math.random() * 500, Math.random() * 500]);
   }
   chart = echarts.init(chartRef.value);
   mockData1.sort((a, b) => b[0] - a[0]);

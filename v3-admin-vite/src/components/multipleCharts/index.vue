@@ -60,6 +60,7 @@ const chartOption = {
     {
       name: "aaa",
       type: "scatter",
+      color: '',
       data: [],
       smooth: false,
       yAxisIndex: 0,
@@ -70,6 +71,7 @@ const chartOption = {
     {
       name: "bbb",
       type: "scatter",
+      color: '',
       data: [],
       smooth: false,
       yAxisIndex: 1,
@@ -81,17 +83,19 @@ const chartOption = {
 };
 onMounted(() => {
   const mockData1 = [];
-  const mockData2= [];
+  const mockData2 = [];
   for (let i = 0; i < 100; i++) {
-    mockData1.push([Math.random() * 1000,Math.random() * 1000])
-    mockData2.push([Math.random() * 1000,Math.random() * 1000])
+    mockData1.push([Math.random() * 1000, Math.random() * 1000]);
+    mockData2.push([Math.random() * 1000, Math.random() * 1000]);
   }
   chart = echarts.init(chartRef.value);
-  mockData1.sort((a,b)=>b[0]-a[0]);
-  mockData2.sort((a,b)=>b[0]-a[0]);
+  mockData1.sort((a, b) => b[0] - a[0]);
+  mockData2.sort((a, b) => b[0] - a[0]);
 
-  chartOption.series[0].data =mockData1
-  chartOption.series[1].data =mockData2
+  chartOption.series[0].data = mockData1;
+  chartOption.series[1].data = mockData2;
+  chartOption.series[0].color=leftColor.value
+  chartOption.series[1].color=rightColor.value
   chart.setOption(chartOption);
 });
 
@@ -179,6 +183,26 @@ const handleChartTitleChange = () => {
   chart.setOption(chartOption);
 };
 
+const leftColor = ref("#1e90ff");
+const rightColor = ref("#90ee90");
+const predefineColors = ref([
+  "#ff4500",
+  "#ff8c00",
+  "#ffd700",
+  "#90ee90",
+  "#00ced1",
+  "#1e90ff",
+  "#c71585"
+]);
+
+const handleLeftColorChange=(color:string)=>{
+  chartOption.series[0].color=leftColor.value
+  chart.setOption(chartOption)
+}
+const handleRightColorChange=(color:string)=>{
+  chartOption.series[1].color=rightColor.value
+  chart.setOption(chartOption)
+}
 </script>
 
 <template>
@@ -205,7 +229,12 @@ const handleChartTitleChange = () => {
             <el-form-item label="图表标题名称：">
               <el-input v-model="userOption.chartTitle" @input="handleChartTitleChange" />
             </el-form-item>
-
+            <el-form-item label="左侧y轴数据颜色：" label-width="auto">
+              <el-color-picker v-model="leftColor" :predefine="predefineColors" @change="handleLeftColorChange"/>
+            </el-form-item>
+            <el-form-item label="右侧y轴数据颜色：" label-width="auto">
+              <el-color-picker v-model="rightColor" :predefine="predefineColors" @change="handleRightColorChange"/>
+            </el-form-item>
           </el-form>
         </div>
       </el-col>

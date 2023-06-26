@@ -55,6 +55,8 @@ const chartOption: any = {
     bottom: 10
   },
   xAxis: {
+    name:'aaaaa',
+    nameLocation: "middle",
     min: null,
     max: null,
     axisLabel: {
@@ -142,9 +144,10 @@ const userOption = reactive({
     leftYAxisLegendName: "aaa",
     rightYAxisLegendName: "bbb"
   },
-  yAxisNames:{
+  axisNames:{
     leftYAxisName: "频率",
     rightYAxisName: "长度",
+    xAxisName:'重量'
   }
 });
 
@@ -282,13 +285,17 @@ const handRightYAxisLegendNameChange = (value: string) => {
   chart?.setOption(chartOption);
 };
 
-// 改变y轴名称
+// 改变各轴名称
 const handLeftYAxisNameChange = (value: string) => {
   chartOption.yAxis[0].name = value;
   chart?.setOption(chartOption);
 };
 const handRightYAxisNameChange = (value: string) => {
   chartOption.yAxis[1].name = value;
+  chart?.setOption(chartOption);
+};
+const handXAxisNameChange = (value: string) => {
+  chartOption.xAxis.name = value;
   chart?.setOption(chartOption);
 };
 
@@ -364,10 +371,13 @@ const handRightYAxisNameChange = (value: string) => {
               <el-input v-model="userOption.legendNames.rightYAxisLegendName" @input="handRightYAxisLegendNameChange" />
             </el-form-item>
             <el-form-item label="左侧y轴名称：" label-width="auto">
-              <el-input v-model="userOption.yAxisNames.leftYAxisName" @input="handLeftYAxisNameChange" />
+              <el-input v-model="userOption.axisNames.leftYAxisName" @input="handLeftYAxisNameChange" />
             </el-form-item>
             <el-form-item label="右侧y轴名称：" label-width="auto">
-              <el-input v-model="userOption.yAxisNames.rightYAxisName" @input="handRightYAxisNameChange" />
+              <el-input v-model="userOption.axisNames.rightYAxisName" @input="handRightYAxisNameChange" />
+            </el-form-item>
+            <el-form-item label="X轴名称：" label-width="auto">
+              <el-input v-model="userOption.axisNames.xAxisName" @input="handXAxisNameChange" />
             </el-form-item>
           </el-form>
         </div>

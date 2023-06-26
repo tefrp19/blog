@@ -4,7 +4,7 @@ import { onMounted, reactive, ref } from "vue";
 import { EChartsOption, EChartsType } from "echarts";
 import { MarkerStatisticType } from "echarts/types/src/component/marker/MarkerModel";
 
-let chart: null | EChartsType=null;
+let chart: null | EChartsType = null;
 const chartRef = ref();
 const chartOption: any = {
   title: {
@@ -50,6 +50,10 @@ const chartOption: any = {
     }
   },
   brush: {},
+  legend: {
+    left: "center",
+    bottom: 10
+  },
   xAxis: {
     min: null,
     max: null,
@@ -64,6 +68,7 @@ const chartOption: any = {
   //  newData=Math.log(oldData) / Math.log(10) oldData为100取对数后newData为2
   yAxis: [
     {
+      name: "频率",
       scale: true,
       axisLabel: {
         formatter: "{value} Hz"
@@ -72,6 +77,7 @@ const chartOption: any = {
       max: null
     },
     {
+      name: "长度",
       scale: true,
       axisLabel: {
         formatter: "{value} mm"
@@ -131,7 +137,15 @@ const userOption = reactive({
     max: false, // 是否展示数据最大值线
     average: false // 是否展示数据平均值线
   },
-  chartTitle: "图表默认标题"
+  chartTitle: "图表默认标题",
+  legendNames: {
+    leftYAxisLegendName: "aaa",
+    rightYAxisLegendName: "bbb"
+  },
+  yAxisNames:{
+    leftYAxisName: "频率",
+    rightYAxisName: "长度",
+  }
 });
 
 const chartTypeOptions = [
@@ -173,12 +187,13 @@ const chartTypeOptionChange = (value: "line" | "curve" | "scatter") => {
   }
   chart?.setOption(chartOption);
 };
-interface switchItemType{
-  type:Exclude<MarkerStatisticType,'median'> // 从联合类型中排除一个类型
-  name:string
+
+interface switchItemType {
+  type: Exclude<MarkerStatisticType, "median">; // 从联合类型中排除一个类型
+  name: string;
 }
 
-const switchList:switchItemType[] = [
+const switchList: switchItemType[] = [
   {
     type: "min",
     name: "最小值"
@@ -215,6 +230,7 @@ const leftColor = ref("#1e90ff");
 const rightColor = ref("#90ee90");
 const predefineColors = ref(["#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"]);
 
+// 改变图标颜色
 const handleLeftColorChange = () => {
   chartOption.series[0].color = leftColor.value;
   chart?.setOption(chartOption);
@@ -224,36 +240,59 @@ const handleRightColorChange = () => {
   chart?.setOption(chartOption);
 };
 
+// 改变各轴值域
 const xAxisMin = ref<null | number>(null);
 const xAxisMax = ref<null | number>(null);
-const handleXAxisMinChange = (value:string) => {
+const handleXAxisMinChange = (value: string) => {
   chartOption.xAxis.min = +value;
   chart?.setOption(chartOption);
 };
-const handleXAxisMaxChange = (value:string) => {
+const handleXAxisMaxChange = (value: string) => {
   chartOption.xAxis.max = +value;
   chart?.setOption(chartOption);
 };
 const leftYAxisMin = ref<null | number>(null);
 const leftYAxisMax = ref<null | number>(null);
-const handleLeftYAxisMinChange = (value:string) => {
+const handleLeftYAxisMinChange = (value: string) => {
   chartOption.yAxis[0].min = +value;
   chart?.setOption(chartOption);
 };
-const handleLeftYAxisMaxChange = (value:string) => {
+const handleLeftYAxisMaxChange = (value: string) => {
   chartOption.yAxis[0].max = +value;
   chart?.setOption(chartOption);
 };
 const rightYAxisMin = ref<null | number>(null);
 const rightYAxisMax = ref<null | number>(null);
-const handleRightYAxisMinChange = (value:string) => {
+const handleRightYAxisMinChange = (value: string) => {
   chartOption.yAxis[1].min = +value;
   chart?.setOption(chartOption);
 };
-const handleRightYAxisMaxChange = (value:string) => {
+const handleRightYAxisMaxChange = (value: string) => {
   chartOption.yAxis[1].max = +value;
   chart?.setOption(chartOption);
 };
+
+// 改变图例名称
+const handLeftYAxisLegendNameChange = (value: string) => {
+  chartOption.series[0].name = value;
+  chart?.setOption(chartOption);
+};
+const handRightYAxisLegendNameChange = (value: string) => {
+  chartOption.series[1].name = value;
+  chart?.setOption(chartOption);
+};
+
+// 改变y轴名称
+const handLeftYAxisNameChange = (value: string) => {
+  chartOption.yAxis[0].name = value;
+  chart?.setOption(chartOption);
+};
+const handRightYAxisNameChange = (value: string) => {
+  chartOption.yAxis[1].name = value;
+  chart?.setOption(chartOption);
+};
+
+
 </script>
 
 <template>
@@ -317,6 +356,18 @@ const handleRightYAxisMaxChange = (value:string) => {
                 class="number-input"
                 @change="handleRightYAxisMaxChange"
               />
+            </el-form-item>
+            <el-form-item label="左侧y轴图例名称：" label-width="auto">
+              <el-input v-model="userOption.legendNames.leftYAxisLegendName" @input="handLeftYAxisLegendNameChange" />
+            </el-form-item>
+            <el-form-item label="右侧y轴图例名称：" label-width="auto">
+              <el-input v-model="userOption.legendNames.rightYAxisLegendName" @input="handRightYAxisLegendNameChange" />
+            </el-form-item>
+            <el-form-item label="左侧y轴名称：" label-width="auto">
+              <el-input v-model="userOption.yAxisNames.leftYAxisName" @input="handLeftYAxisNameChange" />
+            </el-form-item>
+            <el-form-item label="右侧y轴名称：" label-width="auto">
+              <el-input v-model="userOption.yAxisNames.rightYAxisName" @input="handRightYAxisNameChange" />
             </el-form-item>
           </el-form>
         </div>

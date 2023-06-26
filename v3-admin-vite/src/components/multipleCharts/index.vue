@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import * as echarts from "echarts";
 import { onMounted, reactive, ref } from "vue";
-import { EChartsOption } from "echarts";
+import { EChartsOption, EChartsType } from "echarts";
+import { MarkerStatisticType } from "echarts/types/src/component/marker/MarkerModel";
 
-let chart;
+let chart: null | EChartsType=null;
 const chartRef = ref();
 const chartOption: any = {
   title: {
@@ -41,6 +42,10 @@ const chartOption: any = {
           polygon: "圈选",
           clear: "清除选择"
         }
+      },
+      saveAsImage: {
+        show: true,
+        title: "保存为图片"
       }
     }
   },
@@ -52,6 +57,11 @@ const chartOption: any = {
       formatter: "{value} g"
     }
   },
+  // todo 1. 设置legend名称
+  // todo 2. 设置x、y轴名称
+  // todo 3. 导出图表为jpg
+  // todo 4. x、y轴数据转成对数（按钮）
+  //  newData=Math.log(oldData) / Math.log(10) oldData为100取对数后newData为2
   yAxis: [
     {
       scale: true,
@@ -139,7 +149,7 @@ const chartTypeOptions = [
   }
 ];
 // 改变图表类型
-const chartTypeOptionChange = (value) => {
+const chartTypeOptionChange = (value: "line" | "curve" | "scatter") => {
   switch (value) {
     case "line": {
       chartOption.series[0].type = "line";
@@ -161,10 +171,14 @@ const chartTypeOptionChange = (value) => {
       break;
     }
   }
-  chart.setOption(chartOption);
+  chart?.setOption(chartOption);
 };
+interface switchItemType{
+  type:Exclude<MarkerStatisticType,'median'> // 从联合类型中排除一个类型
+  name:string
+}
 
-const switchList = [
+const switchList:switchItemType[] = [
   {
     type: "min",
     name: "最小值"
@@ -180,21 +194,21 @@ const switchList = [
 ];
 
 // 设置图表标线
-const handleDisplayMarkLineChange = (type, checked: boolean) => {
+const handleDisplayMarkLineChange = (type: MarkerStatisticType, checked: boolean) => {
   if (checked) {
     chartOption.series[0].markLine.data.push({ type, name: switchList.find((item) => item.type === type)?.name });
     chartOption.series[1].markLine.data.push({ type, name: switchList.find((item) => item.type === type)?.name });
   } else {
-    chartOption.series[0].markLine.data = chartOption.series[0].markLine.data.filter((item) => item.type !== type);
-    chartOption.series[1].markLine.data = chartOption.series[0].markLine.data.filter((item) => item.type !== type);
+    chartOption.series[0].markLine.data = chartOption.series[0].markLine.data.filter((item: any) => item.type !== type);
+    chartOption.series[1].markLine.data = chartOption.series[1].markLine.data.filter((item: any) => item.type !== type);
   }
-  chart.setOption(chartOption);
+  chart?.setOption(chartOption);
 };
 
 // 改变图表标题
 const handleChartTitleChange = () => {
   chartOption.title.text = userOption.chartTitle;
-  chart.setOption(chartOption);
+  chart?.setOption(chartOption);
 };
 
 const leftColor = ref("#1e90ff");
@@ -203,42 +217,42 @@ const predefineColors = ref(["#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced
 
 const handleLeftColorChange = () => {
   chartOption.series[0].color = leftColor.value;
-  chart.setOption(chartOption);
+  chart?.setOption(chartOption);
 };
 const handleRightColorChange = () => {
   chartOption.series[1].color = rightColor.value;
-  chart.setOption(chartOption);
+  chart?.setOption(chartOption);
 };
 
 const xAxisMin = ref<null | number>(null);
 const xAxisMax = ref<null | number>(null);
-const handleXAxisMinChange = (value) => {
+const handleXAxisMinChange = (value:string) => {
   chartOption.xAxis.min = +value;
-  chart.setOption(chartOption);
+  chart?.setOption(chartOption);
 };
-const handleXAxisMaxChange = (value) => {
+const handleXAxisMaxChange = (value:string) => {
   chartOption.xAxis.max = +value;
-  chart.setOption(chartOption);
+  chart?.setOption(chartOption);
 };
 const leftYAxisMin = ref<null | number>(null);
 const leftYAxisMax = ref<null | number>(null);
-const handleLeftYAxisMinChange = (value) => {
+const handleLeftYAxisMinChange = (value:string) => {
   chartOption.yAxis[0].min = +value;
-  chart.setOption(chartOption);
+  chart?.setOption(chartOption);
 };
-const handleLeftYAxisMaxChange = (value) => {
+const handleLeftYAxisMaxChange = (value:string) => {
   chartOption.yAxis[0].max = +value;
-  chart.setOption(chartOption);
+  chart?.setOption(chartOption);
 };
 const rightYAxisMin = ref<null | number>(null);
 const rightYAxisMax = ref<null | number>(null);
-const handleRightYAxisMinChange = (value) => {
+const handleRightYAxisMinChange = (value:string) => {
   chartOption.yAxis[1].min = +value;
-  chart.setOption(chartOption);
+  chart?.setOption(chartOption);
 };
-const handleRightYAxisMaxChange = (value) => {
+const handleRightYAxisMaxChange = (value:string) => {
   chartOption.yAxis[1].max = +value;
-  chart.setOption(chartOption);
+  chart?.setOption(chartOption);
 };
 </script>
 
@@ -257,7 +271,7 @@ const handleRightYAxisMaxChange = (value) => {
             <el-form-item v-for="item in switchList" :label="`显示${item.name}：`">
               <el-switch
                 v-model="userOption.displayMarkLine[item.type]"
-                @change="handleDisplayMarkLineChange(item.type, $event)"
+                @change="handleDisplayMarkLineChange(item.type, $event as boolean)"
               />
             </el-form-item>
             <el-form-item label="图表标题名称：">

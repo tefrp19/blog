@@ -55,8 +55,13 @@ const chartOption: any = {
     bottom: 10
   },
   xAxis: {
-    name:'aaaaa',
+    name: "重量",
+    type: "value",
     nameLocation: "middle",
+    nameTextStyle: {
+      color: '#000',
+      fontSize: 22,
+    },
     min: null,
     max: null,
     axisLabel: {
@@ -71,7 +76,13 @@ const chartOption: any = {
   yAxis: [
     {
       name: "频率",
+      type: "value",
       scale: true,
+      nameLocation: "middle",
+      nameTextStyle: {
+        color: '#000',
+        fontSize: 22,
+      },
       axisLabel: {
         formatter: "{value} Hz"
       },
@@ -81,6 +92,12 @@ const chartOption: any = {
     {
       name: "长度",
       scale: true,
+      type: "value",
+      nameLocation: "middle",
+      nameTextStyle: {
+        color: '#000',
+        fontSize: 22,
+      },
       axisLabel: {
         formatter: "{value} mm"
       },
@@ -114,6 +131,16 @@ const chartOption: any = {
   ]
 };
 onMounted(() => {
+  // 模拟y=lg(x)
+  // 数据格式：[[1,0],[10,1],[100,2],[1000,3]]
+  type point = [number, number]
+  type mockDataType = point[]
+  const data: mockDataType = [];
+  for (let i = 0; i < 100; i++) {
+    const point: point = [Math.pow(10, i), i];
+    data.push(point);
+  }
+  console.log(data);
   const mockData1 = [];
   const mockData2 = [];
   for (let i = 0; i < 100; i++) {
@@ -124,10 +151,10 @@ onMounted(() => {
   mockData1.sort((a, b) => b[0] - a[0]);
   mockData2.sort((a, b) => b[0] - a[0]);
 
-  chartOption.series[0].data = mockData1;
-  chartOption.series[1].data = mockData2;
+  chartOption.series[0].data = data;
+  // chartOption.series[1].data = mockData2;
   chartOption.series[0].color = leftColor.value;
-  chartOption.series[1].color = rightColor.value;
+  // chartOption.series[1].color = rightColor.value;
   chart.setOption(chartOption);
 });
 
@@ -144,10 +171,10 @@ const userOption = reactive({
     leftYAxisLegendName: "aaa",
     rightYAxisLegendName: "bbb"
   },
-  axisNames:{
+  axisNames: {
     leftYAxisName: "频率",
     rightYAxisName: "长度",
-    xAxisName:'重量'
+    xAxisName: "重量"
   }
 });
 
@@ -299,7 +326,19 @@ const handXAxisNameChange = (value: string) => {
   chart?.setOption(chartOption);
 };
 
-
+// 对各轴取对数
+const xAxisLogarithmic = () => {
+  chartOption.xAxis.type = "log";
+  chart?.setOption(chartOption);
+};
+const leftYAxisLogarithmic = () => {
+  chartOption.yAxis[0].type = "log";
+  chart?.setOption(chartOption);
+};
+const rightYAxisLogarithmic = () => {
+  chartOption.yAxis[1].type = "log";
+  chart?.setOption(chartOption);
+};
 </script>
 
 <template>
@@ -379,6 +418,13 @@ const handXAxisNameChange = (value: string) => {
             <el-form-item label="X轴名称：" label-width="auto">
               <el-input v-model="userOption.axisNames.xAxisName" @input="handXAxisNameChange" />
             </el-form-item>
+            <el-form-item label="y轴取对数：" label-width="auto">
+              <el-button size="small" @click="leftYAxisLogarithmic">左侧y轴取对数</el-button>
+              <el-button size="small" @click="rightYAxisLogarithmic">右侧y轴取对数</el-button>
+            </el-form-item>
+            <el-form-item label="x轴取对数：" label-width="auto">
+              <el-button size="small" @click="xAxisLogarithmic">x轴取对数</el-button>
+            </el-form-item>
           </el-form>
         </div>
       </el-col>
@@ -400,13 +446,8 @@ const handXAxisNameChange = (value: string) => {
 .left,
 .right {
   border: #000 solid 1px;
-  height: 800px;
+  height: 850px;
   padding: 20px 10px;
-}
-
-.right {
-  border: #000 solid 1px;
-  height: 800px;
 }
 
 .number-input {

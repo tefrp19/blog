@@ -293,6 +293,18 @@ Don't forget, in case of a rebase, ["what you have" and "what you merge" are rev
 - `master`分支是主分支，因此要时刻与远程同步；
 - `dev`分支是开发分支，团队所有成员都需要在上面工作，所以也需要与远程同步；
 
+# [Commit message 规范]([Commit message 和 Change log 编写指南 - 阮一峰的网络日志 (ruanyifeng.com)](https://ruanyifeng.com/blog/2016/01/commit_message_change_log.html))
+
+- feat：新功能（feature）
+- fix：修补bug
+- docs：文档（documentation）
+- style： 格式（不影响代码运行的变动）
+- refactor：重构（即不是新增功能，也不是修改bug的代码变动）
+- test：增加测试
+- chore：构建过程或辅助工具的变动
+
+
+
 # 其他知识点
 
 ## 遇到的问题

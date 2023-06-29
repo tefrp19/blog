@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import * as echarts from "echarts";
-import { onMounted, reactive, ref } from "vue";
-import { EChartsOption, EChartsType } from "echarts";
+import { nextTick, reactive, ref } from "vue";
+import { EChartsType } from "echarts";
 import { MarkerStatisticType } from "echarts/types/src/component/marker/MarkerModel";
 
+const dialogVisible = ref(false);
 let chart: null | EChartsType = null;
 const chartRef = ref();
 const chartOption: any = {
@@ -59,8 +60,8 @@ const chartOption: any = {
     type: "value",
     nameLocation: "middle",
     nameTextStyle: {
-      color: '#000',
-      fontSize: 22,
+      color: "#000",
+      fontSize: 22
     },
     min: null,
     max: null,
@@ -80,8 +81,8 @@ const chartOption: any = {
       scale: true,
       nameLocation: "middle",
       nameTextStyle: {
-        color: '#000',
-        fontSize: 22,
+        color: "#000",
+        fontSize: 22
       },
       axisLabel: {
         formatter: "{value} Hz"
@@ -95,8 +96,8 @@ const chartOption: any = {
       type: "value",
       nameLocation: "middle",
       nameTextStyle: {
-        color: '#000',
-        fontSize: 22,
+        color: "#000",
+        fontSize: 22
       },
       axisLabel: {
         formatter: "{value} mm"
@@ -130,7 +131,16 @@ const chartOption: any = {
     }
   ]
 };
-onMounted(() => {
+
+// 展示对话框并初始化图表
+const showDialog = async () => {
+  dialogVisible.value = true;
+  // 当dialog组件的v-model为true时内部的元素才会被挂载到dom上，dom才会更新
+  // 而vue的更改响应式状态时dom并不是同步生效，直接调用echarts.init方法时dom还未更新（元素不存在）所以会报错，解决办法：调用nextTick后再init
+  await nextTick();
+  initChart();
+};
+const initChart = () => {
   // 模拟y=lg(x)
   // 数据格式：[[1,0],[10,1],[100,2],[1000,3]]
   type point = [number, number]
@@ -140,23 +150,24 @@ onMounted(() => {
     const point: point = [Math.pow(10, i), i];
     data.push(point);
   }
-  console.log(data);
-  const mockData1 = [];
-  const mockData2 = [];
+  const mockData1: mockDataType = [];
+  const mockData2: mockDataType = [];
   for (let i = 0; i < 100; i++) {
     mockData1.push([Math.random() * 1000, Math.random() * 1000]);
     mockData2.push([Math.random() * 500, Math.random() * 500]);
   }
+  console.log(chartRef.value);
   chart = echarts.init(chartRef.value);
   mockData1.sort((a, b) => b[0] - a[0]);
   mockData2.sort((a, b) => b[0] - a[0]);
 
+  console.log("mockData1", mockData1);
   chartOption.series[0].data = data;
   // chartOption.series[1].data = mockData2;
   chartOption.series[0].color = leftColor.value;
   // chartOption.series[1].color = rightColor.value;
   chart.setOption(chartOption);
-});
+};
 
 // 左列用户可选的图表配置项
 const userOption = reactive({
@@ -339,119 +350,132 @@ const rightYAxisLogarithmic = () => {
   chartOption.yAxis[1].type = "log";
   chart?.setOption(chartOption);
 };
+
 </script>
 
 <template>
-  <div class="container">
-    <el-row :gutter="20">
-      <el-col :span="6">
-        <div class="left">
-          <el-form label-width="120px">
-            <el-form-item label="图表类型：">
-              <el-select v-model="userOption.chartType" placeholder="Select" @change="chartTypeOptionChange">
-                <el-option v-for="item in chartTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
-              </el-select>
-            </el-form-item>
+  <el-button @click="showDialog">展示可视化图表</el-button>
+  <el-dialog
+    v-model="dialogVisible"
+    width="90vw"
+    top="5vh"
+    title="内部对话框"
+    append-to-body
+  >
+    <el-card class="container">
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <el-card>
+            <el-form label-width="120px">
+              <el-form-item label="图表类型：">
+                <el-select v-model="userOption.chartType" placeholder="Select" @change="chartTypeOptionChange">
+                  <el-option v-for="item in chartTypeOptions" :key="item.value" :label="item.label"
+                             :value="item.value" />
+                </el-select>
+              </el-form-item>
 
-            <el-form-item v-for="item in switchList" :label="`显示${item.name}：`">
-              <el-switch
-                v-model="userOption.displayMarkLine[item.type]"
-                @change="handleDisplayMarkLineChange(item.type, $event as boolean)"
-              />
-            </el-form-item>
-            <el-form-item label="图表标题名称：">
-              <el-input v-model="userOption.chartTitle" @input="handleChartTitleChange" />
-            </el-form-item>
-            <el-form-item label="左侧y轴数据颜色：" label-width="auto">
-              <el-color-picker v-model="leftColor" :predefine="predefineColors" @change="handleLeftColorChange" />
-            </el-form-item>
-            <el-form-item label="右侧y轴数据颜色：" label-width="auto">
-              <el-color-picker v-model="rightColor" :predefine="predefineColors" @change="handleRightColorChange" />
-            </el-form-item>
-            <el-form-item label="x轴值域：" label-width="auto">
-              <el-input v-model="xAxisMin" placeholder="最小值" class="number-input" @change="handleXAxisMinChange" />
-              至
-              <el-input v-model="xAxisMax" placeholder="最大值" class="number-input" @change="handleXAxisMaxChange" />
-            </el-form-item>
-            <el-form-item label="左y轴值域：" label-width="auto">
-              <el-input
-                v-model="leftYAxisMin"
-                placeholder="最小值"
-                class="number-input"
-                @change="handleLeftYAxisMinChange"
-              />
-              至
-              <el-input
-                v-model="leftYAxisMax"
-                placeholder="最大值"
-                class="number-input"
-                @change="handleLeftYAxisMaxChange"
-              />
-            </el-form-item>
-            <el-form-item label="右y轴值域：" label-width="auto">
-              <el-input
-                v-model="rightYAxisMin"
-                placeholder="最小值"
-                class="number-input"
-                @change="handleRightYAxisMinChange"
-              />
-              至
-              <el-input
-                v-model="rightYAxisMax"
-                placeholder="最大值"
-                class="number-input"
-                @change="handleRightYAxisMaxChange"
-              />
-            </el-form-item>
-            <el-form-item label="左侧y轴图例名称：" label-width="auto">
-              <el-input v-model="userOption.legendNames.leftYAxisLegendName" @input="handLeftYAxisLegendNameChange" />
-            </el-form-item>
-            <el-form-item label="右侧y轴图例名称：" label-width="auto">
-              <el-input v-model="userOption.legendNames.rightYAxisLegendName" @input="handRightYAxisLegendNameChange" />
-            </el-form-item>
-            <el-form-item label="左侧y轴名称：" label-width="auto">
-              <el-input v-model="userOption.axisNames.leftYAxisName" @input="handLeftYAxisNameChange" />
-            </el-form-item>
-            <el-form-item label="右侧y轴名称：" label-width="auto">
-              <el-input v-model="userOption.axisNames.rightYAxisName" @input="handRightYAxisNameChange" />
-            </el-form-item>
-            <el-form-item label="X轴名称：" label-width="auto">
-              <el-input v-model="userOption.axisNames.xAxisName" @input="handXAxisNameChange" />
-            </el-form-item>
-            <el-form-item label="y轴取对数：" label-width="auto">
-              <el-button size="small" @click="leftYAxisLogarithmic">左侧y轴取对数</el-button>
-              <el-button size="small" @click="rightYAxisLogarithmic">右侧y轴取对数</el-button>
-            </el-form-item>
-            <el-form-item label="x轴取对数：" label-width="auto">
-              <el-button size="small" @click="xAxisLogarithmic">x轴取对数</el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-      </el-col>
-      <el-col :span="18">
-        <div class="right" ref="chartRef" />
-      </el-col>
-    </el-row>
-  </div>
+              <el-form-item v-for="item in switchList" :label="`显示${item.name}：`">
+                <el-switch
+                  v-model="userOption.displayMarkLine[item.type]"
+                  @change="handleDisplayMarkLineChange(item.type, $event as boolean)"
+                />
+              </el-form-item>
+              <el-form-item label="图表标题名称：">
+                <el-input v-model="userOption.chartTitle" @input="handleChartTitleChange" />
+              </el-form-item>
+              <el-form-item label="左侧y轴数据颜色：" label-width="auto">
+                <el-color-picker v-model="leftColor" :predefine="predefineColors" @change="handleLeftColorChange" />
+              </el-form-item>
+              <el-form-item label="右侧y轴数据颜色：" label-width="auto">
+                <el-color-picker v-model="rightColor" :predefine="predefineColors"
+                                 @change="handleRightColorChange" />
+              </el-form-item>
+              <el-form-item label="x轴值域：" label-width="auto">
+                <el-input v-model="xAxisMin" placeholder="最小值" class="number-input"
+                          @change="handleXAxisMinChange" />
+                至
+                <el-input v-model="xAxisMax" placeholder="最大值" class="number-input"
+                          @change="handleXAxisMaxChange" />
+              </el-form-item>
+              <el-form-item label="左y轴值域：" label-width="auto">
+                <el-input
+                  v-model="leftYAxisMin"
+                  placeholder="最小值"
+                  class="number-input"
+                  @change="handleLeftYAxisMinChange"
+                />
+                至
+                <el-input
+                  v-model="leftYAxisMax"
+                  placeholder="最大值"
+                  class="number-input"
+                  @change="handleLeftYAxisMaxChange"
+                />
+              </el-form-item>
+              <el-form-item label="右y轴值域：" label-width="auto">
+                <el-input
+                  v-model="rightYAxisMin"
+                  placeholder="最小值"
+                  class="number-input"
+                  @change="handleRightYAxisMinChange"
+                />
+                至
+                <el-input
+                  v-model="rightYAxisMax"
+                  placeholder="最大值"
+                  class="number-input"
+                  @change="handleRightYAxisMaxChange"
+                />
+              </el-form-item>
+              <el-form-item label="左侧y轴图例名称：" label-width="auto">
+                <el-input v-model="userOption.legendNames.leftYAxisLegendName"
+                          @input="handLeftYAxisLegendNameChange" />
+              </el-form-item>
+              <el-form-item label="右侧y轴图例名称：" label-width="auto">
+                <el-input v-model="userOption.legendNames.rightYAxisLegendName"
+                          @input="handRightYAxisLegendNameChange" />
+              </el-form-item>
+              <el-form-item label="左侧y轴名称：" label-width="auto">
+                <el-input v-model="userOption.axisNames.leftYAxisName" @input="handLeftYAxisNameChange" />
+              </el-form-item>
+              <el-form-item label="右侧y轴名称：" label-width="auto">
+                <el-input v-model="userOption.axisNames.rightYAxisName" @input="handRightYAxisNameChange" />
+              </el-form-item>
+              <el-form-item label="X轴名称：" label-width="auto">
+                <el-input v-model="userOption.axisNames.xAxisName" @input="handXAxisNameChange" />
+              </el-form-item>
+              <el-form-item label="y轴取对数：" label-width="auto">
+                <el-button size="small" @click="leftYAxisLogarithmic">左侧y轴取对数</el-button>
+                <el-button size="small" @click="rightYAxisLogarithmic">右侧y轴取对数</el-button>
+              </el-form-item>
+              <el-form-item label="x轴取对数：" label-width="auto">
+                <el-button size="small" @click="xAxisLogarithmic">x轴取对数</el-button>
+              </el-form-item>
+            </el-form>
+          </el-card>
+        </el-col>
+        <el-col :span="18">
+          <div class="right" ref="chartRef" />
+        </el-col>
+      </el-row>
+    </el-card>
+  </el-dialog>
 </template>
 
 <style scoped>
 .container {
-  border: #000 solid 1px;
   margin: 10px auto;
-  width: 100%;
   height: 100%;
 }
 
-.left,
 .right {
-  border: #000 solid 1px;
-  height: 850px;
+  box-sizing: border-box;
+  height: 900px;
   padding: 20px 10px;
 }
 
 .number-input {
-  width: 100px;
+  width: 80px;
   margin: 0 10px;
 }
 </style>

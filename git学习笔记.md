@@ -51,11 +51,11 @@
 
 
 
-假设三歪做完了，经过校验通过后，把自己的代码`merge`（合并）到`origin/master`分支后，然后就发布上线啦。
+假设三歪做完了，经过校验通过后，把自己的代码`merge`（合并）到`origin/main`分支后，然后就发布上线啦。
 
-随后，鸡蛋也做完了，自己的分支校验完了以后，他此时也想把自己的代码合并到`origin/master`。不料，他改的代码跟三歪改的代码有冲突了（Git不知道选择谁的的代码），那鸡蛋只能手动`merge`了。
+随后，鸡蛋也做完了，自己的分支校验完了以后，他此时也想把自己的代码合并到`origin/main`。不料，他改的代码跟三歪改的代码有冲突了（Git不知道选择谁的的代码），那鸡蛋只能手动`merge`了。
 
-综合来看，我们使用Git大多数的场景就是**各自分支开发**，然后各自在本地`commit`（提交），最后汇总到`master`分支。
+综合来看，我们使用Git大多数的场景就是**各自分支开发**，然后各自在本地`commit`（提交），最后汇总到`main`分支。
 
 
 
@@ -193,9 +193,9 @@ git log --pretty=oneline
 
 想把远程分支最新的代码给拉下来，然后合并到本地上。我们可以用`git fetch`和`git merge`来实现，也可以通过`git pull`来实现。一般我用的都是`git fetch`+`git merge`，这样会更加**可控**一些
 
-有的时候，本地分支在master分支，然后忘了切其他的分支去修改，直接在master改了，然后也push到远程了。等你发现的时候，你会真的想骂自己。
+有的时候，本地分支在main分支，然后忘了切其他的分支去修改，直接在main改了，然后也push到远程了。等你发现的时候，你会真的想骂自己。
 
-咋办？最简单的办法其实我们还是可以`git reset --hard`到对应的版本，然后将其修改或者复原，再强制提交到`master`分支：`git push -u origin/master -f`
+咋办？最简单的办法其实我们还是可以`git reset --hard`到对应的版本，然后将其修改或者复原，再强制提交到`main`分支：`git push -u origin/main -f`
 
 ## 本地仓库
 
@@ -203,7 +203,7 @@ git log --pretty=oneline
 
 当工作区相较于上个版本（上次commit）有修改又要`commit`的时候，**必须**要把修改的文件添加（`add`）到**暂存区**才能`commit`
 
-如果只是对自己的文本文件进行版本管理（而不是团队协作），Git鼓励你使用分支完成某个任务，合并后再删掉分支，这和直接在`master`分支上工作（一直使用`commit`操作产生的不同版本）效果是一样的，但过程更安全。
+如果只是对自己的文本文件进行版本管理（而不是团队协作），Git鼓励你使用分支完成某个任务，合并后再删掉分支，这和直接在`main`分支上工作（一直使用`commit`操作产生的不同版本）效果是一样的，但过程更安全。
 
 ### 提交commit
 
@@ -282,7 +282,7 @@ Don't forget, in case of a rebase, ["what you have" and "what you merge" are rev
 
 ## 远程仓库
 
-当你从远程仓库克隆时，Git自动把**本地**的`master`分支和**远程**的`master`分支对应起来了，并且，远程仓库的默认名称是`origin`。
+当你从远程仓库克隆时，Git自动把**本地**的`main`分支和**远程**的`main`分支对应起来了，并且，远程仓库的默认名称是`origin`。
 
 ### 推送分支
 
@@ -290,8 +290,47 @@ Don't forget, in case of a rebase, ["what you have" and "what you merge" are rev
 
 ### 注意
 
-- `master`分支是主分支，因此要时刻与远程同步；
+- `main`分支是主分支，因此要时刻与远程同步；
 - `dev`分支是开发分支，团队所有成员都需要在上面工作，所以也需要与远程同步；
+
+
+
+## git flow
+
+<img src="https://nvie.com/img/git-model@2x.png" alt="git flow" style="zoom:50%;" />
+
+### 分支命名
+
+**main 分支**
+
+- main 为主分支，也是用于部署生产环境的分支，确保main分支稳定性
+- main 分支一般由develop以及hotfix分支合并，任何时间都不能直接修改代码
+
+**develop 分支**
+
+- develop 为开发分支，始终保持最新完成以及bug修复后的代码
+- 一般开发的新功能时，feature分支都是基于develop分支下创建的
+
+**feature 分支**
+
+- 开发新功能时，以develop为基础创建feature分支
+- 分支命名: feature/ 开头的为特性分支， 命名规则: feature/user_module、 feature/cart_module
+
+**release分支**
+
+- release 为预上线分支，发布提测阶段，会以release分支代码为基准提测
+
+
+> 当有一组feature开发完成，首先会合并到develop分支，进入提测时，会创建release分支。
+> 如果测试过程中若存在bug需要修复，则直接由开发者在release分支修复并提交。
+> 当测试完成之后，合并release分支到main和develop分支，此时main为最新代码，用作上线。
+
+**hotfix 分支**
+
+- 分支命名: hotfix/ 开头的为修复分支，它的命名规则与 feature 分支类似
+- 线上出现紧急问题时，需要及时修复，以main分支为基线，创建hotfix分支，修复完成后，需要合并到main分支和develop分支
+
+
 
 # 其他知识点
 

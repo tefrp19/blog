@@ -330,7 +330,7 @@ Don't forget, in case of a rebase, ["what you have" and "what you merge" are rev
 - 分支命名: hotfix/ 开头的为修复分支，它的命名规则与 feature 分支类似
 - 线上出现紧急问题时，需要及时修复，以main分支为基线，创建hotfix分支，修复完成后，需要合并到main分支和develop分支
 
-# [Commit message 规范]([Commit message 和 Change log 编写指南 - 阮一峰的网络日志 (ruanyifeng.com)](https://ruanyifeng.com/blog/2016/01/commit_message_change_log.html))
+## [Commit message 规范]([Commit message 和 Change log 编写指南 - 阮一峰的网络日志 (ruanyifeng.com)](https://ruanyifeng.com/blog/2016/01/commit_message_change_log.html))
 
 - feat：新功能（feature）
 - fix：修补bug

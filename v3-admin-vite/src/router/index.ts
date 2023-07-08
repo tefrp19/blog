@@ -233,6 +233,14 @@ export const constantRoutes: RouteRecordRaw[] = [
         meta: {
           title: "多种图，动态配置项"
         }
+      },
+      {
+        path: "bucket-list",
+        component: () => import("@/components/BucketList/index.vue"),
+        name: "bucketList",
+        meta: {
+          title: "文件库列表"
+        }
       }
     ]
   }

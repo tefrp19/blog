@@ -235,6 +235,14 @@ export const constantRoutes: RouteRecordRaw[] = [
         }
       },
       {
+        path: "for-ppt",
+        component: () => import("@/components/ForPPT/index.vue"),
+        name: "forPPT",
+        meta: {
+          title: "可视化"
+        }
+      },
+      {
         path: "bucket-list",
         component: () => import("@/components/BucketList/index.vue"),
         name: "bucketList",

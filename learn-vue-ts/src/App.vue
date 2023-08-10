@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import Main from './components/Task/index.vue'
-import TransitionTest from './components/TransitionTest/index.vue'
+import ForPPt from "./components/ForPPT/index.vue"
 </script>
 
 <template>
 <!--  <Main/>-->
-  <TransitionTest/>
+  <ForPPt/>
 </template>
 

@@ -6,6 +6,7 @@ import { FormInstance, FormRules } from "element-plus";
 import * as echarts from "echarts";
 import { EChartsType } from "echarts";
 import { MarkerStatisticType } from "echarts/types/src/component/marker/MarkerModel";
+import 'echarts-gl';
 
 const props = defineProps({
   nodeId: {

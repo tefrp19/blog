@@ -2,9 +2,9 @@ import router from "@/router"
 import { useUserStoreHook } from "@/store/modules/user"
 import { usePermissionStoreHook } from "@/store/modules/permission"
 import { ElMessage } from "element-plus"
-import { whiteList } from "@/config/white-list"
 import { getToken } from "@/utils/cache/cookies"
-import asyncRouteSettings from "@/config/async-route"
+import routeSettings from "@/config/route"
+import isWhiteList from "@/config/white-list"
 import NProgress from "nprogress"
 import "nprogress/nprogress.css"
 
@@ -24,7 +24,7 @@ router.beforeEach(async (to, _from, next) => {
       // 检查用户是否已获得其权限角色
       if (userStore.roles.length === 0) {
         try {
-          if (asyncRouteSettings.open) {
+          if (routeSettings.async) {
             // 注意：角色必须是一个数组！ 例如: ['admin'] 或 ['developer', 'editor']
             await userStore.getInfo()
             const roles = userStore.roles
@@ -32,8 +32,8 @@ router.beforeEach(async (to, _from, next) => {
             permissionStore.setRoutes(roles)
           } else {
             // 没有开启动态路由功能，则启用默认角色
-            userStore.setRoles(asyncRouteSettings.defaultRoles)
-            permissionStore.setRoutes(asyncRouteSettings.defaultRoles)
+            userStore.setRoles(routeSettings.defaultRoles)
+            permissionStore.setRoutes(routeSettings.defaultRoles)
           }
           // 将'有访问权限的动态路由' 添加到 Router 中
           permissionStore.dynamicRoutes.forEach((route) => {
@@ -55,7 +55,7 @@ router.beforeEach(async (to, _from, next) => {
     }
   } else {
     // 如果没有 Token
-    if (whiteList.indexOf(to.path) !== -1) {
+    if (isWhiteList(to)) {
       // 如果在免登录的白名单中，则直接进入
       next()
     } else {

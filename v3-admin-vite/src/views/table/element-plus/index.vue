@@ -6,9 +6,10 @@ import { type FormInstance, type FormRules, ElMessage, ElMessageBox } from "elem
 import { Search, Refresh, CirclePlus, Delete, Download, RefreshRight } from "@element-plus/icons-vue"
 import { usePagination } from "@/hooks/usePagination"
 
-// defineOptions({
-//   name: "ElementPlus"
-// })
+defineOptions({
+  // 命名当前组件
+  name: "ElementPlus"
+})
 
 const loading = ref<boolean>(false)
 const { paginationData, handleCurrentChange, handleSizeChange } = usePagination()
@@ -25,31 +26,32 @@ const formRules: FormRules = reactive({
   password: [{ required: true, trigger: "blur", message: "请输入密码" }]
 })
 const handleCreate = () => {
-  formRef.value?.validate((valid: boolean) => {
+  formRef.value?.validate((valid: boolean, fields) => {
     if (valid) {
       if (currentUpdateId.value === undefined) {
-        console.log("增")
-        createTableDataApi({
-          username: formData.username,
-          password: formData.password
-        }).then(() => {
-          ElMessage.success("新增成功")
-          dialogVisible.value = false
-          getTableData()
-        })
+        createTableDataApi(formData)
+          .then(() => {
+            ElMessage.success("新增成功")
+            getTableData()
+          })
+          .finally(() => {
+            dialogVisible.value = false
+          })
       } else {
-        console.log("改")
         updateTableDataApi({
           id: currentUpdateId.value,
           username: formData.username
-        }).then(() => {
-          ElMessage.success("修改成功")
-          dialogVisible.value = false
-          getTableData()
         })
+          .then(() => {
+            ElMessage.success("修改成功")
+            getTableData()
+          })
+          .finally(() => {
+            dialogVisible.value = false
+          })
       }
     } else {
-      return false
+      console.error("表单校验不通过", fields)
     }
   })
 }
@@ -111,25 +113,16 @@ const getTableData = () => {
     })
 }
 const handleSearch = () => {
-  if (paginationData.currentPage === 1) {
-    getTableData()
-  }
-  paginationData.currentPage = 1
+  paginationData.currentPage === 1 ? getTableData() : (paginationData.currentPage = 1)
 }
 const resetSearch = () => {
   searchFormRef.value?.resetFields()
-  if (paginationData.currentPage === 1) {
-    getTableData()
-  }
-  paginationData.currentPage = 1
-}
-const handleRefresh = () => {
-  getTableData()
+  handleSearch()
 }
 //#endregion
 
 /** 监听分页参数的变化 */
-watch(paginationData, getTableData, { immediate: true })
+watch([() => paginationData.currentPage, () => paginationData.pageSize], getTableData, { immediate: true })
 </script>
 
 <template>
@@ -142,7 +135,6 @@ watch(paginationData, getTableData, { immediate: true })
         <el-form-item prop="phone" label="手机号">
           <el-input v-model="searchData.phone" placeholder="请输入" />
         </el-form-item>
-        <el-button size="large" />
         <el-form-item>
           <el-button type="primary" :icon="Search" @click="handleSearch">查询</el-button>
           <el-button :icon="Refresh" @click="resetSearch">重置</el-button>
@@ -159,13 +151,13 @@ watch(paginationData, getTableData, { immediate: true })
           <el-tooltip content="下载">
             <el-button type="primary" :icon="Download" circle />
           </el-tooltip>
-          <el-tooltip content="刷新表格">
-            <el-button type="primary" :icon="RefreshRight" circle @click="handleRefresh" />
+          <el-tooltip content="刷新当前页">
+            <el-button type="primary" :icon="RefreshRight" circle @click="getTableData" />
           </el-tooltip>
         </div>
       </div>
       <div class="table-wrapper">
-        <el-table :data="tableData" size="large">
+        <el-table :data="tableData">
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column prop="username" label="用户名" align="center" />
           <el-table-column prop="roles" label="角色" align="center">
@@ -222,7 +214,6 @@ watch(paginationData, getTableData, { immediate: true })
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="handleCreate">确认</el-button>
-        <el-button />
       </template>
     </el-dialog>
   </div>

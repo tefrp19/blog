@@ -3,31 +3,23 @@ import store from "@/store"
 import { defineStore } from "pinia"
 import { type RouteRecordRaw } from "vue-router"
 import { constantRoutes, asyncRoutes } from "@/router"
-import asyncRouteSettings from "@/config/async-route"
+import { flatMultiLevelRoutes } from "@/router/helper"
+import routeSettings from "@/config/route"
 
 const hasPermission = (roles: string[], route: RouteRecordRaw) => {
-  if (route.meta && route.meta.roles) {
-    return roles.some((role) => {
-      if (route.meta?.roles !== undefined) {
-        return route.meta.roles.includes(role)
-      } else {
-        return false
-      }
-    })
-  } else {
-    return true
-  }
+  const routeRoles = route.meta?.roles
+  return routeRoles ? roles.some((role) => routeRoles.includes(role)) : true
 }
 
 const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
   const res: RouteRecordRaw[] = []
   routes.forEach((route) => {
-    const r = { ...route }
-    if (hasPermission(roles, r)) {
-      if (r.children) {
-        r.children = filterAsyncRoutes(r.children, roles)
+    const tempRoute = { ...route }
+    if (hasPermission(roles, tempRoute)) {
+      if (tempRoute.children) {
+        tempRoute.children = filterAsyncRoutes(tempRoute.children, roles)
       }
-      res.push(r)
+      res.push(tempRoute)
     }
   })
   return res
@@ -38,14 +30,9 @@ export const usePermissionStore = defineStore("permission", () => {
   const dynamicRoutes = ref<RouteRecordRaw[]>([])
 
   const setRoutes = (roles: string[]) => {
-    let accessedRoutes
-    if (!asyncRouteSettings.open) {
-      accessedRoutes = asyncRoutes
-    } else {
-      accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-    }
+    const accessedRoutes = routeSettings.async ? filterAsyncRoutes(asyncRoutes, roles) : asyncRoutes
     routes.value = constantRoutes.concat(accessedRoutes)
-    dynamicRoutes.value = accessedRoutes
+    dynamicRoutes.value = routeSettings.thirdLevelRouteCache ? flatMultiLevelRoutes(accessedRoutes) : accessedRoutes
   }
 
   return { routes, dynamicRoutes, setRoutes }

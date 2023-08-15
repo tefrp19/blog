@@ -6,14 +6,21 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <style>
         .background-color-red {
+            --bg-color: darkred;
+        }
+
+        .box {
             width: 100px;
             height: 100px;
-            background-color: darkred;
+            background-color: var(--bg-color);
         }
     </style>
     <title>css变量</title>
 </head>
 <body>
-<div class="background-color-red"></div>
+<div class="background-color-red">
+<div class="box"></div>
+
+</div>
 </body>
 </html>

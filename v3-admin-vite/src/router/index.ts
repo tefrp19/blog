@@ -1,12 +1,14 @@
-import { type RouteRecordRaw, createRouter, createWebHashHistory, createWebHistory } from "vue-router"
+import { type RouteRecordRaw, createRouter } from "vue-router"
+import { history, flatMultiLevelRoutes } from "./helper"
+import routeSettings from "@/config/route"
 
-const Layout = () => import("@/layout/index.vue")
+const Layouts = () => import("@/layouts/index.vue")
 
 /** 常驻路由 */
 export const constantRoutes: RouteRecordRaw[] = [
   {
     path: "/redirect",
-    component: Layout,
+    component: Layouts,
     meta: {
       hidden: true
     },
@@ -41,7 +43,7 @@ export const constantRoutes: RouteRecordRaw[] = [
   },
   {
     path: "/",
-    component: Layout,
+    component: Layouts,
     redirect: "/dashboard",
     children: [
       {
@@ -58,7 +60,7 @@ export const constantRoutes: RouteRecordRaw[] = [
   },
   {
     path: "/unocss",
-    component: Layout,
+    component: Layouts,
     redirect: "/unocss/index",
     children: [
       {
@@ -74,7 +76,7 @@ export const constantRoutes: RouteRecordRaw[] = [
   },
   {
     path: "/link",
-    component: Layout,
+    component: Layouts,
     children: [
       {
         path: "https://juejin.cn/post/7089377403717287972",
@@ -89,7 +91,7 @@ export const constantRoutes: RouteRecordRaw[] = [
   },
   {
     path: "/table",
-    component: Layout,
+    component: Layouts,
     redirect: "/table/element-plus",
     name: "Table",
     meta: {
@@ -100,7 +102,7 @@ export const constantRoutes: RouteRecordRaw[] = [
       {
         path: "element-plus",
         component: () => import("@/views/table/element-plus/index.vue"),
-        // name: "ElementPlus",
+        name: "ElementPlus",
         meta: {
           title: "Element Plus",
           keepAlive: true
@@ -119,11 +121,11 @@ export const constantRoutes: RouteRecordRaw[] = [
   },
   {
     path: "/menu",
-    component: Layout,
+    component: Layouts,
     redirect: "/menu/menu1",
     name: "Menu",
     meta: {
-      title: "多级菜单",
+      title: "多级路由",
       svgIcon: "menu"
     },
     children: [
@@ -141,7 +143,8 @@ export const constantRoutes: RouteRecordRaw[] = [
             component: () => import("@/views/menu/menu1/menu1-1/index.vue"),
             name: "Menu1-1",
             meta: {
-              title: "menu1-1"
+              title: "menu1-1",
+              keepAlive: true
             }
           },
           {
@@ -158,7 +161,8 @@ export const constantRoutes: RouteRecordRaw[] = [
                 component: () => import("@/views/menu/menu1/menu1-2/menu1-2-1/index.vue"),
                 name: "Menu1-2-1",
                 meta: {
-                  title: "menu1-2-1"
+                  title: "menu1-2-1",
+                  keepAlive: true
                 }
               },
               {
@@ -166,7 +170,8 @@ export const constantRoutes: RouteRecordRaw[] = [
                 component: () => import("@/views/menu/menu1/menu1-2/menu1-2-2/index.vue"),
                 name: "Menu1-2-2",
                 meta: {
-                  title: "menu1-2-2"
+                  title: "menu1-2-2",
+                  keepAlive: true
                 }
               }
             ]
@@ -176,7 +181,8 @@ export const constantRoutes: RouteRecordRaw[] = [
             component: () => import("@/views/menu/menu1/menu1-3/index.vue"),
             name: "Menu1-3",
             meta: {
-              title: "menu1-3"
+              title: "menu1-3",
+              keepAlive: true
             }
           }
         ]
@@ -186,14 +192,15 @@ export const constantRoutes: RouteRecordRaw[] = [
         component: () => import("@/views/menu/menu2/index.vue"),
         name: "Menu2",
         meta: {
-          title: "menu2"
+          title: "menu2",
+          keepAlive: true
         }
       }
     ]
   },
   {
     path: "/hook-demo",
-    component: Layout,
+    component: Layouts,
     redirect: "/hook-demo/use-fetch-select",
     name: "HookDemo",
     meta: {
@@ -217,37 +224,50 @@ export const constantRoutes: RouteRecordRaw[] = [
         meta: {
           title: "useFullscreenLoading"
         }
-      },
-      {
-        path: "file-upload",
-        component: () => import("@/components/FileUpload/index.vue"),
-        name: "fileUpload",
-        meta: {
-          title: "文件上传"
-        }
-      },
+      }
+    ]
+  },
+  {
+    path: "/business",
+    component: Layouts,
+    redirect: "/business/multiple-charts",
+    name: "business",
+    meta: {
+      title: "业务",
+      elIcon: "Menu",
+      alwaysShow: true
+    },
+    children: [
       {
         path: "multiple-charts",
         component: () => import("@/components/multipleCharts/index.vue"),
         name: "multipleCharts",
         meta: {
-          title: "多种图，动态配置项"
+          title: "动态配置图表"
         }
       },
       {
         path: "for-ppt",
-        component: () => import("@/components/ForPPT/index.vue"),
-        name: "forPPT",
+        component: () => import("@/components/forPPT/index.vue"),
+        name: "forPpt",
         meta: {
-          title: "可视化"
+          title: "多种图表（打击距离直方图）"
+        }
+      },
+      {
+        path: "file-upload",
+        component: () => import("@/components/fileUpload/index.vue"),
+        name: "fileUpload",
+        meta: {
+          title: "文件上传table"
         }
       },
       {
         path: "bucket-list",
-        component: () => import("@/components/BucketList/index.vue"),
+        component: () => import("@/components/bucketList/index.vue"),
         name: "bucketList",
         meta: {
-          title: "文件库列表"
+          title: "对象存储"
         }
       }
     ]
@@ -262,7 +282,7 @@ export const constantRoutes: RouteRecordRaw[] = [
 export const asyncRoutes: RouteRecordRaw[] = [
   {
     path: "/permission",
-    component: Layout,
+    component: Layouts,
     redirect: "/permission/page",
     name: "Permission",
     meta: {
@@ -302,11 +322,8 @@ export const asyncRoutes: RouteRecordRaw[] = [
 ]
 
 const router = createRouter({
-  history:
-    import.meta.env.VITE_ROUTER_HISTORY === "hash"
-      ? createWebHashHistory(import.meta.env.VITE_PUBLIC_PATH)
-      : createWebHistory(import.meta.env.VITE_PUBLIC_PATH),
-  routes: constantRoutes
+  history,
+  routes: routeSettings.thirdLevelRouteCache ? flatMultiLevelRoutes(constantRoutes) : constantRoutes
 })
 
 /** 重置路由 */
@@ -319,7 +336,7 @@ export function resetRouter() {
         router.hasRoute(name) && router.removeRoute(name)
       }
     })
-  } catch (error) {
+  } catch {
     // 强制刷新浏览器也行，只是交互体验不是很好
     window.location.reload()
   }

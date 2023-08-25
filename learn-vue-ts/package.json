@@ -12,9 +12,11 @@
     "echarts": "^5.4.3",
     "echarts-gl": "^2.0.9",
     "element-plus": "^2.3.5",
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "vue-router": "^4.2.4"
   },
   "devDependencies": {
+    "@types/node": "^20.5.4",
     "@vitejs/plugin-vue": "^4.1.0",
     "typescript": "^5.0.2",
     "vite": "^4.3.2",

@@ -429,9 +429,10 @@ const rightYAxisLogarithmic = () => {
 </script>
 
 <template>
-  <el-button type="primary" @click="showDialog" style="margin-right: 12px"> 可视化 </el-button>
+  <div>
+    <el-button type="primary" @click="showDialog" style="margin-right: 12px"> 可视化 </el-button>
 
-  <el-dialog v-model="dialogVisible" title="外部对话框" width="90vw" top="5vh" append-to-body>
+    <el-dialog v-model="dialogVisible" title="外部对话框" width="90vw" top="5vh" append-to-body>
     <template #default>
       <el-card>
         <el-form :inline="true" :model="form" ref="formRef" :rules="rules">
@@ -568,6 +569,7 @@ const rightYAxisLogarithmic = () => {
       </el-card>
     </template>
   </el-dialog>
+  </div>
 </template>
 
 <style scoped>

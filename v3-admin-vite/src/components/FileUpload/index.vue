@@ -128,7 +128,6 @@ const options = [
     </el-table>
     <el-button type="success" :disabled="tableData.length === 0" @click="submitUpload"> 批量上传文件 </el-button>
   </div>
-  >
 </template>
 
 <style scoped>

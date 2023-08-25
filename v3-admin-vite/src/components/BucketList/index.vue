@@ -1,407 +1,409 @@
 <template>
-  <template v-if="isBucketList">
-    <zr-query-form :leftSpan="23" :rightSpan="1">
-      <template #left>
-        <el-input v-model="queryParams.name" placeholder="搜索文件库" clearable :suffix-icon="Search" />
-      </template>
-      <template #right>
-        <el-button><span class="iconfont icon-refresh1" /></el-button>
-      </template>
-    </zr-query-form>
-    <vxe-table
-      border
-      show-header-overflow
-      show-overflow
-      :row-config="{ isHover: true }"
-      :row-class-name="rowClassName"
-      :data="bucketListData"
-      @cell-click="goToFileListPage"
-      max-height="1000px"
-    >
-      <vxe-column field="name" title="名称">
-        <template #default="{ row }">
-          <span class="iconfont icon-wenjiantong" style="font-size: 20px" />
-          {{ row.name }}
+  <div>
+    <template v-if="isBucketList">
+      <zr-query-form :leftSpan="23" :rightSpan="1">
+        <template #left>
+          <el-input v-model="queryParams.name" placeholder="搜索文件库" clearable :suffix-icon="Search" />
         </template>
-      </vxe-column>
-      <vxe-column field="objectNum" title="文件数" />
-      <vxe-column field="size" title="占用空间" />
-      <vxe-column field="accessPolicy" title="权限" />
-    </vxe-table>
-  </template>
+        <template #right>
+          <el-button><span class="iconfont icon-refresh1" /></el-button>
+        </template>
+      </zr-query-form>
+      <vxe-table
+        border
+        show-header-overflow
+        show-overflow
+        :row-config="{ isHover: true }"
+        :row-class-name="rowClassName"
+        :data="bucketListData"
+        @cell-click="goToFileListPage"
+        max-height="1000px"
+      >
+        <vxe-column field="name" title="名称">
+          <template #default="{ row }">
+            <span class="iconfont icon-wenjiantong" style="font-size: 20px" />
+            {{ row.name }}
+          </template>
+        </vxe-column>
+        <vxe-column field="objectNum" title="文件数" />
+        <vxe-column field="size" title="占用空间" />
+        <vxe-column field="accessPolicy" title="权限" />
+      </vxe-table>
+    </template>
 
-  <template v-else>
-    <el-card>
-      <template #header>
-        <div class="card-header">
-          <div class="bucket-summary">
-            <span class="iconfont icon-wenjiantong" style="font-size: 40px" />
-            <div class="bucket-info">
-              <h1>{{ bucketDetail.name }}</h1>
-              <span
-                >创建时间：<strong>{{ bucketDetail.zonedDateTime }}</strong></span
-              >
-              <span
-                >权限：<strong>{{ bucketDetail.access }}</strong></span
-              >
-              <span
-                >大小：<strong>{{ bucketDetail.size }}</strong></span
-              >
-              <span
-                >文件数：<strong>{{ bucketDetail.objectNum }}</strong></span
-              >
+    <template v-else>
+      <el-card>
+        <template #header>
+          <div class="card-header">
+            <div class="bucket-summary">
+              <span class="iconfont icon-wenjiantong" style="font-size: 40px" />
+              <div class="bucket-info">
+                <h1>{{ bucketDetail.name }}</h1>
+                <span
+                  >创建时间：<strong>{{ bucketDetail.zonedDateTime }}</strong></span
+                >
+                <span
+                  >权限：<strong>{{ bucketDetail.access }}</strong></span
+                >
+                <span
+                  >大小：<strong>{{ bucketDetail.size }}</strong></span
+                >
+                <span
+                  >文件数：<strong>{{ bucketDetail.objectNum }}</strong></span
+                >
+              </div>
+            </div>
+            <div class="bucket-action">
+              <el-button size="large" :icon="RefreshRight" @click="setFileListTable()">刷新</el-button>
+              <el-dropdown trigger="click">
+                <el-button class="button" size="large" :icon="Upload" color="rgb(0,21,41)">上传</el-button>
+                <template #dropdown>
+                  <el-dropdown-menu style="width: 175px">
+                    <el-upload :auto-upload="false" multiple :show-file-list="false" :on-change="uploadFileOrDir">
+                      <el-button size="large" style="width: 175px" :icon="Upload">上传文件</el-button>
+                    </el-upload>
+                    <el-upload :auto-upload="false" multiple :show-file-list="false" :on-change="uploadFileOrDir">
+                      <el-button size="large" style="width: 175px" :icon="FolderAdd">上传文件夹 </el-button>
+                    </el-upload>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
             </div>
           </div>
-          <div class="bucket-action">
-            <el-button size="large" :icon="RefreshRight" @click="setFileListTable()">刷新</el-button>
-            <el-dropdown trigger="click">
-              <el-button class="button" size="large" :icon="Upload" color="rgb(0,21,41)">上传</el-button>
-              <template #dropdown>
-                <el-dropdown-menu style="width: 175px">
-                  <el-upload :auto-upload="false" multiple :show-file-list="false" :on-change="uploadFileOrDir">
-                    <el-button size="large" style="width: 175px" :icon="Upload">上传文件</el-button>
-                  </el-upload>
-                  <el-upload :auto-upload="false" multiple :show-file-list="false" :on-change="uploadFileOrDir">
-                    <el-button size="large" style="width: 175px" :icon="FolderAdd">上传文件夹 </el-button>
-                  </el-upload>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
-        </div>
-      </template>
+        </template>
 
-      <el-card>
-        <div class="container">
-          <el-button class="button" size="large" @click="backToSpecifiedSpace(-1)">
-            <el-icon>
-              <ArrowLeft />
-            </el-icon>
-          </el-button>
-          <el-breadcrumb separator="/" class="bucket-breadcrumb">
-            <el-breadcrumb-item
-              v-for="(path, index) in breadcrumbPath"
-              :key="index"
-              @click="backToSpecifiedSpace(path)"
-            >
-              <a>
-                {{ path }}
-              </a>
-            </el-breadcrumb-item>
-          </el-breadcrumb>
-          <el-button class="button" size="large" @click="copyPath">
-            <el-icon>
-              <CopyDocument />
-            </el-icon>
-          </el-button>
-          <el-button class="button" size="large" :icon="FolderAdd" @click="createDirDialogVisible = true"
-            >创建新路径
-          </el-button>
-          <el-dialog
-            v-model="createDirDialogVisible"
-            title="创建新路径"
-            width="30%"
-            align-center
-            append-to-body
-            :lock-scroll="false"
-          >
-            <span>当前路径：</span><br />
-            <strong>{{ currentDir }}</strong
-            ><br />
-            <el-space style="margin-top: 20px">
-              <span>新目录名称：</span>
-              <el-input v-model="newDir" placeholder="输入新目录名称" />
-            </el-space>
-
-            <template #footer>
-              <span class="dialog-footer">
-                <el-button size="large" @click="createDirDialogVisible = false">取消</el-button>
-                <el-button size="large" :disabled="newDir.length === 0" type="primary" @click="createDir"
-                  >创建</el-button
-                >
-              </span>
-            </template>
-          </el-dialog>
-        </div>
-      </el-card>
-      <div class="file-list">
         <el-card>
-          <template v-if="!showFileVersionsList">
-            <vxe-table
-              show-header-overflow
-              show-overflow
-              :row-config="{ isHover: true }"
-              :row-class-name="rowClassName"
-              :data="fileListTableData"
-              @cell-click="cellClickEvent"
-              max-height="1000px"
-            >
-              <vxe-column field="objectName" title="名称">
-                <template #default="{ row }">
-                  <el-icon>
-                    <template v-if="row.dir">
-                      <Folder />
-                    </template>
-                    <template v-else>
-                      <Document />
-                    </template>
-                  </el-icon>
-                  {{ row.objectName }}
-                </template>
-              </vxe-column>
-              <vxe-column field="lastModified" title="上次修改日期" />
-              <vxe-column field="size" title="占用空间" />
-            </vxe-table>
-          </template>
-          <template v-else>
-            <el-card>
-              <template #header>
-                <el-row :gutter="20" align="middle">
-                  <el-col :span="3">
-                    <el-icon size="50">
-                      <List />
-                    </el-icon>
-                  </el-col>
-                  <el-col :span="12">
-                    <el-row>
-                      <el-col :span="24"
-                        ><span style="font-size: 25px">{{ fileDetail.objectName + " 版本" }}</span>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="8"
-                        ><span style="font-size: 15px">{{ fileDetail.versions.versionNum + "个版本" }}</span></el-col
-                      >
-                      <el-col :span="16"
-                        ><span style="font-size: 15px">{{ fileDetail.versions.totalSize }}</span>
-                      </el-col>
-                    </el-row>
-                  </el-col>
-                  <el-col :span="3" :offset="6">
-                    <el-tooltip effect="dark" content="删除当前版本外的所有版本" placement="bottom">
-                      <el-button :type="'danger'" :size="'large'" :icon="DocumentDelete" />
-                    </el-tooltip>
-                  </el-col>
-                </el-row>
-              </template>
-              <el-row
-                class="version-list-item"
-                v-for="(version, index) in fileDetail.versions.itemVOList"
-                :style="{ opacity: version.deleteMaker ? 0.5 : 1 }"
+          <div class="container">
+            <el-button class="button" size="large" @click="backToSpecifiedSpace(-1)">
+              <el-icon>
+                <ArrowLeft />
+              </el-icon>
+            </el-button>
+            <el-breadcrumb separator="/" class="bucket-breadcrumb">
+              <el-breadcrumb-item
+                v-for="(path, index) in breadcrumbPath"
                 :key="index"
+                @click="backToSpecifiedSpace(path)"
               >
-                <el-col :span="24">
-                  <el-row :gutter="20" align="middle">
-                    <el-col :span="2" style="max-height: 50px; max-width: 50px">
-                      <Document />
-                    </el-col>
-                    <el-col :span="2" style="font-weight: bold; font-size: 16px"
-                      >v{{ fileDetail.versions.itemVOList.length - index }}
-                    </el-col>
-                    <el-col :span="3">
-                      <el-tag v-if="version.latest">当前版本</el-tag>
-                      <el-tag v-if="version.deleteMaker" type="info">已删除</el-tag>
-                    </el-col>
-
-                    <el-col :span="2" :offset="11">
-                      <el-tooltip effect="dark" content="下载该版本" placement="bottom">
-                        <el-button
-                          type="info"
-                          size="small"
-                          circle
-                          :icon="Download"
-                          :disabled="version.deleteMaker"
-                          @click="downloadFile(version.versionId as string | null)"
-                        />
-                      </el-tooltip>
-                    </el-col>
-                    <el-col :span="2">
-                      <el-tooltip effect="dark" content="恢复该版本" placement="bottom">
-                        <el-button
-                          type="info"
-                          size="small"
-                          circle
-                          :icon="Refresh"
-                          :disabled="version.deleteMaker"
-                          @click="restoreFile(version.objectName, version.versionId as string | null)"
-                        />
-                      </el-tooltip>
-                    </el-col>
-                    <el-col :span="2">
-                      <el-tooltip effect="dark" content="删除该版本" placement="bottom">
-                        <el-button
-                          type="info"
-                          size="small"
-                          circle
-                          :icon="Delete"
-                          :disabled="version.deleteMaker"
-                          @click="deleteFileVersion(version.objectName, version.versionId as string | null)"
-                        />
-                      </el-tooltip>
-                    </el-col>
-                  </el-row>
-                </el-col>
-                <el-col :span="24">{{ version.versionId ? version.versionId : "-" }}</el-col>
-                <el-col :span="16">上次修改时间：{{ version.lastModified }}</el-col>
-                <el-col :span="8">大小：{{ version.size }}</el-col>
-                <el-divider />
-              </el-row>
-            </el-card>
-          </template>
-        </el-card>
-
-        <el-card v-show="showFileDetail" style="width: 300px">
-          <el-row>
-            <el-col :span="20">
-              <div class="file-name" style="font-size: 16px; height: 30px; line-height: 30px">
-                <strong>{{ fileDetail.objectName }}</strong>
-              </div>
-            </el-col>
-            <el-col :span="4">
-              <el-button @click="showFileDetail = false">
-                <el-icon>
-                  <Expand />
-                </el-icon>
-              </el-button>
-            </el-col>
-          </el-row>
-          <el-card class="file-action">
-            <div style="font-size: 16px; font-weight: bold">操作：</div>
-            <el-divider />
-            <el-button text @click="downloadFile(null)">
+                <a>
+                  {{ path }}
+                </a>
+              </el-breadcrumb-item>
+            </el-breadcrumb>
+            <el-button class="button" size="large" @click="copyPath">
               <el-icon>
-                <Download />
+                <CopyDocument />
               </el-icon>
-              下载
             </el-button>
-            <el-divider />
-            <el-button text disabled>
-              <el-icon>
-                <Share />
-              </el-icon>
-              分享
-            </el-button>
-            <el-divider />
-            <el-button text @click="tagsDialogVisible = true">
-              <el-icon>
-                <CollectionTag />
-              </el-icon>
-              标签
+            <el-button class="button" size="large" :icon="FolderAdd" @click="createDirDialogVisible = true"
+              >创建新路径
             </el-button>
             <el-dialog
-              v-model="tagsDialogVisible"
-              title="修改标签"
-              width="50%"
+              v-model="createDirDialogVisible"
+              title="创建新路径"
+              width="30%"
               align-center
               append-to-body
               :lock-scroll="false"
             >
-              <span>当前标签：</span><br />
-              <div>
-                <el-tag
-                  v-for="tag in fileDetail.tags"
-                  :key="tag.tagKey"
-                  class="mx-1"
-                  round
-                  closable
-                  @close="deleteTag(tag.tagKey)"
-                  style="margin-top: 15px"
-                >
-                  {{ tag.tagKey }}:{{ tag.tagLabel }}
-                </el-tag>
-              </div>
-
-              <el-form :model="tagForm" style="margin-top: 20px">
-                <el-form-item label="标签 Key：">
-                  <el-input v-model="tagForm.tagKey" />
-                </el-form-item>
-                <el-form-item label="标签 Label：">
-                  <el-input v-model="tagForm.tagLabel" />
-                </el-form-item>
-              </el-form>
+              <span>当前路径：</span><br />
+              <strong>{{ currentDir }}</strong
+              ><br />
+              <el-space style="margin-top: 20px">
+                <span>新目录名称：</span>
+                <el-input v-model="newDir" placeholder="输入新目录名称" />
+              </el-space>
 
               <template #footer>
                 <span class="dialog-footer">
-                  <el-button size="large" @click="tagsDialogVisible = false">取消</el-button>
-                  <el-button
-                    size="large"
-                    :disabled="tagForm.tagKey.length === 0 || tagForm.tagLabel.length === 0"
-                    type="primary"
-                    @click="createTag"
-                    >保存</el-button
+                  <el-button size="large" @click="createDirDialogVisible = false">取消</el-button>
+                  <el-button size="large" :disabled="newDir.length === 0" type="primary" @click="createDir"
+                    >创建</el-button
                   >
                 </span>
               </template>
             </el-dialog>
-            <el-divider />
-            <el-button text @click="showFileVersionsList = !showFileVersionsList">
-              <el-icon>
-                <Operation />
-              </el-icon>
-              {{ showFileVersionsList ? "隐藏文件版本" : "展示文件版本" }}
-            </el-button>
-            <el-divider />
+          </div>
+        </el-card>
+        <div class="file-list">
+          <el-card>
+            <template v-if="!showFileVersionsList">
+              <vxe-table
+                show-header-overflow
+                show-overflow
+                :row-config="{ isHover: true }"
+                :row-class-name="rowClassName"
+                :data="fileListTableData"
+                @cell-click="cellClickEvent"
+                max-height="1000px"
+              >
+                <vxe-column field="objectName" title="名称">
+                  <template #default="{ row }">
+                    <el-icon>
+                      <template v-if="row.dir">
+                        <Folder />
+                      </template>
+                      <template v-else>
+                        <Document />
+                      </template>
+                    </el-icon>
+                    {{ row.objectName }}
+                  </template>
+                </vxe-column>
+                <vxe-column field="lastModified" title="上次修改日期" />
+                <vxe-column field="size" title="占用空间" />
+              </vxe-table>
+            </template>
+            <template v-else>
+              <el-card>
+                <template #header>
+                  <el-row :gutter="20" align="middle">
+                    <el-col :span="3">
+                      <el-icon size="50">
+                        <List />
+                      </el-icon>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-row>
+                        <el-col :span="24"
+                          ><span style="font-size: 25px">{{ fileDetail.objectName + " 版本" }}</span>
+                        </el-col>
+                      </el-row>
+                      <el-row>
+                        <el-col :span="8"
+                          ><span style="font-size: 15px">{{ fileDetail.versions.versionNum + "个版本" }}</span></el-col
+                        >
+                        <el-col :span="16"
+                          ><span style="font-size: 15px">{{ fileDetail.versions.totalSize }}</span>
+                        </el-col>
+                      </el-row>
+                    </el-col>
+                    <el-col :span="3" :offset="6">
+                      <el-tooltip effect="dark" content="删除当前版本外的所有版本" placement="bottom">
+                        <el-button :type="'danger'" :size="'large'" :icon="DocumentDelete" />
+                      </el-tooltip>
+                    </el-col>
+                  </el-row>
+                </template>
+                <el-row
+                  class="version-list-item"
+                  v-for="(version, index) in fileDetail.versions.itemVOList"
+                  :style="{ opacity: version.deleteMaker ? 0.5 : 1 }"
+                  :key="index"
+                >
+                  <el-col :span="24">
+                    <el-row :gutter="20" align="middle">
+                      <el-col :span="2" style="max-height: 50px; max-width: 50px">
+                        <Document />
+                      </el-col>
+                      <el-col :span="2" style="font-weight: bold; font-size: 16px"
+                        >v{{ fileDetail.versions.itemVOList.length - index }}
+                      </el-col>
+                      <el-col :span="3">
+                        <el-tag v-if="version.latest">当前版本</el-tag>
+                        <el-tag v-if="version.deleteMaker" type="info">已删除</el-tag>
+                      </el-col>
+
+                      <el-col :span="2" :offset="11">
+                        <el-tooltip effect="dark" content="下载该版本" placement="bottom">
+                          <el-button
+                            type="info"
+                            size="small"
+                            circle
+                            :icon="Download"
+                            :disabled="version.deleteMaker"
+                            @click="downloadFile(version.versionId as string | null)"
+                          />
+                        </el-tooltip>
+                      </el-col>
+                      <el-col :span="2">
+                        <el-tooltip effect="dark" content="恢复该版本" placement="bottom">
+                          <el-button
+                            type="info"
+                            size="small"
+                            circle
+                            :icon="Refresh"
+                            :disabled="version.deleteMaker"
+                            @click="restoreFile(version.objectName, version.versionId as string | null)"
+                          />
+                        </el-tooltip>
+                      </el-col>
+                      <el-col :span="2">
+                        <el-tooltip effect="dark" content="删除该版本" placement="bottom">
+                          <el-button
+                            type="info"
+                            size="small"
+                            circle
+                            :icon="Delete"
+                            :disabled="version.deleteMaker"
+                            @click="deleteFileVersion(version.objectName, version.versionId as string | null)"
+                          />
+                        </el-tooltip>
+                      </el-col>
+                    </el-row>
+                  </el-col>
+                  <el-col :span="24">{{ version.versionId ? version.versionId : "-" }}</el-col>
+                  <el-col :span="16">上次修改时间：{{ version.lastModified }}</el-col>
+                  <el-col :span="8">大小：{{ version.size }}</el-col>
+                  <el-divider />
+                </el-row>
+              </el-card>
+            </template>
           </el-card>
 
-          <el-button
-            type="danger"
-            size="large"
-            style="width: 100%; margin: 10px 0"
-            @click="deleteFileDialogVisible = true"
-          >
-            <el-icon>
-              <Delete />
-            </el-icon>
-            删除
-          </el-button>
+          <el-card v-show="showFileDetail" style="width: 300px">
+            <el-row>
+              <el-col :span="20">
+                <div class="file-name" style="font-size: 16px; height: 30px; line-height: 30px">
+                  <strong>{{ fileDetail.objectName }}</strong>
+                </div>
+              </el-col>
+              <el-col :span="4">
+                <el-button @click="showFileDetail = false">
+                  <el-icon>
+                    <Expand />
+                  </el-icon>
+                </el-button>
+              </el-col>
+            </el-row>
+            <el-card class="file-action">
+              <div style="font-size: 16px; font-weight: bold">操作：</div>
+              <el-divider />
+              <el-button text @click="downloadFile(null)">
+                <el-icon>
+                  <Download />
+                </el-icon>
+                下载
+              </el-button>
+              <el-divider />
+              <el-button text disabled>
+                <el-icon>
+                  <Share />
+                </el-icon>
+                分享
+              </el-button>
+              <el-divider />
+              <el-button text @click="tagsDialogVisible = true">
+                <el-icon>
+                  <CollectionTag />
+                </el-icon>
+                标签
+              </el-button>
+              <el-dialog
+                v-model="tagsDialogVisible"
+                title="修改标签"
+                width="50%"
+                align-center
+                append-to-body
+                :lock-scroll="false"
+              >
+                <span>当前标签：</span><br />
+                <div>
+                  <el-tag
+                    v-for="tag in fileDetail.tags"
+                    :key="tag.tagKey"
+                    class="mx-1"
+                    round
+                    closable
+                    @close="deleteTag(tag.tagKey)"
+                    style="margin-top: 15px"
+                  >
+                    {{ tag.tagKey }}:{{ tag.tagLabel }}
+                  </el-tag>
+                </div>
 
-          <el-dialog
-            v-model="deleteFileDialogVisible"
-            title="删除文件"
-            width="30%"
-            align-center
-            append-to-body
-            :lock-scroll="false"
-          >
-            <span>你确定要删除：</span><br />
-            <strong>{{ currentDir + fileDetail.objectName }}</strong> ？<br />
-            <el-space style="margin-top: 20px">
-              <span>删除全部版本：</span>
-              <el-switch v-model="deleteFileAllVersion" />
-            </el-space>
+                <el-form :model="tagForm" style="margin-top: 20px">
+                  <el-form-item label="标签 Key：">
+                    <el-input v-model="tagForm.tagKey" />
+                  </el-form-item>
+                  <el-form-item label="标签 Label：">
+                    <el-input v-model="tagForm.tagLabel" />
+                  </el-form-item>
+                </el-form>
 
-            <template #footer>
-              <span class="dialog-footer">
-                <el-button size="large" @click="deleteFileDialogVisible = false">取消</el-button>
-                <el-button size="large" type="danger" @click="deleteCurrentVersionFile(null)">删除</el-button>
-              </span>
-            </template>
-          </el-dialog>
+                <template #footer>
+                  <span class="dialog-footer">
+                    <el-button size="large" @click="tagsDialogVisible = false">取消</el-button>
+                    <el-button
+                      size="large"
+                      :disabled="tagForm.tagKey.length === 0 || tagForm.tagLabel.length === 0"
+                      type="primary"
+                      @click="createTag"
+                      >保存</el-button
+                    >
+                  </span>
+                </template>
+              </el-dialog>
+              <el-divider />
+              <el-button text @click="showFileVersionsList = !showFileVersionsList">
+                <el-icon>
+                  <Operation />
+                </el-icon>
+                {{ showFileVersionsList ? "隐藏文件版本" : "展示文件版本" }}
+              </el-button>
+              <el-divider />
+            </el-card>
 
-          <el-divider />
+            <el-button
+              type="danger"
+              size="large"
+              style="width: 100%; margin: 10px 0"
+              @click="deleteFileDialogVisible = true"
+            >
+              <el-icon>
+                <Delete />
+              </el-icon>
+              删除
+            </el-button>
 
-          <el-descriptions title="文件信息" direction="vertical" :column="1" :size="'default'" border>
-            <el-descriptions-item label="名称：">{{ fileDetail.objectName }}</el-descriptions-item>
-            <el-descriptions-item label="大小：">{{ fileDetail.size }}</el-descriptions-item>
-            <el-descriptions-item label="上次修改日期：">{{ fileDetail.lastModified }}</el-descriptions-item>
-            <el-descriptions-item label="ETag：">{{ fileDetail.etag }}</el-descriptions-item>
-            <el-descriptions-item label="标签：">
-              <span v-for="(tag, index) in fileDetail.tags" :key="index">{{ tag.tagKey }}:{{ tag.tagLabel }}, </span>
-            </el-descriptions-item>
-          </el-descriptions>
-          <el-descriptions title="元数据" direction="vertical" :column="1" :size="'default'" border>
-            <el-descriptions-item label="Content-Type：">
-              {{ fileDetail.metadata.contentType }}
-            </el-descriptions-item>
-            <el-descriptions-item label="X-Amz-Tagging-Count：">
-              {{ fileDetail.metadata.xAmzTaggingCount }}
-            </el-descriptions-item>
-          </el-descriptions>
-          <el-divider />
-        </el-card>
-      </div>
-    </el-card>
-  </template>
+            <el-dialog
+              v-model="deleteFileDialogVisible"
+              title="删除文件"
+              width="30%"
+              align-center
+              append-to-body
+              :lock-scroll="false"
+            >
+              <span>你确定要删除：</span><br />
+              <strong>{{ currentDir + fileDetail.objectName }}</strong> ？<br />
+              <el-space style="margin-top: 20px">
+                <span>删除全部版本：</span>
+                <el-switch v-model="deleteFileAllVersion" />
+              </el-space>
+
+              <template #footer>
+                <span class="dialog-footer">
+                  <el-button size="large" @click="deleteFileDialogVisible = false">取消</el-button>
+                  <el-button size="large" type="danger" @click="deleteCurrentVersionFile(null)">删除</el-button>
+                </span>
+              </template>
+            </el-dialog>
+
+            <el-divider />
+
+            <el-descriptions title="文件信息" direction="vertical" :column="1" :size="'default'" border>
+              <el-descriptions-item label="名称：">{{ fileDetail.objectName }}</el-descriptions-item>
+              <el-descriptions-item label="大小：">{{ fileDetail.size }}</el-descriptions-item>
+              <el-descriptions-item label="上次修改日期：">{{ fileDetail.lastModified }}</el-descriptions-item>
+              <el-descriptions-item label="ETag：">{{ fileDetail.etag }}</el-descriptions-item>
+              <el-descriptions-item label="标签：">
+                <span v-for="(tag, index) in fileDetail.tags" :key="index">{{ tag.tagKey }}:{{ tag.tagLabel }}, </span>
+              </el-descriptions-item>
+            </el-descriptions>
+            <el-descriptions title="元数据" direction="vertical" :column="1" :size="'default'" border>
+              <el-descriptions-item label="Content-Type：">
+                {{ fileDetail.metadata.contentType }}
+              </el-descriptions-item>
+              <el-descriptions-item label="X-Amz-Tagging-Count：">
+                {{ fileDetail.metadata.xAmzTaggingCount }}
+              </el-descriptions-item>
+            </el-descriptions>
+            <el-divider />
+          </el-card>
+        </div>
+      </el-card>
+    </template>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -448,12 +450,12 @@ const router = useRouter()
 const bucketListData = ref([])
 
 onMounted(async () => {
-  const bucketName = router.currentRoute.value.query.bucketName
-  if (bucketName) {
-    goToFileListPage({ row: { name: bucketName } })
-  } else {
-    bucketListData.value = (await getBucketListApi()).data
-  }
+  // const bucketName = router.currentRoute.value.query.bucketName
+  // if (bucketName) {
+  //   goToFileListPage({ row: { name: bucketName } })
+  // } else {
+  //   bucketListData.value = (await getBucketListApi()).data
+  // }
 })
 const rowClassName = () => {
   return "row-pointer"

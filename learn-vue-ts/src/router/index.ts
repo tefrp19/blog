@@ -47,6 +47,13 @@ const routes = [
         }
     },
     {
+        path: "/v-model-with-props",
+        component: () => import("../components/v-modelWithProps/parent.vue"),
+        meta:{
+            isDynamic:false
+        }
+    },
+    {
         path: "/404",
         component: () => import("../components/404page/index.vue"),
         meta:{

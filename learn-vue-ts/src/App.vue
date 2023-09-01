@@ -53,6 +53,14 @@
             <template #title>可编辑表格校验</template>
           </el-menu-item>
         </router-link>
+        <router-link to="/v-model-with-props">
+          <el-menu-item index="6">
+            <el-icon>
+              <setting/>
+            </el-icon>
+            <template #title>v-model-with-props</template>
+          </el-menu-item>
+        </router-link>
         <el-button @click="login">登录</el-button>
         <el-button @click="logout">登出</el-button>
       </el-menu>

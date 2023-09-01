@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>node并发测试</title>
+</head>
+<body>
+<button>发送10个计算密集型请求</button>
+<script>
+    document.querySelector("button").addEventListener("click", () => {
+        for (let i = 0; i < 10; i++) {
+            fetch("http://localhost:8000/busyTask")
+        }
+        fetch("http://localhost:8000/commonTask")
+    })
+</script>
+</body>
+</html>

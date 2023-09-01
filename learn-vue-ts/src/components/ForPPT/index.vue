@@ -1024,14 +1024,14 @@ const handXAxisNameChange = (value: string) => {
         <template #header>
 
           <el-form :inline="true" :model="form" ref="formRef" :rules="rules">
-            <el-form-item label="图表类型：" label-width="auto">
-              <el-select v-model="chartType" placeholder="选择图表类型" size="large" @change="chartTypeChange">
-                <el-option label="多轴图表" value="multiAxis"/>
-                <el-option label="多维度图表" value="multiDimension"/>
-                <el-option label="打击距离直方图" value="barChart"/>
-                <el-option label="3D飞行轨迹图" value="3dLineChart"/>
-              </el-select>
-            </el-form-item>
+<!--            <el-form-item label="图表类型：" label-width="auto">-->
+<!--              <el-select v-model="chartType" placeholder="选择图表类型" size="large" @change="chartTypeChange">-->
+<!--                <el-option label="多轴图表" value="multiAxis"/>-->
+<!--                <el-option label="多维度图表" value="multiDimension"/>-->
+<!--                <el-option label="打击距离直方图" value="barChart"/>-->
+<!--                <el-option label="3D飞行轨迹图" value="3dLineChart"/>-->
+<!--              </el-select>-->
+<!--            </el-form-item>-->
             <template v-if="chartType==='multiAxis'">
               <el-form-item label="x轴数据：" prop="xAxis" label-width="auto" required>
                 <el-select v-model="form.xAxis" placeholder="选择表格列" size="large">
@@ -1063,20 +1063,12 @@ const handXAxisNameChange = (value: string) => {
               </el-select>
             </el-form-item>
             <el-form-item>
-              <el-button>
-                <el-icon>
-                  <ArrowLeft/>
-                </el-icon>
-              </el-button>
-              <el-button>
-                <el-icon>
-                  <ArrowRight/>
-                </el-icon>
-              </el-button>
-            </el-form-item>
-            <el-form-item>
               <el-button type="primary" @click="createChart">生成可视化图表</el-button>
             </el-form-item>
+            <el-form-item>
+              <el-pagination background layout="prev, pager, next" :total="1000" />
+            </el-form-item>
+
           </el-form>
         </template>
         <el-row :gutter="20">

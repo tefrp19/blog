@@ -1,12 +1,14 @@
 import {createApp} from 'vue'
 import ElementPlus from 'element-plus'
+import VXETable from 'vxe-table'
 import 'element-plus/dist/index.css'
+import 'vxe-table/lib/style.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import App from './App.vue'
 import router from "./router";
 
 const app= createApp(App)
-app.use(ElementPlus).use(router)
+app.use(ElementPlus).use(VXETable).use(router)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }

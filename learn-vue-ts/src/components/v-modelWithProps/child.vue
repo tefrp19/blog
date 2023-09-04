@@ -2,7 +2,7 @@
 <template>
   <el-dialog
       :model-value="dialogVisible"
-      @close="$emit('closeDialog')"
+      @close="emit('closeDialog')"
       title="Tips"
   >
   </el-dialog>
@@ -13,8 +13,8 @@
 const props=defineProps<{
   dialogVisible:boolean
 }>()
-
-const fn=(param)=>{
+const emit=defineEmits(["closeDialog"])
+const fn=(param:boolean)=>{
   console.log(param)
 }
 </script>

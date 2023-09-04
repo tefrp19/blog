@@ -79,11 +79,11 @@
 import {
   Document,
   Menu as IconMenu,
-  Location,
   Setting,
 } from '@element-plus/icons-vue'
 import {RouteRecordRaw, useRouter} from "vue-router";
-import router from "./router";
+import router, {addRoutes, getDynamicRoutes, removeRoutes} from "./router";
+import {onMounted} from "vue";
 
 const handleOpen = (key: string, keyPath: string[]) => {
   // console.log(key, keyPath)
@@ -112,33 +112,18 @@ const resetRouter = () => {
 }
 
 // 1. 添加动态路由
-const login = () => {
-  const newRoutes = [
-    {
-      path: '/task',
-      name: 'task',
-      component: () => import("/src/components/Task/index.vue"),
-      meta: {
-        isDynamic: true
-      }
-    },
-  ]
-  newRoutes.forEach(route => {
-    router.addRoute(route)
-  })
+const login = async () => {
+  const newRoutes =await getDynamicRoutes()
+  const newRoutesStr=JSON.stringify(newRoutes)
+  localStorage.setItem("menuList",newRoutesStr)
+  addRoutes()
 }
 
 // 1. 删除动态路由
 const logout = () => {
-  router.getRoutes().forEach(route => {
-    const {isDynamic}=route.meta
-    if (isDynamic){
-      const {name}=route
-      console.log("name",name)
-      router.removeRoute(name as string)
-    }
-  })
+  removeRoutes()
 }
+
 
 </script>
 

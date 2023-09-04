@@ -1,7 +1,5 @@
 <template>
-  <div>
-    登录页
-  </div>
+  <el-button>登录</el-button>
 </template>
 
 <script setup lang="ts">

@@ -1,7 +1,9 @@
-import {createRouter, createWebHashHistory, RouteRecord, RouteRecordRaw} from "vue-router"
-import {App} from "vue";
+import {createRouter, createWebHashHistory, RouteRecordRaw} from "vue-router"
 
-const routes = [
+export const Layout = () => import("../layout/index.vue")
+
+// 常驻路由
+export const constantRoutes: RouteRecordRaw[] = [
     {
         path: '/login',
         name: "login",
@@ -12,44 +14,68 @@ const routes = [
         }
     },
     {
-        path: '/form-validation',
-        name: "formValidation",
-        component: () => import("../components/formValidation/index.vue"),
+        path: '/',
+        name: "home",
+        redirect:"/home",
+        component: Layout,
+        children: [
+            {
+                path: "home",
+                component: () => import("../components/home/index.vue")
+            }
+        ],
         meta: {
             isDynamic: false
         }
     },
-    // {
-    //     path: '/task',
-    //     name: 'task',
-    //     component: () => import("../components/Task/index.vue")
-    // },
     {
         path: '/for-ppt',
-        name: 'forPpt',
-        component: () => import("../components/ForPPT/index.vue"),
+        name: "forPpt",
+        redirect:"/for-ppt/index",
+        component: Layout,
+        children: [
+            {
+                path: "index",
+                component: () => import("../components/forPpt/index.vue")
+            }
+        ],
         meta: {
             isDynamic: false
         }
     },
     {
-        path: '/table-validation',
-        name: 'tableValidation',
-        component: () => import("../components/tableValidation/index.vue"),
+        path: '/business',
+        name: "business",
+        redirect:"/business/form-validation",
+        component: Layout,
+        children: [
+            {
+                path: "form-validation",
+                component: () => import("../components/formValidation/index.vue")
+            },
+            {
+                path: "task",
+                component: () => import("../components/task/index.vue")
+            },
+            {
+                path: "table-validation",
+                component: () => import("../components/tableValidation/index.vue")
+            },
+        ],
         meta: {
-            isDynamic: false
-        }
-    },
-    {
-        path: "/",
-        redirect: "/login",
-        meta: {
-            isDynamic: false
+            isDynamic: true
         }
     },
     {
         path: "/v-model-with-props",
-        component: () => import("../components/v-modelWithProps/parent.vue"),
+        redirect:"/v-model-with-props/index",
+        component: Layout,
+        children: [
+            {
+                path: "index",
+                component: () => import("../components/v-modelWithProps/parent.vue"),
+            }
+        ],
         meta: {
             isDynamic: false
         }
@@ -73,17 +99,17 @@ const routes = [
 
 const router = createRouter({
     history: createWebHashHistory(),
-    routes, // `routes: routes` 的缩写
+    routes: constantRoutes, // `routes: routes` 的缩写
 })
 
-router.beforeEach((to, from) => {
-    // console.log("to", to)
-    // console.log("from", from)
-    // ...
-    // 返回 false 以取消导航
-    // return false
-
-})
+// router.beforeEach((to, from) => {
+//     // console.log("to", to)
+//     // console.log("from", from)
+//     // ...
+//     // 返回 false 以取消导航
+//     // return false
+//
+// })
 
 // 模拟接口
 export const getDynamicRoutes = () => {
@@ -110,9 +136,9 @@ type RouteRecordRawPlus = RouteRecordRaw & {
     componentUrl: string
 }
 export const addRoutes = () => {
-    const menuListStr = localStorage.getItem("menuList")
-    if (menuListStr) {
-        const dynamicRoutes = JSON.parse(menuListStr)
+    const dynamicRoutesStr = localStorage.getItem("dynamicRoutes")
+    if (dynamicRoutesStr) {
+        const dynamicRoutes = JSON.parse(dynamicRoutesStr)
         dynamicRoutes.forEach((route: RouteRecordRawPlus) => {
             route.component = modules[route.componentUrl]
             router.addRoute(route)

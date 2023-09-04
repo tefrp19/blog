@@ -12,7 +12,7 @@
     "echarts": "^5.4.3",
     "echarts-gl": "^2.0.9",
     "element-plus": "^2.3.5",
-    "pinia": "^2.1.6",
+    "pinia": "^2.0.35",
     "vue": "^3.2.47",
     "vue-router": "^4.2.4",
     "vxe-table": "^4.5.7"

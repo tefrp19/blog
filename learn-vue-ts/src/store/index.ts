@@ -1,10 +1,11 @@
-// stores/counter.js
-import { defineStore } from 'pinia'
+import {defineStore} from 'pinia'
 import {ref} from "vue";
+import {RouteRecordRaw} from "vue-router";
 
-export const appStore = defineStore('counter', () => {
-    const menuList=ref([])
+export const useAppStore = defineStore('appStore', () => {
+    const menuList = ref<RouteRecordRaw[]>([])
+    const num = ref(0)
 
 
-    return { menuList }
+    return {menuList, num}
 })

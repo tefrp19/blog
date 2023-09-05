@@ -11,9 +11,7 @@
             <el-icon>
               <icon-menu/>
             </el-icon>
-            <template #title>
               首页
-            </template>
           </el-menu-item>
         </router-link>
         <router-link to="/for-ppt">
@@ -21,9 +19,7 @@
             <el-icon>
               <icon-menu/>
             </el-icon>
-            <template #title>
               多个图表（动态路由）
-            </template>
           </el-menu-item>
         </router-link>
         <el-sub-menu index="3">
@@ -31,7 +27,7 @@
             <el-icon>
               <location/>
             </el-icon>
-            <span>业务（动态路由）</span>
+<!--            <span>业务（动态路由）</span>-->
           </template>
           <router-link to="/business/form-validation">
             <el-menu-item index="3-1">表单校验文件是否上传</el-menu-item>
@@ -48,13 +44,13 @@
             <el-icon>
               <setting/>
             </el-icon>
-            <template #title>v-model-with-props</template>
+            v-model-with-props
           </el-menu-item>
         </router-link>
-        <el-button @click="login">登录</el-button>
-        <el-button @click="logout">登出</el-button>
-        {{ appStore.num }}
       </el-menu>
+      <DynamicMenus :b="1"/>
+      <el-button type="primary" @click="login">登录</el-button>
+      <el-button @click="logout">登出</el-button>
     </el-col>
     <el-col :span="20">
       <router-view v-slot="{ Component }">
@@ -74,6 +70,7 @@ import {
 } from '@element-plus/icons-vue'
 import router, {addRoutes, constantRoutes, getDynamicRoutes, removeRoutes} from "../../router";
 import {useAppStore} from "../../store";
+import DynamicMenus from "./dynamicMenus.tsx"
 
 // const handleOpen = (key: string, keyPath: string[]) => {
 //   // console.log(key, keyPath)

@@ -5,8 +5,6 @@
           default-active="1"
           :default-openeds="['3']"
           class="el-menu-vertical-demo"
-          @open="handleOpen"
-          @close="handleClose"
       >
         <router-link to="/home">
           <el-menu-item index="1">

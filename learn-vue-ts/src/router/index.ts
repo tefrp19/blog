@@ -194,8 +194,8 @@ export const addRoutes = () => {
 }
 
 /**
- * @param routes 待转换的路由数组
  * 将 componentUrl 字符串转换为 component 函数
+ * @param routes 待转换的路由数组
  */
 const convertRoutes = (routes: RouteRecordRawPlus[]) => {
     // dfs 遍历路由树

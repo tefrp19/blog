@@ -1,6 +1,6 @@
 import {createRouter, createWebHashHistory, RouteRecordRaw} from "vue-router"
 
-export const Layout = () => import("../layout/index.vue")
+export const Layout = () => import("../components/layout/index.vue")
 
 // 常驻路由
 export const constantRoutes: RouteRecordRaw[] = [
@@ -16,7 +16,7 @@ export const constantRoutes: RouteRecordRaw[] = [
     {
         path: '/',
         name: "home",
-        redirect:"/home",
+        redirect: "/home",
         component: Layout,
         children: [
             {
@@ -28,58 +28,58 @@ export const constantRoutes: RouteRecordRaw[] = [
             isDynamic: false
         }
     },
-    {
-        path: '/for-ppt',
-        name: "forPpt",
-        redirect:"/for-ppt/index",
-        component: Layout,
-        children: [
-            {
-                path: "index",
-                component: () => import("../components/forPpt/index.vue")
-            }
-        ],
-        meta: {
-            isDynamic: false
-        }
-    },
-    {
-        path: '/business',
-        name: "business",
-        redirect:"/business/form-validation",
-        component: Layout,
-        children: [
-            {
-                path: "form-validation",
-                component: () => import("../components/formValidation/index.vue")
-            },
-            {
-                path: "task",
-                component: () => import("../components/task/index.vue")
-            },
-            {
-                path: "table-validation",
-                component: () => import("../components/tableValidation/index.vue")
-            },
-        ],
-        meta: {
-            isDynamic: true
-        }
-    },
-    {
-        path: "/v-model-with-props",
-        redirect:"/v-model-with-props/index",
-        component: Layout,
-        children: [
-            {
-                path: "index",
-                component: () => import("../components/v-modelWithProps/parent.vue"),
-            }
-        ],
-        meta: {
-            isDynamic: false
-        }
-    },
+    // {
+    //     path: '/for-ppt',
+    //     name: "forPpt",
+    //     redirect: "/for-ppt/index",
+    //     component: Layout,
+    //     children: [
+    //         {
+    //             path: "index",
+    //             component: () => import("../components/forPpt/index.vue")
+    //         }
+    //     ],
+    //     meta: {
+    //         isDynamic: true
+    //     }
+    // },
+    // {
+    //     path: '/business',
+    //     name: "business",
+    //     redirect: "/business/form-validation",
+    //     component: Layout,
+    //     children: [
+    //         {
+    //             path: "form-validation",
+    //             component: () => import("../components/formValidation/index.vue")
+    //         },
+    //         {
+    //             path: "task",
+    //             component: () => import("../components/task/index.vue")
+    //         },
+    //         {
+    //             path: "table-validation",
+    //             component: () => import("../components/tableValidation/index.vue")
+    //         },
+    //     ],
+    //     meta: {
+    //         isDynamic: true
+    //     }
+    // },
+    // {
+    //     path: "/v-model-with-props",
+    //     redirect: "/v-model-with-props/index",
+    //     component: Layout,
+    //     children: [
+    //         {
+    //             path: "index",
+    //             component: () => import("../components/v-modelWithProps/parent.vue"),
+    //         }
+    //     ],
+    //     meta: {
+    //         isDynamic: true
+    //     }
+    // },
     {
         path: "/404",
         component: () => import("../components/404page/index.vue"),
@@ -113,12 +113,58 @@ const router = createRouter({
 
 // 模拟接口
 export const getDynamicRoutes = () => {
+    const layoutComponentUrl = "/src/components/layout/index.vue"
     return new Promise(resolve => {
         const newRoutes = [
             {
-                path: "/task",
-                name: "task",
-                componentUrl: "/src/components/Task/index.vue",
+                path: '/for-ppt',
+                name: "forPpt",
+                redirect: "/for-ppt/index",
+                componentUrl: layoutComponentUrl,
+                children: [
+                    {
+                        path: "index",
+                        componentUrl: "/src/components/forPpt/index.vue"
+                    }
+                ],
+                meta: {
+                    isDynamic: true
+                }
+            },
+            {
+                path: '/business',
+                name: "business",
+                redirect: "/business/form-validation",
+                componentUrl: layoutComponentUrl,
+                children: [
+                    {
+                        path: "form-validation",
+                        componentUrl: "/src/components/formValidation/index.vue"
+                    },
+                    {
+                        path: "task",
+                        componentUrl: "/src/components/task/index.vue"
+                    },
+                    {
+                        path: "table-validation",
+                        componentUrl: "/src/components/tableValidation/index.vue"
+                    },
+                ],
+                meta: {
+                    isDynamic: true
+                }
+            },
+            {
+                path: "/v-model-with-props",
+                name: "v-modelWithProps",
+                redirect: "/v-model-with-props/index",
+                componentUrl: layoutComponentUrl,
+                children: [
+                    {
+                        path: "index",
+                        componentUrl: "/src/components/v-modelWithProps/parent.vue",
+                    }
+                ],
                 meta: {
                     isDynamic: true
                 }
@@ -139,10 +185,29 @@ export const addRoutes = () => {
     const dynamicRoutesStr = localStorage.getItem("dynamicRoutes")
     if (dynamicRoutesStr) {
         const dynamicRoutes = JSON.parse(dynamicRoutesStr)
+        convertRoutes(dynamicRoutes)
+        // 添加路由
         dynamicRoutes.forEach((route: RouteRecordRawPlus) => {
-            route.component = modules[route.componentUrl]
             router.addRoute(route)
         })
+    }
+}
+
+/**
+ * @param routes 待转换的路由数组
+ * 将 componentUrl 字符串转换为 component 函数
+ */
+const convertRoutes = (routes: RouteRecordRawPlus[]) => {
+    // dfs 遍历路由树
+    const dfs = (rootRoute: RouteRecordRawPlus) => {
+        rootRoute.component = modules[rootRoute.componentUrl]
+        if (!rootRoute.children) return
+        for (const child of rootRoute.children as RouteRecordRawPlus[]) {
+            dfs(child)
+        }
+    }
+    for (const item of routes) {
+        dfs(item)
     }
 }
 

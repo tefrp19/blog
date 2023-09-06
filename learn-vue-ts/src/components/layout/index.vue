@@ -47,8 +47,16 @@
             v-model-with-props
           </el-menu-item>
         </router-link>
+        <router-link to="/database-table-visualization">
+          <el-menu-item index="7">
+            <el-icon>
+              <setting/>
+            </el-icon>
+            数据库表可视化
+          </el-menu-item>
+        </router-link>
       </el-menu>
-      <DynamicMenus :b="1"/>
+<!--      <DynamicMenus :b="1"/>-->
       <el-button type="primary" @click="login">登录</el-button>
       <el-button @click="logout">登出</el-button>
     </el-col>
@@ -87,8 +95,8 @@ const login = async () => {
 // 1. 添加动态路由
   addRoutes()
 // 2. 更新菜单视图
-  appStore.menuList = constantRoutes
-  appStore.num++
+//   appStore.menuList = constantRoutes
+//   appStore.num++
 }
 
 // 1. 删除动态路由

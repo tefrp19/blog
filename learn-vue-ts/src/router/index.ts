@@ -169,6 +169,21 @@ export const getDynamicRoutes = () => {
                     isDynamic: true
                 }
             },
+            {
+                path: "/database-table-visualization",
+                name: "databaseTableVisualization",
+                redirect: "/database-table-visualization/index",
+                componentUrl: layoutComponentUrl,
+                children: [
+                    {
+                        path: "index",
+                        componentUrl: "/src/components/databaseTableVisualization/index.vue",
+                    }
+                ],
+                meta: {
+                    isDynamic: true
+                }
+            },
         ]
         resolve(newRoutes)
     })

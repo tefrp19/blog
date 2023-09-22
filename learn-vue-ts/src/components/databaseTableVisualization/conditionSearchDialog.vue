@@ -8,13 +8,9 @@
       draggable
   >
     <el-form
-        ref="ruleFormRef"
         label-width="120px"
-        class="demo-ruleForm"
-        :size="formSize"
-        status-icon
     >
-      <el-form-item v-for="item in formItems" :label="item.name+'：'" :prop="'name'">
+      <el-form-item v-for="item in formItems" :key="item.name" :label="item.name+'：'" :prop="'name'">
         <!--        数值型-->
         <template v-if="item.type.includes('int')||item.type.includes('float')">
           <el-row gutter="20">
@@ -31,11 +27,11 @@
             </el-col>
           </el-row>
         </template>
-        <!--        文本型-->
-        <template v-if="item.type==='varchar'">
+        <!-- 文本型 -->
+        <template v-if="item.type.includes('char')">
           <el-row gutter="20">
             <el-col span="6">
-              <el-select v-model="item.pattern" style="width: 120px;" placeholder="选择">
+              <el-select v-model="item.pattern" style="width: 120px;" placeholder="选择查询方式">
                 <el-option
                     :key="'like'"
                     :label="'模糊查询'"
@@ -53,7 +49,7 @@
             </el-col>
           </el-row>
         </template>
-        <!--日期和日期时间型-->
+        <!-- 日期和日期时间型 -->
         <template v-if="item.type==='date'||item.type==='timestamp'">
           <el-row gutter="20">
             <el-col :span="11">
@@ -63,7 +59,6 @@
                     v-model="item.startTime"
                     placeholder="开始时间"
                     value-format="x"
-                    style="width: 100%"
                 />
               </el-form-item>
             </el-col>
@@ -77,11 +72,36 @@
                     v-model="item.endTime"
                     placeholder="结束时间"
                     value-format="x"
-                    style="width: 100%"
                 />
               </el-form-item>
             </el-col>
           </el-row>
+        </template>
+        <!-- 布尔型 -->
+        <template v-if="item.type==='boolean'">
+          <el-select v-model="item.value" style="width: 120px;" placeholder="选择布尔型">
+            <el-option
+                :key="'like'"
+                :label="'true'"
+                :value="true"
+            />
+            <el-option
+                :key="'equal'"
+                :label="'false'"
+                :value="false"
+            />
+          </el-select>
+        </template>
+        <!-- 下拉型 -->
+        <template v-if="item.type==='drop'">
+          <el-select v-model="item.condition" style="width: 120px;" placeholder="选择类型">
+            <el-option
+                v-for="option in item.data"
+                :key="option.value"
+                :label="option.label"
+                :value="option.value"
+            />
+          </el-select>
         </template>
       </el-form-item>
 
@@ -188,9 +208,9 @@
 </template>
 
 <script setup lang="ts">
-import {reactive, ref} from 'vue'
-import type {FormInstance, FormRules} from 'element-plus'
-import {formItem} from "./index.ts"
+import { ref} from 'vue'
+import {FormItem} from "./index.ts"
+
 const dialogVisible = ref(false)
 
 const initComponent = () => {
@@ -198,7 +218,7 @@ const initComponent = () => {
   setConditionQueryFormItems()
 }
 
-const formItems = ref<formItem[]>([])
+const formItems = ref<FormItem[]>([])
 /**
  * 动态设置表单项
  */
@@ -234,22 +254,49 @@ const setConditionQueryFormItems = async () => {
       startTime: null,
       endTime: null,
     },
+    {
+      name: "col6",
+      type: "boolean",
+      value: null,
+    },
+    {
+      name: "col7",
+      type: "drop",
+      data: [
+        {
+          label: "正常",
+          value: "1",
+        },
+        {
+          label: "异常",
+          value: "0",
+        },
+        {
+          label: "欠压",
+          value: "-1",
+        },
+        {
+          label: "过压",
+          value: "-2",
+        },
+      ],
+      pattern: "equal",
+      condition: null,
+    }
   ]
 }
 
-const emit=defineEmits<{
-  (e: 'setConditionQueryParams', value: formItem[]): void
+const emit = defineEmits<{
+  (e: 'setConditionQueryParams', value: FormItem[]): void
 }>()
 
 /**
  * 设置条件查询参数
  */
 const setConditionQueryParams = () => {
-  emit("setConditionQueryParams",formItems.value)
-  dialogVisible.value=false
+  emit("setConditionQueryParams", formItems.value)
+  dialogVisible.value = false
 }
-
-const ruleFormRef = ref<FormInstance>()
 
 /**
  * 重置表单项内容
@@ -262,7 +309,7 @@ const resetForm = () => {
         item.lessThan = null
         break
       }
-      case item.type === "varchar": {
+      case item.type.includes("char"): {
         item.pattern = "like"
         item.condition = null
         break
@@ -270,6 +317,14 @@ const resetForm = () => {
       case item.type === "date" || item.type === "timestamp": {
         item.startTime = null
         item.endTime = null
+        break
+      }
+      case item.type === "boolean": {
+        item.value = null
+        break
+      }
+      case item.type === "drop": {
+        item.condition = null
         break
       }
     }

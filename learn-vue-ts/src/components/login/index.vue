@@ -14,7 +14,6 @@ const login = async () => {
 // 1. 添加动态路由
   addRoutes()
 // 2. 更新菜单视图
-  appStore.menuList = constantRoutes
   appStore.num++
 }
 </script>

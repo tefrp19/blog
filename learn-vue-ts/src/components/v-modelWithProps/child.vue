@@ -7,15 +7,21 @@
   >
   </el-dialog>
   <el-button @click="fn(dialogVisible)">测试在template中解构props</el-button>
+  <el-button @click="testProps">测试props</el-button>
 </template>
 
 <script setup lang="ts">
 const props=defineProps<{
-  dialogVisible:boolean
+  dialogVisible:boolean,
+  prop1: number
 }>()
 const emit=defineEmits(["closeDialog"])
 const fn=(param:boolean)=>{
   console.log(param)
+}
+
+const testProps=()=>{
+  console.log("props.prop1",props)
 }
 </script>
 

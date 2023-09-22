@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-button @click="dialogVisible = true">
-      click to open the Dialog
+    <el-button  @click="dialogVisible = true">
+      打开 dialog
     </el-button>
-    <child :dialogVisible="dialogVisible" @close-dialog="closeDialog"/>
+    <child :dialogVisible="dialogVisible" prop1=2 @close-dialog="closeDialog"/>
 
   </div>
 </template>

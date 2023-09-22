@@ -173,7 +173,7 @@ import {ElMessage, ElMessageBox, FormInstance, FormRules} from 'element-plus'
 import * as echarts from "echarts";
 import {EChartsType} from "echarts";
 import ConditionSearchDialog from "./conditionSearchDialog.vue";
-import {formItem} from "./index.ts";
+import {FormItem} from "./index.ts";
 
 const props = defineProps({
   routeUrl: {
@@ -292,8 +292,8 @@ const setSelectOptions = async () => {
 
 }
 
-const conditionQueryParams=ref<formItem[]>([])
-const setConditionQueryParams=(value:formItem[])=>{
+const conditionQueryParams=ref<FormItem[]>([])
+const setConditionQueryParams=(value:FormItem[])=>{
   conditionQueryParams.value=value
   console.log("conditionQueryParams.value",conditionQueryParams.value)
 }

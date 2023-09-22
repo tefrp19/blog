@@ -1,62 +1,7 @@
 <template>
   <el-row>
     <el-col :span="4">
-      <el-menu
-          default-active="1"
-          :default-openeds="['3']"
-          class="el-menu-vertical-demo"
-      >
-        <router-link to="/home">
-          <el-menu-item index="1">
-            <el-icon>
-              <icon-menu/>
-            </el-icon>
-              首页
-          </el-menu-item>
-        </router-link>
-        <router-link to="/for-ppt">
-          <el-menu-item index="2">
-            <el-icon>
-              <icon-menu/>
-            </el-icon>
-              多个图表（动态路由）
-          </el-menu-item>
-        </router-link>
-        <el-sub-menu index="3">
-          <template #title>
-            <el-icon>
-              <location/>
-            </el-icon>
-<!--            <span>业务（动态路由）</span>-->
-          </template>
-          <router-link to="/business/form-validation">
-            <el-menu-item index="3-1">表单校验文件是否上传</el-menu-item>
-          </router-link>
-          <router-link to="/business/task">
-            <el-menu-item index="3-2">task</el-menu-item>
-          </router-link>
-          <router-link to="/business/table-validation">
-            <el-menu-item index="3-3">可编辑表格校验</el-menu-item>
-          </router-link>
-        </el-sub-menu>
-        <router-link to="/v-model-with-props">
-          <el-menu-item index="6">
-            <el-icon>
-              <setting/>
-            </el-icon>
-            v-model-with-props
-          </el-menu-item>
-        </router-link>
-        <router-link to="/database-table-visualization">
-          <el-menu-item index="7">
-            <el-icon>
-              <setting/>
-            </el-icon>
-            数据库表可视化
-          </el-menu-item>
-        </router-link>
-      </el-menu>
-<!--      <DynamicMenus :b="1"/>-->
+      <DynamicMenus :b="2"/>
       <el-button type="primary" @click="login">登录</el-button>
       <el-button @click="logout">登出</el-button>
     </el-col>
@@ -87,7 +32,7 @@ import DynamicMenus from "./dynamicMenus.tsx"
 //   // console.log(key, keyPath)
 // }
 
-const appStore = useAppStore()
+const {routes} = useAppStore()
 const login = async () => {
   const newRoutes = await getDynamicRoutes()
   const newRoutesStr = JSON.stringify(newRoutes)
@@ -95,7 +40,6 @@ const login = async () => {
 // 1. 添加动态路由
   addRoutes()
 // 2. 更新菜单视图
-//   appStore.menuList = constantRoutes
 //   appStore.num++
 }
 

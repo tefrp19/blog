@@ -421,7 +421,6 @@
 </template>
 
 <script setup lang="ts">
-import ZrQueryForm from "@/components/zr/ZrQueryForm/src/ZrQueryForm.vue";
 import {
   CopyDocument,
   Delete,
@@ -435,14 +434,6 @@ import {
 } from '@element-plus/icons-vue'
 import {computed, nextTick, onMounted, onUnmounted, reactive, ref, toRefs} from "vue";
 import {useRouter} from "vue-router";
-import {
-  createTagApi,
-  deleteFileApi, deleteTagApi, downloadFileApi,
-  file,
-  getBucketListApi,
-  getFileListApi,
-  uploadFileApi
-} from "@/api/minio/bucketList";
 import {ElMessage, ElMessageBox, UploadFile} from "element-plus";
 
 const isBucketList = ref(true) // 是否是文件库列表页

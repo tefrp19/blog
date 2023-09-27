@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>前端直接下载文件</title>
+</head>
+<body>
+<button>前端直接下载文件</button>
+<script>
+    document.querySelector("button").addEventListener("click", () => {
+        const data = '<a id="a"><b id="b">hey!</b></a>'
+        const blob=new Blob([data])
+        const reader = new FileReader()
+        // 传入被读取的blob对象
+        reader.readAsDataURL(blob)
+        // 读取完成的回调事件
+        reader.onload = () => {
+            let a = document.createElement('a')
+            a.download = 'test.text'
+            a.style.display = 'none'
+            // 生成的base64编码
+            let url = reader.result
+            console.log("url",url)
+            a.href = url
+            document.body.appendChild(a)
+            a.click()
+            document.body.removeChild(a)
+        }
+    })
+
+</script>
+</body>
+</html>

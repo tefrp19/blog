@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>table</title>
+</head>
+<body>
+
+<table>
+    <tr>
+        <td>label</td>
+        <td>
+            <span style="display: block;width: 10px; border: 1px solid" id="parent">
+                <span id="child">value</span>
+            </span>
+        </td>
+    </tr>
+</table>
+<script>
+    const parentDom=document.querySelector("#parent")
+    const childDom=document.querySelector("#child")
+    console.log(parentDom.offsetWidth, 'parentDom.offsetWidth')
+    console.log(childDom.offsetWidth, 'childDom.offsetWidth')
+</script>
+</body>
+</html>

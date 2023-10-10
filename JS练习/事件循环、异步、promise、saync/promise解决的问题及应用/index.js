@@ -62,7 +62,7 @@ Promise.all([readFile('f1.txt'), readFile('f2.txt'), readFile('f3.txt')]).then(r
     console.log(res);
 }).catch(err => {
     console.log(err);
-})
+});
 //#endregion
 
 // 4. 异步的最佳方案

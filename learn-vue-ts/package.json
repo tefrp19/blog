@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -16,7 +16,8 @@
     "pinia": "^2.0.35",
     "vue": "^3.2.47",
     "vue-router": "^4.2.4",
-    "vxe-table": "^4.5.7"
+    "vxe-table": "^4.5.7",
+    "xe-utils": "^3.5.13"
   },
   "devDependencies": {
     "@types/node": "^20.5.4",

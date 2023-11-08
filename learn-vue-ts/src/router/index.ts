@@ -67,7 +67,6 @@ export const constantRoutes: RouteRecordRaw[] = [
         children: [
             {
                 path: "index",
-                componentUrl: "/src/components/databaseTableVisualization/index.vue",
                 component: () => import("../components/databaseTableVisualization/index.vue")
             }
         ],
@@ -86,7 +85,6 @@ export const constantRoutes: RouteRecordRaw[] = [
         children: [
             {
                 path: "index",
-                componentUrl: "/src/components/dirUpload/index.vue",
                 component: () => import("../components/dirUpload/index.vue")
             }
         ],
@@ -104,7 +102,6 @@ export const constantRoutes: RouteRecordRaw[] = [
         children: [
             {
                 path: "index",
-                componentUrl: "/src/components/refTest/index.vue",
                 component: () => import("../components/refTest/index.vue")
             }
         ],
@@ -113,6 +110,23 @@ export const constantRoutes: RouteRecordRaw[] = [
             isMenu: true,
             isSubMenu: false,
             title: "模板引用",
+        }
+    },
+    {
+        path: "/fullCalendar",
+        redirect: "/fullCalendar/index",
+        component: Layout,
+        children: [
+            {
+                path: "index",
+                component: () => import("../components/fullCalendar/index.vue")
+            }
+        ],
+        meta: {
+            isDynamic: true,
+            isMenu: true,
+            isSubMenu: false,
+            title: "日程管理",
         }
     },
     // {

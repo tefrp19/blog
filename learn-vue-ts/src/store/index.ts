@@ -4,11 +4,22 @@ import {RouteRecordRaw} from "vue-router";
 
 export const useAppStore = defineStore('appStore', () => {
     const routes = ref<RouteRecordRaw[]>([])
-    const num = ref(0)
 
-    const setRoutes=(routesParma:RouteRecordRaw[])=>{
-        routes.value=routesParma
+    const setRoutes = (routesParma: RouteRecordRaw[]) => {
+        routes.value = routesParma
     }
 
-    return {routes, num,setRoutes}
+    return {routes, setRoutes}
+})
+
+export const useTestStore = defineStore("testStore", () => {
+    const testStore = ref(1)
+    const setTestStore = (testStore) => {
+        console.log(testStore, "testStore")
+        testStore.value = testStore
+    }
+    const increment=()=> {
+        testStore.value++
+    }
+    return {testStore, setTestStore,increment}
 })

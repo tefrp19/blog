@@ -1,5 +1,5 @@
 <template>
-
+<div>
   <el-button style="width: 100px" type="primary" @click="initComponent">
     可视化
   </el-button>
@@ -163,6 +163,8 @@
       </el-card>
     </template>
   </el-dialog>
+
+</div>
 
 </template>
 

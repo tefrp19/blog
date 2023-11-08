@@ -8,19 +8,18 @@ const DynamicMenus = defineComponent({
         b: Number
     },
     setup() {
-        const {routes} = useAppStore()
-        console.log("routes from store",routes)
+        const appStore = useAppStore()
         // 渲染一级菜单
         const renderMenuItem = (route: RouteRecordRawPlus) => {
             return (
-                <router-link to={route.menuPath?route.menuPath:route.path}>
-                    <el-menu-item index={route.path}>
+                // <router-link to={route.menuPath ? route.menuPath : route.path}>
+                    <el-menu-item index={route.menuPath ? route.menuPath : route.path}>
                         <el-icon>
-                            <icon-menu/>
+                            <Menu/>
                         </el-icon>
                         {route.meta?.title}
                     </el-menu-item>
-                </router-link>
+                // </router-link>
             )
         }
 
@@ -54,9 +53,10 @@ const DynamicMenus = defineComponent({
                 <el-menu
                     default-active="/home"
                     class="el-menu-vertical-demo"
+                    router={true}
                 >
                     {
-                        routes.map(route => {
+                        appStore.routes.map(route => {
                             if (route.meta?.isMenu) {
                                 if (route.meta?.isSubMenu) {
                                     return renderSubMenu(route)

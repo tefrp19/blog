@@ -40,14 +40,89 @@ export const constantRoutes: RouteRecordRaw[] = [
             isDynamic: false
         }
     },
+
     {
-        path: '/:path(.*)*',
-        redirect: '/404',
-        name: '404Page',
+        path: "/v-model-with-props",
+        name: "v-modelWithProps",
+        redirect: "/v-model-with-props/index",
+        component: Layout,
+        children: [
+            {
+                path: "index",
+                component: () => import("../components/v-modelWithProps/parent.vue")
+            }
+        ],
         meta: {
-            isDynamic: false
+            isDynamic: true,
+            isMenu: true,
+            isSubMenu: false,
+            title: "v-modelWithProps"
         }
     },
+    {
+        path: "/database-table-visualization",
+        name: "databaseTableVisualization",
+        redirect: "/database-table-visualization/index",
+        component: Layout,
+        children: [
+            {
+                path: "index",
+                componentUrl: "/src/components/databaseTableVisualization/index.vue",
+                component: () => import("../components/databaseTableVisualization/index.vue")
+            }
+        ],
+        meta: {
+            isDynamic: true,
+            isMenu: true,
+            isSubMenu: false,
+            title: "数据库表可视化",
+        }
+    },
+    {
+        path: "/dir-upload",
+        name: "dirUpload",
+        redirect: "/dir-upload/index",
+        component: Layout,
+        children: [
+            {
+                path: "index",
+                componentUrl: "/src/components/dirUpload/index.vue",
+                component: () => import("../components/dirUpload/index.vue")
+            }
+        ],
+        meta: {
+            isDynamic: true,
+            isMenu: true,
+            isSubMenu: false,
+            title: "文件夹上传",
+        }
+    },
+    {
+        path: "/ref-test",
+        redirect: "/ref-test/index",
+        component: Layout,
+        children: [
+            {
+                path: "index",
+                componentUrl: "/src/components/refTest/index.vue",
+                component: () => import("../components/refTest/index.vue")
+            }
+        ],
+        meta: {
+            isDynamic: true,
+            isMenu: true,
+            isSubMenu: false,
+            title: "模板引用",
+        }
+    },
+    // {
+    //     path: '/:path(.*)*',
+    //     redirect: '/404',
+    //     name: '404Page',
+    //     meta: {
+    //         isDynamic: false
+    //     }
+    // },
 ]
 
 const router = createRouter({
@@ -55,12 +130,8 @@ const router = createRouter({
     routes: constantRoutes, // `routes: routes` 的缩写
 })
 
-router.beforeEach((to, from) => {
-    // console.log("to", to)
-    // console.log("from", from)
-    // ...
-    // 返回 false 以取消导航
-    // return false
+router.beforeEach(async (to, from) => {
+
 })
 
 // 模拟接口
@@ -94,7 +165,7 @@ export const getDynamicRoutes = () => {
                 children: [
                     {
                         path: "form-validation",
-                        menuPath:"/business/form-validation", // 全路径，用于菜单跳转
+                        menuPath: "/business/form-validation", // 全路径，用于菜单跳转
                         componentUrl: "/src/components/formValidation/index.vue",
                         meta: {
                             title: "表单校验",
@@ -102,7 +173,7 @@ export const getDynamicRoutes = () => {
                     },
                     {
                         path: "task",
-                        menuPath:"/business/task",
+                        menuPath: "/business/task",
                         componentUrl: "/src/components/task/index.vue",
                         meta: {
                             title: "task",
@@ -110,7 +181,7 @@ export const getDynamicRoutes = () => {
                     },
                     {
                         path: "table-validation",
-                        menuPath:"/business/table-validation",
+                        menuPath: "/business/table-validation",
                         componentUrl: "/src/components/tableValidation/index.vue",
                         meta: {
                             title: "可编辑表格校验",
@@ -124,77 +195,6 @@ export const getDynamicRoutes = () => {
                     title: "业务"
                 }
             },
-            {
-                path: "/v-model-with-props",
-                name: "v-modelWithProps",
-                redirect: "/v-model-with-props/index",
-                componentUrl: layoutComponentUrl,
-                children: [
-                    {
-                        path: "index",
-                        componentUrl: "/src/components/v-modelWithProps/parent.vue",
-                    }
-                ],
-                meta: {
-                    isDynamic: true,
-                    isMenu: true,
-                    isSubMenu: false,
-                    title: "v-modelWithProps"
-                }
-            },
-            {
-                path: "/database-table-visualization",
-                name: "databaseTableVisualization",
-                redirect: "/database-table-visualization/index",
-                componentUrl: layoutComponentUrl,
-                children: [
-                    {
-                        path: "index",
-                        componentUrl: "/src/components/databaseTableVisualization/index.vue",
-                    }
-                ],
-                meta: {
-                    isDynamic: true,
-                    isMenu: true,
-                    isSubMenu: false,
-                    title: "数据库表可视化",
-                }
-            },
-            {
-                path: "/dir-upload",
-                name: "dirUpload",
-                redirect: "/dir-upload/index",
-                componentUrl: layoutComponentUrl,
-                children: [
-                    {
-                        path: "index",
-                        componentUrl: "/src/components/dirUpload/index.vue",
-                    }
-                ],
-                meta: {
-                    isDynamic: true,
-                    isMenu: true,
-                    isSubMenu: false,
-                    title: "文件夹上传",
-                }
-            },
-            {
-                path: "/ref-test",
-                redirect: "/ref-test/index",
-                componentUrl: layoutComponentUrl,
-                children: [
-                    {
-                        path: "index",
-                        componentUrl: "/src/components/refTest/index.vue",
-                    }
-                ],
-                meta: {
-                    isDynamic: true,
-                    isMenu: true,
-                    isSubMenu: false,
-                    title: "模板引用",
-                }
-            },
         ]
         resolve(newRoutes)
     })
@@ -206,9 +206,9 @@ const modules = import.meta.glob('/src/components/**/**.vue')
 
 export type RouteRecordRawPlus = RouteRecordRaw & {
     componentUrl?: string,
-    menuPath?:string,
+    menuPath?: string,
 }
-export const addRoutes = async () => {
+export const addRoutes = () => {
     const dynamicRoutesStr = localStorage.getItem("dynamicRoutes")
     if (dynamicRoutesStr) {
         const dynamicRoutes = JSON.parse(dynamicRoutesStr)
@@ -243,6 +243,8 @@ const convertRoutes = (routes: RouteRecordRawPlus[]) => {
 
 export const removeRoutes = () => {
     localStorage.removeItem("dynamicRoutes")
+    const {setRoutes} = useAppStore()
+    setRoutes([])
     router.getRoutes().forEach(route => {
         const {isDynamic} = route.meta
         if (isDynamic) {

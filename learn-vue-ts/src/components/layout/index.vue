@@ -37,10 +37,8 @@ const login = async () => {
   const newRoutes = await getDynamicRoutes()
   const newRoutesStr = JSON.stringify(newRoutes)
   localStorage.setItem("dynamicRoutes", newRoutesStr)
-// 1. 添加动态路由
+//  添加动态路由并更新视图
   addRoutes()
-// 2. 更新菜单视图
-//   appStore.num++
 }
 
 // 1. 删除动态路由

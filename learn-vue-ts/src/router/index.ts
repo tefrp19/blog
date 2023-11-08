@@ -129,6 +129,23 @@ export const constantRoutes: RouteRecordRaw[] = [
             title: "日程管理",
         }
     },
+    {
+        path: "/videoPlayer",
+        redirect: "/videoPlayer/index",
+        component: Layout,
+        children: [
+            {
+                path: "index",
+                component: () => import("../components/videoPlayer/index.vue")
+            }
+        ],
+        meta: {
+            isDynamic: true,
+            isMenu: true,
+            isSubMenu: false,
+            title: "视频播放",
+        }
+    },
     // {
     //     path: '/:path(.*)*',
     //     redirect: '/404',

@@ -53,7 +53,7 @@ export const constantRoutes: RouteRecordRaw[] = [
             }
         ],
         meta: {
-            isDynamic: true,
+            isDynamic: false,
             isMenu: true,
             isSubMenu: false,
             title: "v-modelWithProps"
@@ -71,7 +71,7 @@ export const constantRoutes: RouteRecordRaw[] = [
             }
         ],
         meta: {
-            isDynamic: true,
+            isDynamic: false,
             isMenu: true,
             isSubMenu: false,
             title: "数据库表可视化",
@@ -89,7 +89,7 @@ export const constantRoutes: RouteRecordRaw[] = [
             }
         ],
         meta: {
-            isDynamic: true,
+            isDynamic: false,
             isMenu: true,
             isSubMenu: false,
             title: "文件夹上传",
@@ -106,7 +106,7 @@ export const constantRoutes: RouteRecordRaw[] = [
             }
         ],
         meta: {
-            isDynamic: true,
+            isDynamic: false,
             isMenu: true,
             isSubMenu: false,
             title: "模板引用",
@@ -123,7 +123,7 @@ export const constantRoutes: RouteRecordRaw[] = [
             }
         ],
         meta: {
-            isDynamic: true,
+            isDynamic: false,
             isMenu: true,
             isSubMenu: false,
             title: "日程管理",
@@ -140,7 +140,7 @@ export const constantRoutes: RouteRecordRaw[] = [
             }
         ],
         meta: {
-            isDynamic: true,
+            isDynamic: false,
             isMenu: true,
             isSubMenu: false,
             title: "视频播放",

@@ -11,6 +11,7 @@ import router from "./router/index.ts"
 import {createPinia} from "pinia";
 import VueVideoPlayer from '@videojs-player/vue'
 import 'video.js/dist/video-js.css'
+import {createPermissionDirective} from "./components/learnVue/directive/createDirective.ts";
 
 const pinia = createPinia()
 export const app = createApp(App)
@@ -20,4 +21,5 @@ app.use(ElementPlus, {
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
+createPermissionDirective(app)
 app.mount("#app")

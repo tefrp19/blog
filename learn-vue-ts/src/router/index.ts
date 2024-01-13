@@ -40,7 +40,6 @@ export const constantRoutes: RouteRecordRaw[] = [
             isDynamic: false
         }
     },
-
     {
         path: "/v-model-with-props",
         name: "v-modelWithProps",
@@ -146,6 +145,27 @@ export const constantRoutes: RouteRecordRaw[] = [
             title: "视频播放",
         }
     },
+    {
+        path: "/learnVue",
+        redirect: "/learnVue/index",
+        component: Layout,
+        children: [
+            {
+                path: "/learnVue/directive",
+                component: () => import("../components/learnVue/directive/index.vue"),
+                meta: {
+                    title: "自定义指令",
+                }
+            }
+        ],
+        meta: {
+            isDynamic: false,
+            isMenu: true,
+            isSubMenu: true,
+            title: "vue学习",
+        }
+    },
+
     // {
     //     path: '/:path(.*)*',
     //     redirect: '/404',

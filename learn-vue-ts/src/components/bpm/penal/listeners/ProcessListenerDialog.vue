@@ -42,8 +42,10 @@ import { CommonStatusEnum } from '../../utils/constants.ts'
 /** BPM 流程 表单 */
 defineOptions({ name: 'ProcessListenerDialog' })
 
-const { t } = useI18n() // 国际化
-const message = useMessage() // 消息弹窗
+// const { t } = useI18n() // 国际化
+// const message = useMessage() // 消息弹窗
+const t = ()=>{} // 国际化
+const message = {} // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
 const loading = ref(true) // 列表的加载中

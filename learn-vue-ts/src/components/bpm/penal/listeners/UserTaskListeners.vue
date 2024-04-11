@@ -295,7 +295,7 @@
   </div>
 
   <!-- 选择弹窗 -->
-  <ProcessListenerDialog ref="processListenerDialogRef" @select="selectProcessListener" />
+<!--  <ProcessListenerDialog ref="processListenerDialogRef" @select="selectProcessListener" />-->
 </template>
 <script lang="ts" setup>
 import { ElMessageBox } from 'element-plus'
@@ -308,7 +308,7 @@ import {
   fieldType,
   initListenerForm2
 } from './utilSelf'
-import ProcessListenerDialog from '@/components/bpmnProcessDesigner/package/penal/listeners/ProcessListenerDialog.vue'
+// import ProcessListenerDialog from '@/components/bpmnProcessDesigner/package/penal/listeners/ProcessListenerDialog.vue'
 
 defineOptions({ name: 'UserTaskListeners' })
 

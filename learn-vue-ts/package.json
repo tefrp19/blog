@@ -37,9 +37,10 @@
   "devDependencies": {
     "@types/node": "^20.5.4",
     "@vitejs/plugin-vue": "^4.1.0",
-    "bpmn-js-properties-panel": "^5.14.0",
+    "bpmn-js-properties-panel": "^0.46.0",
     "sass": "^1.74.1",
     "typescript": "^5.0.2",
+    "unplugin-auto-import": "^0.17.5",
     "vite": "^4.3.2",
     "vite-plugin-node-polyfills": "^0.19.0",
     "vue-tsc": "^1.4.2"

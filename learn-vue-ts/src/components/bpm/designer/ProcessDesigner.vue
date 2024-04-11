@@ -213,7 +213,7 @@ import 'bpmn-js/dist/assets/diagram-js.css' // 左边工具栏以及编辑节点
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn.css'
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css'
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css'
-// import 'bpmn-js-properties-panel/dist/assets/bpmn-js-properties-panel.css' // 右侧框样式
+import 'bpmn-js-properties-panel/dist/assets/bpmn-js-properties-panel.css' // 右侧框样式
 import { ElMessage, ElMessageBox } from 'element-plus'
 import BpmnModeler from 'bpmn-js/lib/Modeler'
 import DefaultEmptyXML from './plugins/defaultEmpty.js'

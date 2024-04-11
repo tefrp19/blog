@@ -1,5 +1,5 @@
 import MyProcessDesigner from './designer'
-// import MyProcessPenal from './penal'
+import MyProcessPenal from './penal/index.js'
 // import MyProcessViewer from './designer/index2'
 
 import './theme/index.scss'

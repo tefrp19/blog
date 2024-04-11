@@ -48,7 +48,8 @@
 <script lang="ts" setup>
 defineOptions({ name: 'SignalAndMassage' })
 
-const message = useMessage()
+// const message = useMessage()
+const message = {}
 const signalList = ref<any[]>([])
 const messageList = ref<any[]>([])
 const dialogVisible = ref(false)

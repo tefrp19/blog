@@ -146,6 +146,27 @@ export const constantRoutes: RouteRecordRaw[] = [
             title: "视频播放",
         }
     },
+    {
+        path: '/bpm',
+        name: "bpm",
+        redirect: "",
+        component: Layout,
+        children: [
+            {
+                path: "/bpm/processDesigner",
+                component: () => import("../components/bpm/designer/ProcessDesignerParent.vue"),
+                meta: {
+                    title: "流程设计",
+                }
+            },
+        ],
+        meta: {
+            isDynamic: true,
+            isMenu: true,
+            isSubMenu: true,
+            title: "工作流"
+        }
+    },
     // {
     //     path: '/:path(.*)*',
     //     redirect: '/404',
